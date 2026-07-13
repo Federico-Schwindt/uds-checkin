@@ -1,65 +1,80 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ClipboardList, Settings, Wrench } from "lucide-react";
+import { count, eq, gte } from "drizzle-orm";
+import { getDb, entries } from "@/db";
+import { getSettings } from "@/lib/settings";
+import { IdleLock } from "@/components/idle-lock";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const db = await getDb();
+  const s = await getSettings();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const [todayCount] = await db.select({ n: count() }).from(entries).where(gte(entries.createdAt, today));
+  const [ongoingCount] = await db.select({ n: count() }).from(entries).where(eq(entries.jobStatus, "Ongoing"));
+  const [holdCount] = await db.select({ n: count() }).from(entries).where(eq(entries.jobStatus, "On hold"));
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-dvh flex flex-col">
+      <IdleLock minutes={Number(s.idleLockMinutes) || 0} />
+      <header className="bg-ink-950 text-white">
+        <div className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center">
+              <Wrench className="w-5.5 h-5.5" />
+            </span>
+            <div>
+              <p className="font-bold leading-tight">{s.businessName}</p>
+              <p className="text-xs text-ink-400">Check-In Station</p>
+            </div>
+          </div>
+          <Link
+            href="/admin"
+            className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold transition-colors"
+          >
+            <Settings className="w-4 h-4" /> Admin
+          </Link>
+        </div>
+      </header>
+
+      <section className="flex-1 flex items-center justify-center px-6 py-10">
+        <div className="w-full max-w-2xl text-center animate-fade-up">
+          <div className="rounded-2xl bg-brand-600 text-white font-bold py-2.5 px-4 text-sm inline-block mb-8 shadow-sm">
+            {s.turnaroundBanner}
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink-900 mb-3">
+            Driveshaft Repair Check-In
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-ink-500 mb-10">
+            Register a customer for a repair or custom driveshaft. The customer receives SMS updates at every stage.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/checkin"
+            className="inline-flex items-center justify-center gap-3 h-20 px-12 rounded-2xl bg-brand-600 text-white text-xl font-bold shadow-pop hover:bg-brand-700 active:scale-[0.98] transition-all"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <ClipboardList className="w-7 h-7" />
+            Start New Check-In
+          </Link>
+
+          <div className="grid grid-cols-3 gap-4 mt-14 max-w-lg mx-auto">
+            <Stat label="Today" value={todayCount.n} />
+            <Stat label="Ongoing" value={ongoingCount.n} />
+            <Stat label="On hold" value={holdCount.n} />
+          </div>
         </div>
-      </main>
+      </section>
+    </main>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="bg-white rounded-2xl border border-ink-200/60 shadow-card px-4 py-4">
+      <p className="text-3xl font-bold text-ink-900">{value}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-ink-500 mt-1">{label}</p>
     </div>
   );
 }

@@ -1,0 +1,26 @@
+{
+  "Admin Notification": {
+    "subject": "New job order from {form_title}",
+    "message": "{all_fields}"
+  },
+  "Save and Continue Email": {
+    "subject": "Link to continue {form_title}",
+    "message": "Thank you for saving {form_title}. Please use the unique link below to return to the form from any computer. \n\n {save_link} \n\n Remember that the link will expire after 30 days so please return via the provided link to complete your form submission."
+  },
+  "First Email": {
+    "subject": "We received your information!",
+    "message": "Hello {Name (First):80.3},\r\nWe have received your information and your order is awaiting confirmation. You should receive an SMS to your phone number ({Phone:13}) in every stage of the process.\r\n\r\nIf you need to update your contact information, please don’t hesitate to reach out to us. We’re here to ensure you receive the best service and support. Thank you for your trust in Universal Driveshafts."
+  },
+  "Status is on-going": {
+    "subject": "Update on Your Order Status!",
+    "message": "Hello {Name (First):80.3},\r\nThank you for choosing Universal Driveshafts. The current status of your order is: {Job Status:94} and the assigned employee working on your order is {Assigned Employee:90} Once your order is completed, we will send you a confirmation SMS to your registered phone number: {Phone:13}.\r\n\r\nIf you need to update your contact information, please don’t hesitate to reach out to us. We’re here to ensure you receive the best service and support."
+  },
+  "Status is completed": {
+    "subject": "Your Order is Ready for Pickup!",
+    "message": "Hello {Name (First):80.3},\r\nThank you for choosing Universal Driveshafts. We’re pleased to inform you that your driveshaft/vehicle is now complete and ready for pickup.\r\n\r\nWe appreciate your trust in Universal Driveshafts and look forward to serving you again.\r\n\r\nBest regards,\r\nThe Universal Driveshafts Team"
+  },
+  "Status is on-hold": {
+    "subject": "Important Update on Your Universal Driveshafts Order",
+    "message": "Hello {Name (First):80.3},\r\nThank you for choosing Universal Driveshafts. We wanted to keep you informed regarding your order. The current status is {Job Status:94} due to the following reason: {On Hold Reason:89}. As soon as work begins on your driveshaft or vehicle, you’ll receive an SMS update at your registered phone number: {Phone:13}.\r\n\r\nIf any of your contact details need to be updated, please reach out to us at your convenience. We’re dedicated to providing you with the best service and are here to address any questions you may have.\r\n\r\nThank you again for trusting Universal Driveshafts."
+  }
+}
