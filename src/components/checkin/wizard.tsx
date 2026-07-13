@@ -121,10 +121,15 @@ export function CheckinWizard({ turnaroundBanner }: { turnaroundBanner: string }
     setSubmitting(true);
     setSubmitError("");
     try {
+      let locationId: number | null = null;
+      try {
+        const stored = localStorage.getItem("uds-location-id");
+        locationId = stored ? parseInt(stored) : null;
+      } catch {}
       const res = await fetch("/api/entries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, locationId }),
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {

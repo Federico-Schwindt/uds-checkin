@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Check,
+  Copy,
   MessageSquareText,
   Pencil,
   Printer,
@@ -237,6 +238,18 @@ export function EntryDetail({ id }: { id: number }) {
     router.push("/admin/entries");
   };
 
+  const duplicate = async () => {
+    if (!confirm(`Duplicate entry #${id} as a new job? Signatures, job number and status are reset.`)) return;
+    const res = await fetch(`/api/entries/${id}/duplicate`, { method: "POST" });
+    const j = await res.json();
+    if (res.ok) {
+      router.push(`/admin/entries/${j.id}`);
+    } else {
+      setBanner({ tone: "err", text: j.error || "Failed to duplicate." });
+      setTimeout(() => setBanner(null), 4000);
+    }
+  };
+
   const vehicleLabel = useMemo(() => {
     if (!entry) return "";
     return [entry.vehicleYear, entry.vehicleMake, entry.vehicleModel].filter(Boolean).join(" ");
@@ -343,10 +356,13 @@ export function EntryDetail({ id }: { id: number }) {
               <Button variant="outline" size="sm" onClick={() => window.print()}>
                 <Printer className="w-4 h-4" /> Print
               </Button>
+              <Button variant="outline" size="sm" onClick={duplicate}>
+                <Copy className="w-4 h-4" /> Duplicate
+              </Button>
               <Button variant="outline" size="sm" onClick={startEdit}>
                 <Pencil className="w-4 h-4" /> Edit
               </Button>
-              <Button variant="danger" size="sm" onClick={remove}>
+              <Button variant="danger" size="sm" onClick={remove} title="Delete entry">
                 <Trash2 className="w-4 h-4" />
               </Button>
             </>

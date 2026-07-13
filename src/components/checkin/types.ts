@@ -1,6 +1,8 @@
 export type PartLine = { sku: string; name: string; qty: number; price: string };
 
 export type CheckinData = {
+  /** Device location, attached at submit time (from localStorage). */
+  locationId?: number | null;
   // Step 1 — customer
   customerId: number | null;
   firstName: string;

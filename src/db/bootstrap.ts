@@ -314,4 +314,9 @@ export async function bootstrap(db: Db) {
       await db.insert(messageTemplates).values(t);
     }
   }
+
+  // Micro-migration: entries created before locations were mandatory get the first location.
+  await db.execute(
+    sql.raw("UPDATE entries SET location_id = (SELECT MIN(id) FROM locations) WHERE location_id IS NULL")
+  );
 }

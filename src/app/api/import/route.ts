@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Papa from "papaparse";
-import { eq, inArray } from "drizzle-orm";
-import { getDb, customers, entries, parts, statusHistory } from "@/db";
+import { asc, eq, inArray } from "drizzle-orm";
+import { getDb, customers, entries, locations, parts, statusHistory } from "@/db";
 import { normalizePhone } from "@/lib/utils";
 
 export const maxDuration = 300;
@@ -121,6 +121,7 @@ export async function POST(req: NextRequest) {
   }
 
   const db = await getDb();
+  const [defaultLocation] = await db.select().from(locations).orderBy(asc(locations.id)).limit(1);
 
   // Skip rows already imported.
   const sourceIds = rows
@@ -200,6 +201,7 @@ export async function POST(req: NextRequest) {
         .insert(entries)
         .values({
           customerId,
+          locationId: defaultLocation?.id ?? null,
           sourceEntryId: sourceId,
           createdAt: isNaN(createdAt.getTime()) ? new Date() : createdAt,
           estimateChoice: get(row, C.estimateChoice),

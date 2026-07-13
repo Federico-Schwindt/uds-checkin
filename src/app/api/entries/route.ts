@@ -71,10 +71,11 @@ export async function POST(req: NextRequest) {
     return isNaN(n) ? null : n.toFixed(2);
   };
 
+  const requestedLocation = Number(data.locationId) || null;
   const inserted = await db
     .insert(entries)
     .values({
-      locationId: defaultLocation?.id ?? null,
+      locationId: requestedLocation ?? defaultLocation?.id ?? null,
       customerId,
       estimateChoice: data.estimateChoice || "",
       estimateAmount: data.estimateAmount || "",
@@ -173,8 +174,10 @@ export async function GET(req: NextRequest) {
   const q = (p.get("q") || "").trim();
   const from = p.get("from") || "";
   const to = p.get("to") || "";
+  const locationId = parseInt(p.get("locationId") || "");
 
   const conds: SQL[] = [];
+  if (!isNaN(locationId)) conds.push(eq(entries.locationId, locationId));
   if (status) conds.push(eq(entries.jobStatus, status));
   if (payment) conds.push(eq(entries.payment, payment));
   if (from) conds.push(gte(entries.createdAt, new Date(from)));
@@ -214,6 +217,9 @@ export async function GET(req: NextRequest) {
       deposit: entries.deposit,
       createdAt: entries.createdAt,
       etaJob: entries.etaJob,
+      locationId: entries.locationId,
+      onHoldReason: entries.onHoldReason,
+      assignedEmployee: entries.assignedEmployee,
       customerId: customers.id,
       firstName: customers.firstName,
       lastName: customers.lastName,
