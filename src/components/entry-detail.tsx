@@ -117,7 +117,18 @@ type MessageRow = {
   body: string;
 };
 
-export function EntryDetail({ id }: { id: number }) {
+export function EntryDetail({
+  id,
+  basePath = "/entry",
+  backHref = "/",
+  backLabel = "Entries",
+}: {
+  id: number;
+  /** Where "Duplicate" navigates (`${basePath}/${newId}`). */
+  basePath?: string;
+  backHref?: string;
+  backLabel?: string;
+}) {
   const router = useRouter();
   const [entry, setEntry] = useState<EntryData | null>(null);
   const [customer, setCustomer] = useState<CustomerData>(null);
@@ -235,7 +246,7 @@ export function EntryDetail({ id }: { id: number }) {
   const remove = async () => {
     if (!confirm(`Delete entry #${id}? This cannot be undone.`)) return;
     await fetch(`/api/entries/${id}`, { method: "DELETE" });
-    router.push("/admin/entries");
+    router.push(backHref);
   };
 
   const duplicate = async () => {
@@ -243,7 +254,7 @@ export function EntryDetail({ id }: { id: number }) {
     const res = await fetch(`/api/entries/${id}/duplicate`, { method: "POST" });
     const j = await res.json();
     if (res.ok) {
-      router.push(`/admin/entries/${j.id}`);
+      router.push(`${basePath}/${j.id}`);
     } else {
       setBanner({ tone: "err", text: j.error || "Failed to duplicate." });
       setTimeout(() => setBanner(null), 4000);
@@ -266,7 +277,7 @@ export function EntryDetail({ id }: { id: number }) {
     return (
       <div className="py-24 text-center text-ink-500">
         Entry not found.{" "}
-        <Link className="text-brand-700 font-semibold" href="/admin/entries">
+        <Link className="text-brand-700 font-semibold" href={backHref}>
           Back to entries
         </Link>
       </div>
@@ -326,10 +337,10 @@ export function EntryDetail({ id }: { id: number }) {
       <div className="flex items-start justify-between gap-3 flex-wrap no-print">
         <div>
           <Link
-            href="/admin/entries"
+            href={backHref}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-500 hover:text-ink-800 mb-1"
           >
-            <ArrowLeft className="w-4 h-4" /> Entries
+            <ArrowLeft className="w-4 h-4" /> {backLabel}
           </Link>
           <h1 className="text-2xl font-bold tracking-tight flex items-center gap-3 flex-wrap">
             {custData?.firstName as string} {custData?.lastName as string}

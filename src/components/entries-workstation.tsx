@@ -63,7 +63,7 @@ export function LocationPicker({
         value={value ? String(value) : ""}
         onChange={(e) => onChange(parseInt(e.target.value))}
         placeholder="Location…"
-        className="h-10 w-44"
+        className="h-12 w-44"
       >
         {locations.map((l) => (
           <option key={l.id} value={l.id}>
@@ -376,6 +376,7 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
   const [locationReady, setLocationReady] = useState(false);
   const [rows, setRows] = useState<Row[]>([]);
   const [total, setTotal] = useState(0);
+  const [statusCounts, setStatusCounts] = useState<Record<string, number>>({});
   const [page, setPage] = useState(1);
   const [q, setQ] = useState("");
   const [qLive, setQLive] = useState("");
@@ -432,6 +433,7 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
       const j = await res.json();
       setRows(j.rows || []);
       setTotal(j.total || 0);
+      setStatusCounts(j.statusCounts || {});
     } finally {
       setLoading(false);
     }
@@ -514,7 +516,7 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
             value={qLive}
             onChange={(e) => setQLive(e.target.value)}
             placeholder="Search name, phone, job #, vehicle…"
-            className="pl-10 h-11 bg-white"
+            className="pl-10 h-12 bg-white"
           />
           {qLive && (
             <button
@@ -527,23 +529,35 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
           )}
         </div>
         <div className="flex gap-1.5 overflow-x-auto">
-          {["", "New", "Confirmed", "Ongoing", "On hold", "Completed"].map((st) => (
-            <button
-              key={st || "all"}
-              onClick={() => {
-                setStatus(st);
-                setPage(1);
-              }}
-              className={cn(
-                "h-11 px-4 rounded-xl border text-sm font-semibold whitespace-nowrap transition-all",
-                status === st
-                  ? "border-brand-600 bg-brand-600 text-white"
-                  : "border-ink-300 bg-white text-ink-600 hover:border-ink-400"
-              )}
-            >
-              {st || "All"}
-            </button>
-          ))}
+          {["", "New", "Confirmed", "Ongoing", "On hold", "Completed"].map((st) => {
+            const n = statusCounts[st || "All"] ?? 0;
+            const active = status === st;
+            return (
+              <button
+                key={st || "all"}
+                onClick={() => {
+                  setStatus(st);
+                  setPage(1);
+                }}
+                className={cn(
+                  "h-12 px-4 rounded-xl border text-sm font-semibold whitespace-nowrap transition-all active:scale-[0.97] inline-flex items-center gap-2",
+                  active
+                    ? "border-brand-600 bg-brand-600 text-white"
+                    : "border-ink-300 bg-white text-ink-600 hover:border-ink-400"
+                )}
+              >
+                {st || "All"}
+                <span
+                  className={cn(
+                    "min-w-6 px-1.5 h-6 rounded-full text-xs font-bold inline-flex items-center justify-center",
+                    active ? "bg-white/20 text-white" : "bg-ink-100 text-ink-600"
+                  )}
+                >
+                  {n}
+                </span>
+              </button>
+            );
+          })}
         </div>
         <LocationPicker locations={locations} value={locationId} onChange={pickLocation} />
       </div>
@@ -582,9 +596,9 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
                 rows.map((r) => (
                   <tr key={r.id} className="hover:bg-ink-50/60 transition-colors">
                     {/* Customer — navigates to the entry page */}
-                    <td className="px-4 py-1.5">
+                    <td className="px-4 py-2">
                       <button
-                        onClick={() => router.push(`/admin/entries/${r.id}`)}
+                        onClick={() => router.push(`/entry/${r.id}`)}
                         className="group text-left"
                         title="Open entry"
                       >
@@ -596,7 +610,7 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
                       </button>
                     </td>
                     {/* Phone — inline edit (updates the customer) */}
-                    <td className="px-1.5 py-1.5 w-36">
+                    <td className="px-1.5 py-2 w-36">
                       <InlineText
                         value={formatPhone(r.phone || "")}
                         onSave={(v) => patchRow(r, { customer: { phone: v } }, "Phone updated.")}
@@ -605,7 +619,7 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
                       />
                     </td>
                     {/* Vehicle — inline edit of the model (year/make via entry page) */}
-                    <td className="px-1.5 py-1.5 max-lg:hidden w-48">
+                    <td className="px-1.5 py-2 max-lg:hidden w-48">
                       <InlineText
                         value={r.vehicleModel}
                         display={[r.vehicleYear, r.vehicleMake, r.vehicleModel].filter(Boolean).join(" ")}
@@ -614,7 +628,7 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
                       />
                     </td>
                     {/* Job number */}
-                    <td className="px-1.5 py-1.5 w-32">
+                    <td className="px-1.5 py-2 w-32">
                       <InlineText
                         value={r.jobNumber}
                         onSave={(v) => patchRow(r, { entry: { jobNumber: v } }, "Job # updated.")}
@@ -622,14 +636,14 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
                       />
                     </td>
                     {/* Status */}
-                    <td className="px-1.5 py-1.5">
+                    <td className="px-1.5 py-2">
                       <InlineStatus
                         row={r}
                         onApply={(patch, skipNotify) => patchRow(r, { entry: patch, skipNotify })}
                       />
                     </td>
                     {/* Payment */}
-                    <td className="px-1.5 py-1.5 max-sm:hidden">
+                    <td className="px-1.5 py-2 max-sm:hidden">
                       <InlineChoice
                         value={r.payment}
                         options={formOptions.payments}
@@ -644,7 +658,7 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
                       />
                     </td>
                     {/* Total */}
-                    <td className="px-1.5 py-1.5 text-right max-lg:hidden w-28">
+                    <td className="px-1.5 py-2 text-right max-lg:hidden w-28">
                       <InlineText
                         value={r.total ?? ""}
                         display={r.total ? formatMoney(r.total) : ""}
@@ -655,14 +669,14 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
                       />
                     </td>
                     {/* ETA */}
-                    <td className="px-1.5 py-1.5 max-xl:hidden w-36">
+                    <td className="px-1.5 py-2 max-xl:hidden w-36">
                       <InlineText
                         value={r.etaJob}
                         onSave={(v) => patchRow(r, { entry: { etaJob: v } }, "ETA updated.")}
                         placeholder="—"
                       />
                     </td>
-                    <td className="px-3 py-1.5 text-right text-ink-500 whitespace-nowrap text-xs max-sm:hidden">
+                    <td className="px-3 py-2 text-right text-ink-500 whitespace-nowrap text-xs max-sm:hidden">
                       {formatDateTime(r.createdAt)}
                     </td>
                   </tr>

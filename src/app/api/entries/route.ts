@@ -177,14 +177,15 @@ export async function GET(req: NextRequest) {
   const locationId = parseInt(p.get("locationId") || "");
 
   const conds: SQL[] = [];
-  if (!isNaN(locationId)) conds.push(eq(entries.locationId, locationId));
+  const baseConds: SQL[] = []; // every filter except status — used for the per-status counters
+  if (!isNaN(locationId)) baseConds.push(eq(entries.locationId, locationId));
   if (status) conds.push(eq(entries.jobStatus, status));
-  if (payment) conds.push(eq(entries.payment, payment));
-  if (from) conds.push(gte(entries.createdAt, new Date(from)));
+  if (payment) baseConds.push(eq(entries.payment, payment));
+  if (from) baseConds.push(gte(entries.createdAt, new Date(from)));
   if (to) {
     const d = new Date(to);
     d.setHours(23, 59, 59, 999);
-    conds.push(lte(entries.createdAt, d));
+    baseConds.push(lte(entries.createdAt, d));
   }
   if (q) {
     const digits = normalizePhone(q);
@@ -198,10 +199,12 @@ export async function GET(req: NextRequest) {
       ilike(sql`(${customers.firstName} || ' ' || ${customers.lastName})`, like),
     ];
     if (digits.length >= 3) parts_.push(ilike(customers.phone, `%${digits}%`));
-    conds.push(or(...parts_)!);
+    baseConds.push(or(...parts_)!);
   }
 
-  const where = conds.length ? and(...conds) : undefined;
+  const allConds = [...baseConds, ...conds];
+  const where = allConds.length ? and(...allConds) : undefined;
+  const baseWhere = baseConds.length ? and(...baseConds) : undefined;
 
   const rows = await db
     .select({
@@ -238,5 +241,20 @@ export async function GET(req: NextRequest) {
     .leftJoin(customers, eq(entries.customerId, customers.id))
     .where(where);
 
-  return NextResponse.json({ rows, total: total.n, page, pageSize });
+  // Per-status counters for the kiosk filter chips (same filters, status excluded).
+  const byStatus = await db
+    .select({ status: entries.jobStatus, n: count() })
+    .from(entries)
+    .leftJoin(customers, eq(entries.customerId, customers.id))
+    .where(baseWhere)
+    .groupBy(entries.jobStatus);
+  const statusCounts: Record<string, number> = {};
+  let all = 0;
+  for (const r of byStatus) {
+    statusCounts[r.status] = r.n;
+    all += r.n;
+  }
+  statusCounts.All = all;
+
+  return NextResponse.json({ rows, total: total.n, page, pageSize, statusCounts });
 }
