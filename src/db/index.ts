@@ -15,7 +15,11 @@ async function createDb(): Promise<Db> {
   let db: Db;
   if (process.env.DATABASE_URL) {
     const { default: postgres } = await import("postgres");
-    const client = postgres(process.env.DATABASE_URL, { max: 5, prepare: false });
+    // postgres.js doesn't support SCRAM channel binding; drop the param if a
+    // provider (e.g. Neon) includes it so the full connection string still works.
+    const url = process.env.DATABASE_URL.replace(/[?&]channel_binding=[^&]*/i, "");
+    // Silence "relation already exists" NOTICEs from the idempotent bootstrap DDL.
+    const client = postgres(url, { max: 5, prepare: false, onnotice: () => {} });
     db = drizzlePostgres(client, { schema }) as unknown as Db;
   } else {
     const { PGlite } = await import("@electric-sql/pglite");

@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, CheckCircle2, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, Home, RotateCcw, X } from "lucide-react";
 import { Button, Spinner } from "@/components/ui";
 import { normalizePhone, cn } from "@/lib/utils";
 import { groupConfig, type FormLayout } from "@/lib/form-layout";
@@ -72,7 +72,15 @@ function validateStep(stepKey: string, d: CheckinData, layout: FormLayout): Reco
   return errors;
 }
 
-export function CheckinWizard({ turnaroundBanner, layout }: { turnaroundBanner: string; layout: FormLayout }) {
+export function CheckinWizard({
+  turnaroundBanner,
+  layout,
+  businessName = "Universal Driveshafts",
+}: {
+  turnaroundBanner: string;
+  layout: FormLayout;
+  businessName?: string;
+}) {
   const STEPS = layout.steps
     .filter((s) => s.enabled && STEP_COMPONENTS[s.key])
     .map((s) => ({ key: s.key, title: s.title, component: STEP_COMPONENTS[s.key] }));
@@ -184,6 +192,20 @@ export function CheckinWizard({ turnaroundBanner, layout }: { turnaroundBanner: 
     setRestored(false);
   };
 
+  // Has the user entered anything worth confirming before they leave?
+  const isDirty = useMemo(
+    () =>
+      Boolean(
+        data.firstName || data.lastName || normalizePhone(data.phone) || data.email || data.vehicleModel || data.parts.length
+      ),
+    [data]
+  );
+
+  const exit = () => {
+    if (isDirty && !confirm("Leave this check-in? Unsaved progress is kept as a draft on this device.")) return;
+    router.push("/");
+  };
+
   if (done) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-4">
@@ -211,11 +233,33 @@ export function CheckinWizard({ turnaroundBanner, layout }: { turnaroundBanner: 
   const isLast = step === STEPS.length - 1;
 
   return (
-    <div ref={topRef} className="mx-auto w-full max-w-3xl px-4 pb-32 pt-4 scroll-mt-4">
-      {/* Turnaround banner */}
-      <div className="mb-4 rounded-xl bg-brand-600 text-white text-center font-bold py-2.5 px-4 text-sm shadow-sm">
-        {turnaroundBanner}
-      </div>
+    <>
+      {/* Sticky top app bar with a prominent Exit control */}
+      <header className="sticky top-0 z-40 bg-ink-950 text-white no-print">
+        <div className="mx-auto max-w-3xl px-3 sm:px-4 h-14 flex items-center justify-between gap-3">
+          <button
+            onClick={exit}
+            className="inline-flex items-center gap-2 h-10 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 font-semibold text-sm transition-all"
+          >
+            <ArrowLeft className="w-4.5 h-4.5" /> Exit
+          </button>
+          <span className="font-bold text-sm sm:text-base truncate">{businessName} — Check-In</span>
+          <button
+            onClick={exit}
+            className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 flex items-center justify-center transition-all"
+            aria-label="Exit check-in"
+            title="Exit"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      </header>
+
+      <div ref={topRef} className="mx-auto w-full max-w-3xl px-4 pb-32 pt-4 scroll-mt-20">
+        {/* Turnaround banner */}
+        <div className="mb-4 rounded-xl bg-brand-600 text-white text-center font-bold py-2.5 px-4 text-sm shadow-sm">
+          {turnaroundBanner}
+        </div>
 
       {restored && (
         <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm text-amber-800">
@@ -279,26 +323,33 @@ export function CheckinWizard({ turnaroundBanner, layout }: { turnaroundBanner: 
         </div>
       )}
 
-      {/* Sticky nav */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur border-t border-ink-200 no-print">
-        <div className="mx-auto max-w-3xl px-4 py-3 flex items-center justify-between gap-3">
-          <Button variant="outline" size="lg" onClick={goBack} disabled={step === 0 || submitting}>
-            <ArrowLeft className="w-5 h-5" /> Previous
-          </Button>
-          <span className="text-sm text-ink-500 font-medium max-sm:hidden">
-            Step {step + 1} of {STEPS.length} — {STEPS[step].title}
-          </span>
-          {isLast ? (
-            <Button size="lg" onClick={submit} disabled={submitting} className="min-w-36">
-              {submitting ? <Spinner /> : <Check className="w-5 h-5" />} Complete
-            </Button>
-          ) : (
-            <Button size="lg" onClick={goNext} className="min-w-32">
-              Next <ArrowRight className="w-5 h-5" />
-            </Button>
-          )}
+        {/* Sticky nav */}
+        <div className="fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur border-t border-ink-200 no-print">
+          <div className="mx-auto max-w-3xl px-4 py-3 flex items-center justify-between gap-3">
+            {step === 0 ? (
+              <Button variant="outline" size="lg" onClick={exit} disabled={submitting}>
+                <Home className="w-5 h-5" /> Cancel
+              </Button>
+            ) : (
+              <Button variant="outline" size="lg" onClick={goBack} disabled={submitting}>
+                <ArrowLeft className="w-5 h-5" /> Back
+              </Button>
+            )}
+            <span className="text-sm text-ink-500 font-medium max-sm:hidden">
+              Step {step + 1} of {STEPS.length} — {STEPS[step].title}
+            </span>
+            {isLast ? (
+              <Button size="lg" onClick={submit} disabled={submitting} className="min-w-36">
+                {submitting ? <Spinner /> : <Check className="w-5 h-5" />} Complete
+              </Button>
+            ) : (
+              <Button size="lg" onClick={goNext} className="min-w-32">
+                Next <ArrowRight className="w-5 h-5" />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
