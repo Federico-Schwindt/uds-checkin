@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { uploadsDir } from "@/lib/storage";
 
 const TYPES: Record<string, string> = {
   png: "image/png",
@@ -19,7 +20,7 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ path: stri
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
   try {
-    const filePath = path.join(process.cwd(), ".data", "uploads", name);
+    const filePath = path.join(uploadsDir(), name);
     const data = await readFile(filePath);
     const ext = name.split(".").pop()?.toLowerCase() || "";
     return new NextResponse(new Uint8Array(data), {
