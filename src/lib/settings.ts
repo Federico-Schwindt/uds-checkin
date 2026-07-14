@@ -1,7 +1,14 @@
 import { eq } from "drizzle-orm";
 import { getDb, settings } from "@/db";
+import type { FormLayout } from "@/lib/form-layout";
+
+export type KioskColumn = { key: string; visible: boolean };
 
 export type AppSettings = {
+  kioskColumns: KioskColumn[];
+  logoUrl: string;
+  brandColor: string;
+  formLayout: FormLayout | null;
   pin: string;
   idleLockMinutes: number;
   sessionDays: number;

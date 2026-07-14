@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AUTH_COOKIE, verifySessionToken } from "@/lib/auth";
 
-const PUBLIC_PREFIXES = ["/lock", "/api/auth/"];
+const PUBLIC_PREFIXES = ["/lock", "/api/auth/", "/manifest.webmanifest"];
 
 export default function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;

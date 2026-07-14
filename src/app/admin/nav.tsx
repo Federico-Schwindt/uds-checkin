@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   ClipboardList,
+  ListChecks,
   MessageSquareText,
   MailCheck,
   Settings,
@@ -16,6 +17,7 @@ import { cn } from "@/lib/utils";
 const ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/entries", label: "Entries", icon: ClipboardList },
+  { href: "/admin/form", label: "Form Builder", icon: ListChecks },
   { href: "/admin/templates", label: "Notifications", icon: MessageSquareText },
   { href: "/admin/messages", label: "Message Log", icon: MailCheck },
   { href: "/admin/settings", label: "Settings", icon: Settings },

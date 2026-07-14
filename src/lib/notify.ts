@@ -131,6 +131,43 @@ export async function sendSms(opts: {
   }
 }
 
+/** Branded HTML email wrapper: logo header, brand-colored bar, plain body, footer. */
+export function renderBrandedEmail(body: string, s: AppSettings): string {
+  const brand = s.brandColor || "#dc2626";
+  const name = s.businessName || "Universal Driveshafts";
+  const logo = s.logoUrl
+    ? `<img src="${s.logoUrl}" alt="${name}" style="max-height:56px;max-width:260px;display:block;" />`
+    : `<span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:0.5px;">${name}</span>`;
+  const paragraphs = body
+    .split("\n")
+    .map((l) => (l.trim() ? `<p style="margin:0 0 6px;line-height:1.55;">${l}</p>` : `<br/>`))
+    .join("");
+  return `<!doctype html>
+<html>
+  <body style="margin:0;padding:0;background:#f1f5f9;font-family:Arial,Helvetica,sans-serif;color:#0f172a;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:24px 12px;">
+      <tr><td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e2e8f0;">
+          <tr>
+            <td style="background:#020617;padding:20px 28px;" align="left">${logo}</td>
+          </tr>
+          <tr><td style="background:${brand};height:5px;font-size:0;line-height:0;">&nbsp;</td></tr>
+          <tr>
+            <td style="padding:28px;font-size:15px;">${paragraphs}</td>
+          </tr>
+          <tr>
+            <td style="padding:18px 28px;background:#f8fafc;border-top:1px solid #e2e8f0;font-size:12px;color:#64748b;">
+              ${name}${s.helpPhone ? ` · ${s.helpPhone}` : ""}<br/>
+              You are receiving this email because of a service order with us.
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+    </table>
+  </body>
+</html>`;
+}
+
 export async function sendEmail(opts: {
   to: string;
   subject: string;
@@ -173,10 +210,7 @@ export async function sendEmail(opts: {
       to: opts.to,
       subject: opts.subject,
       text: opts.body,
-      html: opts.body
-        .split("\n")
-        .map((l) => (l.trim() ? `<p style="margin:0 0 4px">${l}</p>` : "<br/>"))
-        .join(""),
+      html: renderBrandedEmail(opts.body, s),
     });
     await logMessage({ ...base, status: "sent", providerId: info.messageId || "" });
     return { ok: true };

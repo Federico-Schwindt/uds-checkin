@@ -15,12 +15,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "UDS Check-In | Universal Driveshafts",
   description: "Customer check-in for driveshaft repairs and custom driveshafts",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "UDS Check-In",
+  },
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
+  themeColor: "#dc2626",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

@@ -2,10 +2,14 @@
 
 import { Card, Field, Input, SectionTitle } from "@/components/ui";
 import { SignatureField } from "@/components/signature-pad";
+import { groupConfig } from "@/lib/form-layout";
 import legalTexts from "@/lib/legal-texts.json";
 import type { StepProps } from "../types";
 
-export function StepTerms({ data, set, errors }: StepProps) {
+export function StepTerms({ data, set, errors, layout }: StepProps) {
+  const cfg = groupConfig(layout, "terms");
+  const showDeposit = cfg.deposit?.visible !== false;
+  const showTotal = cfg.total?.visible !== false;
   return (
     <div className="space-y-6">
       <Card className="p-5 sm:p-6">
@@ -15,35 +19,41 @@ export function StepTerms({ data, set, errors }: StepProps) {
         </div>
       </Card>
 
-      <Card className="p-5 sm:p-6">
-        <SectionTitle>Payment</SectionTitle>
-        <div className="grid grid-cols-2 gap-4 max-w-md">
-          <Field label="Payment Deposit" error={errors.deposit}>
-            <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500">$</span>
-              <Input
-                value={data.deposit}
-                onChange={(e) => set("deposit", e.target.value)}
-                inputMode="decimal"
-                className="pl-8"
-                placeholder="0.00"
-              />
-            </div>
-          </Field>
-          <Field label="Total" error={errors.total}>
-            <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500">$</span>
-              <Input
-                value={data.total}
-                onChange={(e) => set("total", e.target.value)}
-                inputMode="decimal"
-                className="pl-8"
-                placeholder="0.00"
-              />
-            </div>
-          </Field>
-        </div>
-      </Card>
+      {(showDeposit || showTotal) && (
+        <Card className="p-5 sm:p-6">
+          <SectionTitle>Payment</SectionTitle>
+          <div className="grid grid-cols-2 gap-4 max-w-md">
+            {showDeposit && (
+              <Field label="Payment Deposit" required={!!cfg.deposit?.required} error={errors.deposit}>
+                <div className="relative">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500">$</span>
+                  <Input
+                    value={data.deposit}
+                    onChange={(e) => set("deposit", e.target.value)}
+                    inputMode="decimal"
+                    className="pl-8"
+                    placeholder="0.00"
+                  />
+                </div>
+              </Field>
+            )}
+            {showTotal && (
+              <Field label="Total" required={!!cfg.total?.required} error={errors.total}>
+                <div className="relative">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500">$</span>
+                  <Input
+                    value={data.total}
+                    onChange={(e) => set("total", e.target.value)}
+                    inputMode="decimal"
+                    className="pl-8"
+                    placeholder="0.00"
+                  />
+                </div>
+              </Field>
+            )}
+          </div>
+        </Card>
+      )}
 
       <Card className="p-5 sm:p-6">
         <SectionTitle>Signature</SectionTitle>

@@ -175,6 +175,23 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
   emailEnabled: false,
   // notify admin on each check-in
   adminNotifyEnabled: true,
+  // branding
+  logoUrl: "",
+  brandColor: "#dc2626",
+  // kiosk table columns (order + visibility)
+  kioskColumns: [
+    { key: "customer", visible: true },
+    { key: "phone", visible: true },
+    { key: "vehicle", visible: true },
+    { key: "jobNumber", visible: true },
+    { key: "status", visible: true },
+    { key: "payment", visible: true },
+    { key: "total", visible: true },
+    { key: "eta", visible: true },
+    { key: "date", visible: true },
+  ],
+  // wizard layout (null = code defaults)
+  formLayout: null,
 };
 
 const SIGNOFF = "\n\nUniversal Driveshafts";

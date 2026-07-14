@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getSettings } from "@/lib/settings";
+import { mergeFormLayout } from "@/lib/form-layout";
 import { CheckinWizard } from "@/components/checkin/wizard";
 import { IdleLock } from "@/components/idle-lock";
 
@@ -23,7 +24,7 @@ export default async function CheckinPage() {
           <span className="font-bold">{s.businessName} — Check-In</span>
         </div>
       </header>
-      <CheckinWizard turnaroundBanner={s.turnaroundBanner} />
+      <CheckinWizard turnaroundBanner={s.turnaroundBanner} layout={mergeFormLayout(s.formLayout)} />
     </main>
   );
 }

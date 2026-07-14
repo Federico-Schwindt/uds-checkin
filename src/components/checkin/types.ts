@@ -152,8 +152,11 @@ export const initialCheckinData: CheckinData = {
   etaJob: "",
 };
 
+import type { FormLayout } from "@/lib/form-layout";
+
 export type StepProps = {
   data: CheckinData;
   set: <K extends keyof CheckinData>(key: K, value: CheckinData[K]) => void;
   errors: Record<string, string>;
+  layout: FormLayout;
 };

@@ -156,6 +156,20 @@ export default function SettingsPage() {
               label="Email admin on every new check-in"
             />
           </div>
+          <Field label="Logo URL (email branding)" hint="Public image URL, e.g. your website logo. Shown in the email header">
+            <Input value={str("logoUrl")} onChange={(e) => set("logoUrl", e.target.value)} placeholder="https://universaldriveshafts.com/…/logo.png" />
+          </Field>
+          <Field label="Brand color" hint="Accent color used in branded emails">
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={str("brandColor") || "#dc2626"}
+                onChange={(e) => set("brandColor", e.target.value)}
+                className="w-12 h-12 rounded-xl border border-ink-300 bg-white p-1 cursor-pointer"
+              />
+              <Input value={str("brandColor")} onChange={(e) => set("brandColor", e.target.value)} placeholder="#dc2626" className="font-mono w-32" />
+            </div>
+          </Field>
         </div>
       </Card>
 

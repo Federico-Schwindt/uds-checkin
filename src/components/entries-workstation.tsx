@@ -2,7 +2,20 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, ChevronLeft, ChevronRight, ExternalLink, MapPin, Search, X } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Eye,
+  EyeOff,
+  MapPin,
+  Search,
+  Settings2,
+  X,
+} from "lucide-react";
 import { Badge, Card, Input, Select, Spinner, StatusBadge } from "@/components/ui";
 import { cn, formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
@@ -368,12 +381,131 @@ function InlineStatus({
   );
 }
 
+/* ================= Column config ================= */
+
+function ColumnsConfig({ cols, onChange }: { cols: ColumnPref[]; onChange: (next: ColumnPref[]) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= cols.length) return;
+    const next = [...cols];
+    [next[i], next[j]] = [next[j], next[i]];
+    onChange(next);
+  };
+
+  const toggle = (i: number) => {
+    if (cols[i].key === "customer") return;
+    const next = cols.map((c, ix) => (ix === i ? { ...c, visible: !c.visible } : c));
+    onChange(next);
+  };
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="h-12 w-12 rounded-xl border border-ink-300 bg-white flex items-center justify-center text-ink-500 hover:border-ink-400 hover:text-ink-700 active:scale-95 transition-all"
+        title="Configure columns"
+        aria-label="Configure columns"
+      >
+        <Settings2 className="w-5 h-5" />
+      </button>
+      {open && (
+        <div className="absolute z-40 right-0 top-full mt-1.5 bg-white rounded-xl border border-ink-200 shadow-pop p-2 w-64 animate-fade-up">
+          <p className="px-2.5 py-1.5 text-xs font-bold uppercase tracking-wide text-ink-500">Table columns</p>
+          {cols.map((c, i) => (
+            <div key={c.key} className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-ink-50">
+              <button
+                onClick={() => toggle(i)}
+                disabled={c.key === "customer"}
+                className={cn(
+                  "w-7 h-7 rounded-md flex items-center justify-center transition-colors",
+                  c.key === "customer" ? "text-ink-300" : c.visible ? "text-brand-600 hover:bg-brand-50" : "text-ink-400 hover:bg-ink-100"
+                )}
+                aria-label={c.visible ? "Hide column" : "Show column"}
+              >
+                {c.visible ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+              </button>
+              <span className={cn("flex-1 text-sm font-medium", !c.visible && "text-ink-400 line-through")}>
+                {COLUMN_LABELS[c.key]}
+              </span>
+              <button
+                onClick={() => move(i, -1)}
+                disabled={i === 0}
+                className="w-7 h-7 rounded-md flex items-center justify-center text-ink-400 hover:bg-ink-100 disabled:opacity-30"
+                aria-label="Move up"
+              >
+                <ArrowUp className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => move(i, 1)}
+                disabled={i === cols.length - 1}
+                className="w-7 h-7 rounded-md flex items-center justify-center text-ink-400 hover:bg-ink-100 disabled:opacity-30"
+                aria-label="Move down"
+              >
+                <ArrowDown className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ================= Workstation table ================= */
 
-export function EntriesWorkstation({ locations }: { locations: LocationOption[] }) {
+export type ColumnPref = { key: string; visible: boolean };
+
+const COLUMN_LABELS: Record<string, string> = {
+  customer: "Customer",
+  phone: "Phone",
+  vehicle: "Vehicle",
+  jobNumber: "Job #",
+  status: "Status",
+  payment: "Payment",
+  total: "Total",
+  eta: "ETA",
+  date: "Date",
+};
+
+const DEFAULT_COLUMNS: ColumnPref[] = Object.keys(COLUMN_LABELS).map((key) => ({ key, visible: true }));
+
+function normalizeColumns(prefs: ColumnPref[] | null | undefined): ColumnPref[] {
+  const out: ColumnPref[] = [];
+  for (const p of prefs || []) {
+    if (COLUMN_LABELS[p.key] && !out.some((o) => o.key === p.key)) out.push({ key: p.key, visible: p.visible !== false });
+  }
+  for (const d of DEFAULT_COLUMNS) {
+    if (!out.some((o) => o.key === d.key)) out.push({ ...d });
+  }
+  // Customer is the anchor column and can't be hidden.
+  const customer = out.find((o) => o.key === "customer")!;
+  customer.visible = true;
+  return out;
+}
+
+export function EntriesWorkstation({
+  locations,
+  initialColumns,
+}: {
+  locations: LocationOption[];
+  initialColumns?: ColumnPref[] | null;
+}) {
   const router = useRouter();
   const [locationId, setLocationId] = useState<number | null>(null);
   const [locationReady, setLocationReady] = useState(false);
+  const [cols, setCols] = useState<ColumnPref[]>(() => normalizeColumns(initialColumns));
   const [rows, setRows] = useState<Row[]>([]);
   const [total, setTotal] = useState(0);
   const [statusCounts, setStatusCounts] = useState<Record<string, number>>({});
@@ -501,8 +633,130 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
     [showToast]
   );
 
+  const saveColumns = useCallback((next: ColumnPref[]) => {
+    setCols(next);
+    fetch("/api/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ kioskColumns: next }),
+    }).catch(() => {});
+  }, []);
+
   const pages = Math.max(1, Math.ceil(total / pageSize));
   const needsGate = locationReady && locations.length > 1 && locationId == null;
+  const visibleCols = cols.filter((c) => c.visible);
+
+  const headerFor = (key: string) => {
+    const right = key === "total" || key === "date";
+    return (
+      <th key={key} className={cn("px-3 py-3 font-semibold whitespace-nowrap", right && "text-right", key === "customer" && "px-4")}>
+        {COLUMN_LABELS[key]}
+      </th>
+    );
+  };
+
+  const cellFor = (key: string, r: Row) => {
+    switch (key) {
+      case "customer":
+        return (
+          <td key={key} className="px-4 py-2">
+            <button onClick={() => router.push(`/entry/${r.id}`)} className="group text-left" title="Open entry">
+              <span className="font-semibold text-ink-900 group-hover:text-brand-700 inline-flex items-center gap-1.5">
+                {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : `Entry #${r.id}`}
+                <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </span>
+              <span className="block text-xs text-ink-400">#{r.id}</span>
+            </button>
+          </td>
+        );
+      case "phone":
+        return (
+          <td key={key} className="px-1.5 py-2 w-36">
+            <InlineText
+              value={formatPhone(r.phone || "")}
+              onSave={(v) => patchRow(r, { customer: { phone: v } }, "Phone updated.")}
+              inputMode="tel"
+              placeholder="No phone"
+            />
+          </td>
+        );
+      case "vehicle":
+        return (
+          <td key={key} className="px-1.5 py-2 w-48">
+            <InlineText
+              value={r.vehicleModel}
+              display={[r.vehicleYear, r.vehicleMake, r.vehicleModel].filter(Boolean).join(" ")}
+              onSave={(v) => patchRow(r, { entry: { vehicleModel: v } }, "Vehicle updated.").then(load)}
+              placeholder="No vehicle"
+            />
+          </td>
+        );
+      case "jobNumber":
+        return (
+          <td key={key} className="px-1.5 py-2 w-32">
+            <InlineText
+              value={r.jobNumber}
+              onSave={(v) => patchRow(r, { entry: { jobNumber: v } }, "Job # updated.")}
+              placeholder="—"
+            />
+          </td>
+        );
+      case "status":
+        return (
+          <td key={key} className="px-1.5 py-2">
+            <InlineStatus row={r} onApply={(patch, skipNotify) => patchRow(r, { entry: patch, skipNotify })} />
+          </td>
+        );
+      case "payment":
+        return (
+          <td key={key} className="px-1.5 py-2">
+            <InlineChoice
+              value={r.payment}
+              options={formOptions.payments}
+              onSave={(v) => patchRow(r, { entry: { payment: v } }, "Payment updated.")}
+              render={(v) =>
+                v ? (
+                  <Badge tone={v === "Paid" ? "success" : v === "Unpaid" ? "danger" : "warning"}>{v}</Badge>
+                ) : (
+                  <span className="text-ink-300 text-sm px-1">—</span>
+                )
+              }
+            />
+          </td>
+        );
+      case "total":
+        return (
+          <td key={key} className="px-1.5 py-2 text-right w-28">
+            <InlineText
+              value={r.total ?? ""}
+              display={r.total ? formatMoney(r.total) : ""}
+              onSave={(v) => patchRow(r, { entry: { total: v.replace(/[^0-9.]/g, "") || null } }, "Total updated.")}
+              align="right"
+              inputMode="decimal"
+              placeholder="—"
+            />
+          </td>
+        );
+      case "eta":
+        return (
+          <td key={key} className="px-1.5 py-2 w-36">
+            <InlineText
+              value={r.etaJob}
+              onSave={(v) => patchRow(r, { entry: { etaJob: v } }, "ETA updated.")}
+              placeholder="—"
+            />
+          </td>
+        );
+      case "date":
+        return (
+          <td key={key} className="px-3 py-2 text-right text-ink-500 whitespace-nowrap text-xs">
+            {formatDateTime(r.createdAt)}
+          </td>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -560,6 +814,7 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
           })}
         </div>
         <LocationPicker locations={locations} value={locationId} onChange={pickLocation} />
+        <ColumnsConfig cols={cols} onChange={saveColumns} />
       </div>
 
       {/* Table */}
@@ -568,117 +823,26 @@ export function EntriesWorkstation({ locations }: { locations: LocationOption[] 
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-xs uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-50">
-                <th className="px-4 py-3 font-semibold">Customer</th>
-                <th className="px-3 py-3 font-semibold">Phone</th>
-                <th className="px-3 py-3 font-semibold max-lg:hidden">Vehicle</th>
-                <th className="px-3 py-3 font-semibold">Job #</th>
-                <th className="px-3 py-3 font-semibold">Status</th>
-                <th className="px-3 py-3 font-semibold max-sm:hidden">Payment</th>
-                <th className="px-3 py-3 font-semibold text-right max-lg:hidden">Total</th>
-                <th className="px-3 py-3 font-semibold max-xl:hidden">ETA</th>
-                <th className="px-3 py-3 font-semibold text-right max-sm:hidden">Date</th>
+                {visibleCols.map((c) => headerFor(c.key))}
               </tr>
             </thead>
             <tbody className="divide-y divide-ink-100">
               {loading ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-16 text-center">
+                  <td colSpan={visibleCols.length} className="px-4 py-16 text-center">
                     <Spinner className="text-brand-600" />
                   </td>
                 </tr>
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-16 text-center text-ink-400">
+                  <td colSpan={visibleCols.length} className="px-4 py-16 text-center text-ink-400">
                     No entries yet. Start a new check-in above.
                   </td>
                 </tr>
               ) : (
                 rows.map((r) => (
                   <tr key={r.id} className="hover:bg-ink-50/60 transition-colors">
-                    {/* Customer — navigates to the entry page */}
-                    <td className="px-4 py-2">
-                      <button
-                        onClick={() => router.push(`/entry/${r.id}`)}
-                        className="group text-left"
-                        title="Open entry"
-                      >
-                        <span className="font-semibold text-ink-900 group-hover:text-brand-700 inline-flex items-center gap-1.5">
-                          {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : `Entry #${r.id}`}
-                          <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </span>
-                        <span className="block text-xs text-ink-400">#{r.id}</span>
-                      </button>
-                    </td>
-                    {/* Phone — inline edit (updates the customer) */}
-                    <td className="px-1.5 py-2 w-36">
-                      <InlineText
-                        value={formatPhone(r.phone || "")}
-                        onSave={(v) => patchRow(r, { customer: { phone: v } }, "Phone updated.")}
-                        inputMode="tel"
-                        placeholder="No phone"
-                      />
-                    </td>
-                    {/* Vehicle — inline edit of the model (year/make via entry page) */}
-                    <td className="px-1.5 py-2 max-lg:hidden w-48">
-                      <InlineText
-                        value={r.vehicleModel}
-                        display={[r.vehicleYear, r.vehicleMake, r.vehicleModel].filter(Boolean).join(" ")}
-                        onSave={(v) => patchRow(r, { entry: { vehicleModel: v } }, "Vehicle updated.").then(load)}
-                        placeholder="No vehicle"
-                      />
-                    </td>
-                    {/* Job number */}
-                    <td className="px-1.5 py-2 w-32">
-                      <InlineText
-                        value={r.jobNumber}
-                        onSave={(v) => patchRow(r, { entry: { jobNumber: v } }, "Job # updated.")}
-                        placeholder="—"
-                      />
-                    </td>
-                    {/* Status */}
-                    <td className="px-1.5 py-2">
-                      <InlineStatus
-                        row={r}
-                        onApply={(patch, skipNotify) => patchRow(r, { entry: patch, skipNotify })}
-                      />
-                    </td>
-                    {/* Payment */}
-                    <td className="px-1.5 py-2 max-sm:hidden">
-                      <InlineChoice
-                        value={r.payment}
-                        options={formOptions.payments}
-                        onSave={(v) => patchRow(r, { entry: { payment: v } }, "Payment updated.")}
-                        render={(v) =>
-                          v ? (
-                            <Badge tone={v === "Paid" ? "success" : v === "Unpaid" ? "danger" : "warning"}>{v}</Badge>
-                          ) : (
-                            <span className="text-ink-300 text-sm px-1">—</span>
-                          )
-                        }
-                      />
-                    </td>
-                    {/* Total */}
-                    <td className="px-1.5 py-2 text-right max-lg:hidden w-28">
-                      <InlineText
-                        value={r.total ?? ""}
-                        display={r.total ? formatMoney(r.total) : ""}
-                        onSave={(v) => patchRow(r, { entry: { total: v.replace(/[^0-9.]/g, "") || null } }, "Total updated.")}
-                        align="right"
-                        inputMode="decimal"
-                        placeholder="—"
-                      />
-                    </td>
-                    {/* ETA */}
-                    <td className="px-1.5 py-2 max-xl:hidden w-36">
-                      <InlineText
-                        value={r.etaJob}
-                        onSave={(v) => patchRow(r, { entry: { etaJob: v } }, "ETA updated.")}
-                        placeholder="—"
-                      />
-                    </td>
-                    <td className="px-3 py-2 text-right text-ink-500 whitespace-nowrap text-xs max-sm:hidden">
-                      {formatDateTime(r.createdAt)}
-                    </td>
+                    {visibleCols.map((c) => cellFor(c.key, r))}
                   </tr>
                 ))
               )}

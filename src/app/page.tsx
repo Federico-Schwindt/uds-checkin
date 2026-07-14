@@ -45,7 +45,10 @@ export default async function HomePage() {
       </header>
 
       <section className="flex-1 mx-auto w-full max-w-7xl px-4 sm:px-6 py-5">
-        <EntriesWorkstation locations={locs.map((l) => ({ id: l.id, name: l.name }))} />
+        <EntriesWorkstation
+          locations={locs.map((l) => ({ id: l.id, name: l.name }))}
+          initialColumns={s.kioskColumns}
+        />
       </section>
     </main>
   );

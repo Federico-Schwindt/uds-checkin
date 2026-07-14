@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, CheckCircle2, RotateCcw } from "lucide-react";
 import { Button, Spinner } from "@/components/ui";
 import { normalizePhone, cn } from "@/lib/utils";
-import { initialCheckinData, type CheckinData } from "./types";
+import { groupConfig, type FormLayout } from "@/lib/form-layout";
+import { initialCheckinData, type CheckinData, type StepProps } from "./types";
 import { StepCustomer } from "./steps/step-customer";
 import { StepEstimate } from "./steps/step-estimate";
 import { StepVehicle } from "./steps/step-vehicle";
@@ -16,36 +17,65 @@ import { StepStaff } from "./steps/step-staff";
 const DRAFT_KEY = "uds-checkin-draft";
 const AMOUNT_OPTION = "I DO NOT REQUEST A WRITTEN ESTIMATE AS LONG AS THE REPAIR COSTS DO NOT EXCEED_______.";
 
-const STEPS = [
-  { title: "Customer", component: StepCustomer },
-  { title: "Estimate", component: StepEstimate },
-  { title: "Vehicle & Job", component: StepVehicle },
-  { title: "Designer", component: StepDesigner },
-  { title: "Terms & Sign", component: StepTerms },
-  { title: "Staff", component: StepStaff },
-] as const;
+const STEP_COMPONENTS: Record<string, (props: StepProps) => React.ReactNode> = {
+  customer: StepCustomer,
+  estimate: StepEstimate,
+  vehicle: StepVehicle,
+  designer: StepDesigner,
+  terms: StepTerms,
+  staff: StepStaff,
+};
 
-function validateStep(step: number, d: CheckinData): Record<string, string> {
+function validateStep(stepKey: string, d: CheckinData, layout: FormLayout): Record<string, string> {
   const errors: Record<string, string> = {};
-  if (step === 0) {
-    if (!d.firstName.trim()) errors.firstName = "First name is required";
-    if (!d.lastName.trim()) errors.lastName = "Last name is required";
-    if (normalizePhone(d.phone).length !== 10) errors.phone = "A valid 10-digit phone is required";
-    if (!d.smsConsent) errors.smsConsent = "The customer must agree to receive SMS updates";
+  if (stepKey === "customer") {
+    const cfg = groupConfig(layout, "customer");
+    const req = (k: string) => cfg[k]?.visible && cfg[k]?.required;
+    if (req("firstName") && !d.firstName.trim()) errors.firstName = "First name is required";
+    if (req("lastName") && !d.lastName.trim()) errors.lastName = "Last name is required";
+    if (req("phone") && normalizePhone(d.phone).length !== 10) errors.phone = "A valid 10-digit phone is required";
+    if (req("email") && !d.email.trim()) errors.email = "Email is required";
+    if (req("street") && !d.street.trim()) errors.street = "Address is required";
+    if (req("howHeard") && !d.howHeard) errors.howHeard = "Please select an option";
+    if (req("smsConsent") && !d.smsConsent) errors.smsConsent = "The customer must agree to receive SMS updates";
   }
-  if (step === 1) {
+  if (stepKey === "estimate") {
     if (!d.estimateChoice) errors.estimateChoice = "Please select one option";
     if (d.estimateChoice === AMOUNT_OPTION && !d.estimateAmount.trim())
       errors.estimateAmount = "Enter the maximum amount";
     if (!d.estimateSignature) errors.estimateSignature = "Customer signature is required";
   }
-  if (step === 4) {
+  if (stepKey === "vehicle") {
+    for (const group of ["vehicle", "job"] as const) {
+      const cfg = groupConfig(layout, group);
+      for (const [key, c] of Object.entries(cfg)) {
+        if (!c.visible || !c.required || key === "parts") continue;
+        const v = d[key as keyof CheckinData];
+        if (typeof v === "string" && !v.trim()) errors[key] = "Required";
+      }
+    }
+  }
+  if (stepKey === "terms") {
+    const cfg = groupConfig(layout, "terms");
+    if (cfg.deposit?.visible && cfg.deposit?.required && !d.deposit.trim()) errors.deposit = "Required";
+    if (cfg.total?.visible && cfg.total?.required && !d.total.trim()) errors.total = "Required";
     if (!d.finalSignature) errors.finalSignature = "Customer signature is required";
+  }
+  if (stepKey === "staff") {
+    const cfg = groupConfig(layout, "staff");
+    for (const [key, c] of Object.entries(cfg)) {
+      if (!c.visible || !c.required) continue;
+      const v = d[key as keyof CheckinData];
+      if (typeof v === "string" && !v.trim()) errors[key] = "Required";
+    }
   }
   return errors;
 }
 
-export function CheckinWizard({ turnaroundBanner }: { turnaroundBanner: string }) {
+export function CheckinWizard({ turnaroundBanner, layout }: { turnaroundBanner: string; layout: FormLayout }) {
+  const STEPS = layout.steps
+    .filter((s) => s.enabled && STEP_COMPONENTS[s.key])
+    .map((s) => ({ key: s.key, title: s.title, component: STEP_COMPONENTS[s.key] }));
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [data, setData] = useState<CheckinData>(initialCheckinData);
@@ -70,6 +100,7 @@ export function CheckinWizard({ turnaroundBanner }: { turnaroundBanner: string }
         }
       }
     } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once; STEPS derives from a stable server prop
   }, []);
 
   // Autosave draft (debounced)
@@ -95,7 +126,7 @@ export function CheckinWizard({ turnaroundBanner }: { turnaroundBanner: string }
   const scrollTop = () => topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   const goNext = () => {
-    const errs = validateStep(step, data);
+    const errs = validateStep(STEPS[step].key, data, layout);
     setErrors(errs);
     if (Object.keys(errs).length > 0) {
       scrollTop();
@@ -115,7 +146,7 @@ export function CheckinWizard({ turnaroundBanner }: { turnaroundBanner: string }
   };
 
   const submit = async () => {
-    const errs = validateStep(step, data);
+    const errs = validateStep(STEPS[step].key, data, layout);
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
     setSubmitting(true);
@@ -239,7 +270,7 @@ export function CheckinWizard({ turnaroundBanner }: { turnaroundBanner: string }
 
       {/* Step body */}
       <div className="animate-fade-up" key={step}>
-        <StepComponent data={data} set={set} errors={errors} />
+        <StepComponent data={data} set={set} errors={errors} layout={layout} />
       </div>
 
       {submitError && (
