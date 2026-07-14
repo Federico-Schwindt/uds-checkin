@@ -17,7 +17,9 @@ Set these on the server (see `.env.example`):
 - `DATABASE_URL` — your Neon connection string.
 - `AUTH_SECRET` — any long random string (e.g. `openssl rand -base64 32`).
 - `UPLOADS_DIR` — a persistent folder **outside** the app directory, e.g.
-  `/home/<user>/uds-uploads`. Create it once: `mkdir -p /home/<user>/uds-uploads`.
+  `/home/<user>/uds-uploads`. **You don't need to create it** — the app creates
+  the folder automatically on the first upload. Just make sure the parent path is
+  writable by the user running Node (a folder under your home dir always is).
 - `PORT` — the port Node should listen on (Hostinger often provides/expects one).
 
 Twilio and SMTP are configured in the app at **Admin → Settings**, not via env.
