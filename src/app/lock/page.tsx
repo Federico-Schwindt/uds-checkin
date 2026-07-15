@@ -6,18 +6,23 @@ export const metadata = { title: "Unlock | UDS Check-In" };
 
 export default function LockPage() {
   return (
-    <main className="min-h-dvh flex items-center justify-center bg-ink-950 px-4 py-8">
-      {/* subtle brand glow */}
-      <div className="pointer-events-none fixed inset-0 opacity-40 [background:radial-gradient(60%_50%_at_50%_0%,#1246ab55,transparent_70%)]" />
+    <main className="min-h-dvh flex items-center justify-center bg-ink-100 px-4 py-8 relative overflow-hidden">
+      {/* brand accent glows */}
+      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(70%_55%_at_50%_-10%,#1246ab22,transparent_70%)]" />
+      <div className="pointer-events-none absolute -bottom-32 -right-24 w-96 h-96 rounded-full bg-brand-600/5 blur-3xl" />
+
       <div className="relative w-full max-w-sm animate-fade-up">
-        <div className="text-center mb-8">
-          <Logo variant="white" className="h-11 sm:h-12 mx-auto mb-6" />
-          <h1 className="text-xl font-bold text-white tracking-tight">Check-In Station</h1>
-          <p className="text-ink-400 mt-1 text-sm">Enter PIN to unlock</p>
+        <div className="bg-white rounded-3xl shadow-pop border border-ink-200/70 p-7 sm:p-8">
+          <div className="text-center mb-7">
+            <Logo className="h-10 sm:h-11 mx-auto mb-5" />
+            <h1 className="text-lg font-bold tracking-tight text-ink-900">Check-In Station</h1>
+            <p className="text-ink-500 mt-1 text-sm">Enter your PIN to unlock</p>
+          </div>
+          <Suspense>
+            <PinPad />
+          </Suspense>
         </div>
-        <Suspense>
-          <PinPad />
-        </Suspense>
+        <p className="text-center text-xs text-ink-400 mt-5">Universal Driveshafts · Staff access only</p>
       </div>
     </main>
   );

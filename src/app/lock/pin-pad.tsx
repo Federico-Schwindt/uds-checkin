@@ -68,10 +68,10 @@ export function PinPad() {
     <div>
       <div className={cn("flex justify-center gap-3 h-6 mb-2", shake && "animate-shake")}>
         {pin.length === 0 ? (
-          <span className="text-ink-600 text-sm select-none">• • • •</span>
+          <span className="text-ink-400 text-sm select-none tracking-widest">• • • •</span>
         ) : (
           Array.from({ length: pin.length }).map((_, i) => (
-            <span key={i} className="w-3.5 h-3.5 rounded-full bg-brand-500 inline-block" />
+            <span key={i} className="w-3.5 h-3.5 rounded-full bg-brand-600 inline-block" />
           ))
         )}
       </div>
@@ -108,7 +108,7 @@ function Key({ children, onClick, ...rest }: React.ButtonHTMLAttributes<HTMLButt
   return (
     <button
       onClick={onClick}
-      className="h-16 rounded-2xl bg-ink-800 text-white text-2xl font-medium transition-all select-none active:scale-95 active:bg-ink-700 hover:bg-ink-700"
+      className="h-16 rounded-2xl bg-ink-100 border border-ink-200 text-ink-800 text-2xl font-semibold transition-all select-none active:scale-95 active:bg-ink-200 hover:bg-ink-200/70"
       {...rest}
     >
       {children}
