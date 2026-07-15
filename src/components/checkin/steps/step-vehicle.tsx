@@ -11,7 +11,7 @@ import type { StepProps, PartLine } from "../types";
 const B_TYPES = ["1 Piece Driveshaft Type 1", "2 Piece Driveshaft Type 1", "2 Piece Driveshaft Type 2"];
 const C_TYPES = ["2 Piece Driveshaft Type 2"];
 
-export function StepVehicle({ data, set, errors, layout }: StepProps) {
+export function StepVehicle({ data, set, errors, layout, options }: StepProps) {
   const vehicleCfg = groupConfig(layout, "vehicle");
   const jobCfg = groupConfig(layout, "job");
 
@@ -30,14 +30,14 @@ export function StepVehicle({ data, set, errors, layout }: StepProps) {
     vehicleYear: () => (
       <Field key="vehicleYear" label="Year" required={req("vehicle", "vehicleYear")} error={errors.vehicleYear}>
         <Select value={data.vehicleYear} onChange={(e) => set("vehicleYear", e.target.value)} placeholder="Year">
-          <SelectOptions options={formOptions.years} />
+          <SelectOptions options={options.years} />
         </Select>
       </Field>
     ),
     vehicleMake: () => (
       <Field key="vehicleMake" label="Make" required={req("vehicle", "vehicleMake")} error={errors.vehicleMake}>
         <Select value={data.vehicleMake} onChange={(e) => set("vehicleMake", e.target.value)} placeholder="Make">
-          <SelectOptions options={formOptions.makes} />
+          <SelectOptions options={options.makes} />
         </Select>
       </Field>
     ),
@@ -49,35 +49,35 @@ export function StepVehicle({ data, set, errors, layout }: StepProps) {
     drive: () => (
       <Field key="drive" label="Drive" required={req("vehicle", "drive")} error={errors.drive}>
         <Select value={data.drive} onChange={(e) => set("drive", e.target.value)} placeholder="Drive">
-          <SelectOptions options={formOptions.drives} />
+          <SelectOptions options={options.drives} />
         </Select>
       </Field>
     ),
     axleLocation: () => (
       <Field key="axleLocation" label="Location" required={req("vehicle", "axleLocation")} error={errors.axleLocation}>
         <Select value={data.axleLocation} onChange={(e) => set("axleLocation", e.target.value)} placeholder="Front / Rear">
-          <SelectOptions options={formOptions.axleLocations} />
+          <SelectOptions options={options.axleLocations} />
         </Select>
       </Field>
     ),
     cab: () => (
       <Field key="cab" label="Cab" required={req("vehicle", "cab")} error={errors.cab}>
         <Select value={data.cab} onChange={(e) => set("cab", e.target.value)} placeholder="Cab">
-          <SelectOptions options={formOptions.cabs} />
+          <SelectOptions options={options.cabs} />
         </Select>
       </Field>
     ),
     transmission: () => (
       <Field key="transmission" label="Transmission" required={req("vehicle", "transmission")} error={errors.transmission}>
         <Select value={data.transmission} onChange={(e) => set("transmission", e.target.value)} placeholder="Transmission">
-          <SelectOptions options={formOptions.transmissions} />
+          <SelectOptions options={options.transmissions} />
         </Select>
       </Field>
     ),
     transmissionSpeed: () => (
       <Field key="transmissionSpeed" label="Transmission Speed" required={req("vehicle", "transmissionSpeed")} error={errors.transmissionSpeed}>
         <Select value={data.transmissionSpeed} onChange={(e) => set("transmissionSpeed", e.target.value)} placeholder="Speed">
-          <SelectOptions options={formOptions.transmissionSpeeds} />
+          <SelectOptions options={options.transmissionSpeeds} />
         </Select>
       </Field>
     ),
@@ -90,7 +90,7 @@ export function StepVehicle({ data, set, errors, layout }: StepProps) {
       <Fragment key="bedSize">
         <Field label="Bed Size" required={req("vehicle", "bedSize")} error={errors.bedSize}>
           <Select value={data.bedSize} onChange={(e) => set("bedSize", e.target.value)} placeholder="Bed size">
-            <SelectOptions options={formOptions.bedSizes} />
+            <SelectOptions options={options.bedSizes} />
           </Select>
         </Field>
         {data.bedSize === "Other" && (
@@ -158,7 +158,7 @@ export function StepVehicle({ data, set, errors, layout }: StepProps) {
       <Fragment key="complaint">
         <Field label="Customer complaint / problem" required={req("vehicle", "complaint")} error={errors.complaint}>
           <Select value={data.complaint} onChange={(e) => set("complaint", e.target.value)} placeholder="Select complaint">
-            <SelectOptions options={formOptions.complaints} />
+            <SelectOptions options={options.complaints} />
           </Select>
         </Field>
         {data.complaint === "Something else" && (
@@ -181,7 +181,7 @@ export function StepVehicle({ data, set, errors, layout }: StepProps) {
       <Fragment key="laborRequest">
         <Field label="Labor Request" required={req("job", "laborRequest")} error={errors.laborRequest}>
           <Select value={data.laborRequest} onChange={(e) => set("laborRequest", e.target.value)} placeholder="Select labor">
-            <SelectOptions options={formOptions.laborRequests} />
+            <SelectOptions options={options.laborRequests} />
           </Select>
         </Field>
         {data.laborRequest === "Other" && (
@@ -199,7 +199,7 @@ export function StepVehicle({ data, set, errors, layout }: StepProps) {
     driveshaftPieces: () => (
       <Field key="driveshaftPieces" label="Type of Driveshaft" required={req("job", "driveshaftPieces")} error={errors.driveshaftPieces}>
         <ChoiceChips
-          options={formOptions.driveshaftPieces}
+          options={options.driveshaftPieces}
           value={data.driveshaftPieces}
           onChange={(v) => set("driveshaftPieces", v)}
           columns={2}
@@ -209,7 +209,7 @@ export function StepVehicle({ data, set, errors, layout }: StepProps) {
     driveshaftMaterial: () => (
       <Field key="driveshaftMaterial" label="Driveshaft Material" required={req("job", "driveshaftMaterial")} error={errors.driveshaftMaterial}>
         <ChoiceChips
-          options={formOptions.driveshaftMaterials}
+          options={options.driveshaftMaterials}
           value={data.driveshaftMaterial}
           onChange={(v) => set("driveshaftMaterial", v)}
           columns={2}

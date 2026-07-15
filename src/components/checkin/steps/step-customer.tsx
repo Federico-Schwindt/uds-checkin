@@ -5,7 +5,6 @@ import { Search, UserRound, X } from "lucide-react";
 import { Card, Field, Input, CheckboxRow, ChoiceChips, SectionTitle } from "@/components/ui";
 import { formatPhone } from "@/lib/utils";
 import { groupConfig } from "@/lib/form-layout";
-import formOptions from "@/lib/form-options.json";
 import legalTexts from "@/lib/legal-texts.json";
 import type { StepProps } from "../types";
 
@@ -22,7 +21,7 @@ type CustomerHit = {
   smsConsent: boolean;
 };
 
-export function StepCustomer({ data, set, errors, layout }: StepProps) {
+export function StepCustomer({ data, set, errors, layout, options }: StepProps) {
   const cfg = groupConfig(layout, "customer");
   const [query, setQuery] = useState("");
   const [hits, setHits] = useState<CustomerHit[]>([]);
@@ -129,7 +128,7 @@ export function StepCustomer({ data, set, errors, layout }: StepProps) {
     ),
     howHeard: () => (
       <Field key="howHeard" label="How did you hear about us?" required={req("howHeard")} error={errors.howHeard} className="sm:col-span-2">
-        <ChoiceChips options={formOptions.howHeard} value={data.howHeard} onChange={(v) => set("howHeard", v)} columns={4} />
+        <ChoiceChips options={options.howHeard} value={data.howHeard} onChange={(v) => set("howHeard", v)} columns={4} />
       </Field>
     ),
   };

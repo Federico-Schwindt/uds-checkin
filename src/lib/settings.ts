@@ -9,6 +9,7 @@ export type AppSettings = {
   logoUrl: string;
   brandColor: string;
   formLayout: FormLayout | null;
+  fieldOptions: Record<string, string[]> | null;
   pin: string;
   idleLockMinutes: number;
   sessionDays: number;

@@ -1,21 +1,19 @@
 import { Suspense } from "react";
+import { Logo } from "@/components/logo";
 import { PinPad } from "./pin-pad";
 
 export const metadata = { title: "Unlock | UDS Check-In" };
 
 export default function LockPage() {
   return (
-    <main className="min-h-dvh flex items-center justify-center bg-ink-950 px-4">
-      <div className="w-full max-w-sm animate-fade-up">
+    <main className="min-h-dvh flex items-center justify-center bg-ink-950 px-4 py-8">
+      {/* subtle brand glow */}
+      <div className="pointer-events-none fixed inset-0 opacity-40 [background:radial-gradient(60%_50%_at_50%_0%,#1246ab55,transparent_70%)]" />
+      <div className="relative w-full max-w-sm animate-fade-up">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-600 shadow-pop mb-4">
-            <svg viewBox="0 0 24 24" fill="none" className="w-9 h-9 text-white" stroke="currentColor" strokeWidth={2}>
-              <rect x="5" y="11" width="14" height="9" rx="2" />
-              <path d="M8 11V7a4 4 0 1 1 8 0v4" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Universal Driveshafts</h1>
-          <p className="text-ink-400 mt-1">Enter PIN to unlock the check-in station</p>
+          <Logo variant="white" className="h-11 sm:h-12 mx-auto mb-6" />
+          <h1 className="text-xl font-bold text-white tracking-tight">Check-In Station</h1>
+          <p className="text-ink-400 mt-1 text-sm">Enter PIN to unlock</p>
         </div>
         <Suspense>
           <PinPad />

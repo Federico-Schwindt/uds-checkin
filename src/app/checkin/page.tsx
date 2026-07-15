@@ -14,7 +14,7 @@ export default async function CheckinPage() {
       <CheckinWizard
         turnaroundBanner={s.turnaroundBanner}
         layout={mergeFormLayout(s.formLayout)}
-        businessName={s.businessName}
+        options={s.fieldOptions}
       />
     </main>
   );

@@ -175,9 +175,9 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
   emailEnabled: false,
   // notify admin on each check-in
   adminNotifyEnabled: true,
-  // branding
-  logoUrl: "",
-  brandColor: "#dc2626",
+  // branding — absolute URL so it also renders inside emails
+  logoUrl: "https://universaldriveshafts.com/wp-content/uploads/2025/01/uds-logo-rebrand.png",
+  brandColor: "#1246ab",
   // kiosk table columns (order + visibility)
   kioskColumns: [
     { key: "customer", visible: true },
@@ -192,6 +192,8 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
   ],
   // wizard layout (null = code defaults)
   formLayout: null,
+  // editable dropdown option overrides (null/{} = code defaults)
+  fieldOptions: null,
 };
 
 const SIGNOFF = "\n\nUniversal Driveshafts";

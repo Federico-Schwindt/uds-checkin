@@ -6,7 +6,7 @@ import { groupConfig } from "@/lib/form-layout";
 import formOptions from "@/lib/form-options.json";
 import type { StepProps } from "../types";
 
-export function StepStaff({ data, set, errors, layout }: StepProps) {
+export function StepStaff({ data, set, errors, layout, options }: StepProps) {
   const cfg = groupConfig(layout, "staff");
   const [employees, setEmployees] = useState<string[]>(formOptions.employees);
 
@@ -41,7 +41,7 @@ export function StepStaff({ data, set, errors, layout }: StepProps) {
     ),
     payment: () => (
       <Field key="payment" label="Payment" required={req("payment")} error={errors.payment}>
-        <ChoiceChips options={formOptions.payments} value={data.payment} onChange={(v) => set("payment", v)} columns={3} />
+        <ChoiceChips options={options.payments} value={data.payment} onChange={(v) => set("payment", v)} columns={3} />
       </Field>
     ),
     signingDate: () => (
@@ -70,7 +70,7 @@ export function StepStaff({ data, set, errors, layout }: StepProps) {
         </Field>
         {data.jobStatus === "On hold" && (
           <Field label="On Hold Reason" className="animate-fade-up sm:col-span-2">
-            <ChoiceChips options={formOptions.onHoldReasons} value={data.onHoldReason} onChange={(v) => set("onHoldReason", v)} columns={2} />
+            <ChoiceChips options={options.onHoldReasons} value={data.onHoldReason} onChange={(v) => set("onHoldReason", v)} columns={2} />
           </Field>
         )}
         {data.jobStatus === "Confirmed" && (

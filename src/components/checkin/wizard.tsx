@@ -4,8 +4,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, CheckCircle2, Home, RotateCcw, X } from "lucide-react";
 import { Button, Spinner } from "@/components/ui";
+import { Logo } from "@/components/logo";
 import { normalizePhone, cn } from "@/lib/utils";
 import { groupConfig, type FormLayout } from "@/lib/form-layout";
+import { mergeOptions, type FormOptions } from "@/lib/form-options";
 import { initialCheckinData, type CheckinData, type StepProps } from "./types";
 import { StepCustomer } from "./steps/step-customer";
 import { StepEstimate } from "./steps/step-estimate";
@@ -75,12 +77,13 @@ function validateStep(stepKey: string, d: CheckinData, layout: FormLayout): Reco
 export function CheckinWizard({
   turnaroundBanner,
   layout,
-  businessName = "Universal Driveshafts",
+  options: optionOverrides,
 }: {
   turnaroundBanner: string;
   layout: FormLayout;
-  businessName?: string;
+  options?: FormOptions | null;
 }) {
+  const options = useMemo(() => mergeOptions(optionOverrides), [optionOverrides]);
   const STEPS = layout.steps
     .filter((s) => s.enabled && STEP_COMPONENTS[s.key])
     .map((s) => ({ key: s.key, title: s.title, component: STEP_COMPONENTS[s.key] }));
@@ -235,18 +238,18 @@ export function CheckinWizard({
   return (
     <>
       {/* Sticky top app bar with a prominent Exit control */}
-      <header className="sticky top-0 z-40 bg-ink-950 text-white no-print">
-        <div className="mx-auto max-w-3xl px-3 sm:px-4 h-14 flex items-center justify-between gap-3">
+      <header className="sticky top-0 z-40 bg-white border-b border-ink-200 no-print">
+        <div className="mx-auto max-w-3xl px-3 sm:px-4 h-16 flex items-center justify-between gap-3">
           <button
             onClick={exit}
-            className="inline-flex items-center gap-2 h-10 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 font-semibold text-sm transition-all"
+            className="inline-flex items-center gap-2 h-11 px-3.5 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 active:scale-95 font-semibold text-sm transition-all"
           >
             <ArrowLeft className="w-4.5 h-4.5" /> Exit
           </button>
-          <span className="font-bold text-sm sm:text-base truncate">{businessName} — Check-In</span>
+          <Logo className="h-6 sm:h-7" />
           <button
             onClick={exit}
-            className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 flex items-center justify-center transition-all"
+            className="w-11 h-11 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-600 active:scale-95 flex items-center justify-center transition-all"
             aria-label="Exit check-in"
             title="Exit"
           >
@@ -314,7 +317,7 @@ export function CheckinWizard({
 
       {/* Step body */}
       <div className="animate-fade-up" key={step}>
-        <StepComponent data={data} set={set} errors={errors} layout={layout} />
+        <StepComponent data={data} set={set} errors={errors} layout={layout} options={options} />
       </div>
 
       {submitError && (

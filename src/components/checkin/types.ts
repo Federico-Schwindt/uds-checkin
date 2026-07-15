@@ -153,10 +153,12 @@ export const initialCheckinData: CheckinData = {
 };
 
 import type { FormLayout } from "@/lib/form-layout";
+import type { FormOptions } from "@/lib/form-options";
 
 export type StepProps = {
   data: CheckinData;
   set: <K extends keyof CheckinData>(key: K, value: CheckinData[K]) => void;
   errors: Record<string, string>;
   layout: FormLayout;
+  options: FormOptions;
 };

@@ -764,7 +764,7 @@ export function EntriesWorkstation({
 
       {/* Filters */}
       <div className="flex items-center gap-2 flex-wrap">
-        <div className="relative flex-1 min-w-56">
+        <div className="relative w-full sm:flex-1 sm:w-auto order-1">
           <Search className="w-4.5 h-4.5 absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
           <Input
             value={qLive}
@@ -782,7 +782,7 @@ export function EntriesWorkstation({
             </button>
           )}
         </div>
-        <div className="flex gap-1.5 overflow-x-auto">
+        <div className="flex gap-1.5 overflow-x-auto no-scrollbar order-3 sm:order-2 w-full sm:w-auto -mx-3 px-3 sm:mx-0 sm:px-0 pb-1 sm:pb-0">
           {["", "New", "Confirmed", "Ongoing", "On hold", "Completed"].map((st) => {
             const n = statusCounts[st || "All"] ?? 0;
             const active = status === st;
@@ -813,12 +813,96 @@ export function EntriesWorkstation({
             );
           })}
         </div>
-        <LocationPicker locations={locations} value={locationId} onChange={pickLocation} />
-        <ColumnsConfig cols={cols} onChange={saveColumns} />
+        <div className="order-2 sm:order-3 flex items-center gap-2 ml-auto sm:ml-0">
+          <LocationPicker locations={locations} value={locationId} onChange={pickLocation} />
+          <ColumnsConfig cols={cols} onChange={saveColumns} />
+        </div>
       </div>
 
-      {/* Table */}
-      <Card className="overflow-hidden">
+      {/* Mobile card list */}
+      <div className="sm:hidden space-y-2.5">
+        {loading ? (
+          <div className="py-16 text-center">
+            <Spinner className="text-brand-600" />
+          </div>
+        ) : rows.length === 0 ? (
+          <Card className="py-14 text-center text-ink-400 text-sm">No entries yet. Start a new check-in above.</Card>
+        ) : (
+          rows.map((r) => (
+            <Card key={r.id} className="p-3.5">
+              <div className="flex items-start justify-between gap-2">
+                <button onClick={() => router.push(`/entry/${r.id}`)} className="text-left min-w-0 flex-1">
+                  <span className="font-bold text-ink-900 flex items-center gap-1.5 truncate">
+                    {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : `Entry #${r.id}`}
+                    <ExternalLink className="w-3.5 h-3.5 text-ink-400 shrink-0" />
+                  </span>
+                  <span className="block text-xs text-ink-400">
+                    #{r.id}
+                    {r.jobNumber ? ` · Job ${r.jobNumber}` : ""}
+                  </span>
+                </button>
+                <InlineStatus row={r} onApply={(patch, skipNotify) => patchRow(r, { entry: patch, skipNotify })} />
+              </div>
+              <div className="mt-2 flex items-center justify-between gap-2 text-sm">
+                <button onClick={() => router.push(`/entry/${r.id}`)} className="text-ink-600 truncate text-left">
+                  {[r.vehicleYear, r.vehicleMake, r.vehicleModel].filter(Boolean).join(" ") || "No vehicle"}
+                </button>
+                <span className="text-ink-400 text-xs whitespace-nowrap">{formatDateTime(r.createdAt)}</span>
+              </div>
+              <div className="mt-2.5 pt-2.5 border-t border-ink-100 flex items-center justify-between gap-2">
+                <a href={`tel:${(r.phone || "").replace(/\D/g, "")}`} className="text-brand-700 font-semibold text-sm">
+                  {formatPhone(r.phone || "") || "—"}
+                </a>
+                <div className="flex items-center gap-2">
+                  <InlineChoice
+                    value={r.payment}
+                    options={formOptions.payments}
+                    onSave={(v) => patchRow(r, { entry: { payment: v } }, "Payment updated.")}
+                    render={(v) =>
+                      v ? (
+                        <Badge tone={v === "Paid" ? "success" : v === "Unpaid" ? "danger" : "warning"}>{v}</Badge>
+                      ) : (
+                        <span className="text-ink-300 text-sm px-1">Payment</span>
+                      )
+                    }
+                  />
+                  <span className="font-semibold text-ink-900 text-sm">{r.total ? formatMoney(r.total) : ""}</span>
+                </div>
+              </div>
+            </Card>
+          ))
+        )}
+      </div>
+
+      {/* Mobile pagination */}
+      {rows.length > 0 && (
+        <div className="sm:hidden flex items-center justify-between px-1">
+          <span className="text-xs text-ink-500">
+            {total} entries · page {page}/{pages}
+          </span>
+          <div className="flex gap-1.5">
+            <button
+              disabled={page <= 1}
+              onClick={() => setPage(page - 1)}
+              className="w-10 h-10 rounded-lg border border-ink-300 bg-white flex items-center justify-center disabled:opacity-35 active:scale-95"
+              aria-label="Previous page"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              disabled={page >= pages}
+              onClick={() => setPage(page + 1)}
+              className="w-10 h-10 rounded-lg border border-ink-300 bg-white flex items-center justify-center disabled:opacity-35 active:scale-95"
+              aria-label="Next page"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Table (tablet & up) */}
+      <Card className="overflow-hidden max-sm:hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
