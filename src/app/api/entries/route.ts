@@ -11,6 +11,26 @@ async function maybeStore(value: string, name: string): Promise<string> {
   return value || "";
 }
 
+/** Custom fields may carry photos/signatures/files as data URLs; persist them to storage. */
+async function storeCustomAssets(custom: Record<string, unknown> | undefined | null) {
+  if (!custom) return null;
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(custom)) {
+    if (typeof value === "string" && value.startsWith("data:")) {
+      out[key] = await storeDataUrl(value, key);
+    } else if (Array.isArray(value)) {
+      out[key] = await Promise.all(
+        value.map(async (v, i) =>
+          typeof v === "string" && v.startsWith("data:") ? await storeDataUrl(v, `${key}-${i}`) : v
+        )
+      );
+    } else {
+      out[key] = value;
+    }
+  }
+  return Object.keys(out).length ? out : null;
+}
+
 export async function POST(req: NextRequest) {
   const data = (await req.json().catch(() => null)) as CheckinData | null;
   if (!data) return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
@@ -116,6 +136,7 @@ export async function POST(req: NextRequest) {
       measurementC: data.measurementC || "",
       designerType: data.designerType || "",
       howHeard: data.howHeard || "",
+      custom: await storeCustomAssets(data.custom),
       deposit: toNumeric(data.deposit),
       total: toNumeric(data.total),
       finalSignature,

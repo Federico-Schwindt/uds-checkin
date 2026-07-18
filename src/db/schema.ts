@@ -125,6 +125,9 @@ export const entries = pgTable(
     signingDate: text("signing_date").notNull().default(""),
     etaJob: text("eta_job").notNull().default(""),
 
+    /** Values for admin-defined custom fields, keyed by the field's schema key. */
+    custom: jsonb("custom"),
+
     // meta
     sourceEntryId: integer("source_entry_id"), // Gravity Forms entry id when imported
     createdAt: timestamp("created_at").notNull().defaultNow(),

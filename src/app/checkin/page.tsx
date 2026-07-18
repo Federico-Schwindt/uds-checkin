@@ -1,5 +1,4 @@
 import { getSettings } from "@/lib/settings";
-import { mergeFormLayout } from "@/lib/form-layout";
 import { CheckinWizard } from "@/components/checkin/wizard";
 import { IdleLock } from "@/components/idle-lock";
 
@@ -11,11 +10,7 @@ export default async function CheckinPage() {
   return (
     <main className="min-h-dvh">
       <IdleLock minutes={Number(s.idleLockMinutes) || 0} />
-      <CheckinWizard
-        turnaroundBanner={s.turnaroundBanner}
-        layout={mergeFormLayout(s.formLayout)}
-        options={s.fieldOptions}
-      />
+      <CheckinWizard turnaroundBanner={s.turnaroundBanner} schema={s.formSchema} options={s.fieldOptions} />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { getDb, settings } from "@/db";
-import type { FormLayout } from "@/lib/form-layout";
+import type { FormSchema } from "@/lib/form-schema";
 
 export type KioskColumn = { key: string; visible: boolean };
 
@@ -8,7 +8,9 @@ export type AppSettings = {
   kioskColumns: KioskColumn[];
   logoUrl: string;
   brandColor: string;
-  formLayout: FormLayout | null;
+  /** Legacy simple layout, superseded by formSchema. Kept so old stored values load. */
+  formLayout: unknown;
+  formSchema: FormSchema | null;
   fieldOptions: Record<string, string[]> | null;
   pin: string;
   idleLockMinutes: number;

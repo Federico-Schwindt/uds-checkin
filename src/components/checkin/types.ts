@@ -3,6 +3,8 @@ export type PartLine = { sku: string; name: string; qty: number; price: string }
 export type CheckinData = {
   /** Device location, attached at submit time (from localStorage). */
   locationId?: number | null;
+  /** Values for admin-defined custom fields, keyed by the field's schema key. */
+  custom?: Record<string, unknown>;
   // Step 1 — customer
   customerId: number | null;
   firstName: string;
@@ -81,6 +83,7 @@ export type CheckinData = {
 };
 
 export const initialCheckinData: CheckinData = {
+  custom: {},
   customerId: null,
   firstName: "",
   lastName: "",
@@ -152,13 +155,3 @@ export const initialCheckinData: CheckinData = {
   etaJob: "",
 };
 
-import type { FormLayout } from "@/lib/form-layout";
-import type { FormOptions } from "@/lib/form-options";
-
-export type StepProps = {
-  data: CheckinData;
-  set: <K extends keyof CheckinData>(key: K, value: CheckinData[K]) => void;
-  errors: Record<string, string>;
-  layout: FormLayout;
-  options: FormOptions;
-};

@@ -190,8 +190,10 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
     { key: "eta", visible: true },
     { key: "date", visible: true },
   ],
-  // wizard layout (null = code defaults)
+  // wizard layout (legacy simple layout; superseded by formSchema)
   formLayout: null,
+  // full form builder schema (null = code default schema)
+  formSchema: null,
   // editable dropdown option overrides (null/{} = code defaults)
   fieldOptions: null,
 };
@@ -338,4 +340,7 @@ export async function bootstrap(db: Db) {
   await db.execute(
     sql.raw("UPDATE entries SET location_id = (SELECT MIN(id) FROM locations) WHERE location_id IS NULL")
   );
+
+  // Micro-migration: JSONB bag for admin-defined custom field values.
+  await db.execute(sql.raw("ALTER TABLE entries ADD COLUMN IF NOT EXISTS custom JSONB"));
 }

@@ -44,6 +44,7 @@ const ENTRY_EDITABLE = new Set([
   "measurementC", "designerType", "howHeard", "deposit", "total", "jobNumber",
   "employeeName", "core", "jobStatus", "onHoldReason", "payment",
   "confirmationDate", "assignedEmployee", "timeOfJob", "signingDate", "etaJob",
+  "custom",
 ]);
 
 const CUSTOMER_EDITABLE = new Set([

@@ -3,91 +3,69 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, CheckCircle2, Home, RotateCcw, X } from "lucide-react";
-import { Button, Spinner } from "@/components/ui";
+import { Button, Card, Spinner } from "@/components/ui";
 import { Logo } from "@/components/logo";
 import { normalizePhone, cn } from "@/lib/utils";
-import { groupConfig, type FormLayout } from "@/lib/form-layout";
 import { mergeOptions, type FormOptions } from "@/lib/form-options";
-import { initialCheckinData, type CheckinData, type StepProps } from "./types";
-import { StepCustomer } from "./steps/step-customer";
-import { StepEstimate } from "./steps/step-estimate";
-import { StepVehicle } from "./steps/step-vehicle";
-import { StepDesigner } from "./steps/step-designer";
-import { StepTerms } from "./steps/step-terms";
-import { StepStaff } from "./steps/step-staff";
+import {
+  evaluateConditions,
+  fieldLookup,
+  type FormField,
+  type FormSchema,
+  type ValueBag,
+} from "@/lib/form-schema";
+import { resolveSchema } from "@/lib/form-schema-default";
+import { FormRenderer, validateFields, type WidgetMap } from "@/components/form-renderer";
+import { CustomerSearchWidget, DriveshaftDesignerWidget, PartsTableWidget, type CustomerHit } from "./widgets";
+import { initialCheckinData, type CheckinData, type PartLine } from "./types";
 
 const DRAFT_KEY = "uds-checkin-draft";
-const AMOUNT_OPTION = "I DO NOT REQUEST A WRITTEN ESTIMATE AS LONG AS THE REPAIR COSTS DO NOT EXCEED_______.";
 
-const STEP_COMPONENTS: Record<string, (props: StepProps) => React.ReactNode> = {
-  customer: StepCustomer,
-  estimate: StepEstimate,
-  vehicle: StepVehicle,
-  designer: StepDesigner,
-  terms: StepTerms,
-  staff: StepStaff,
-};
+/** Split a step's fields into card groups, with widgets standing alone. */
+type Group = { kind: "fields"; title?: string; fields: FormField[] } | { kind: "widget"; field: FormField };
 
-function validateStep(stepKey: string, d: CheckinData, layout: FormLayout): Record<string, string> {
-  const errors: Record<string, string> = {};
-  if (stepKey === "customer") {
-    const cfg = groupConfig(layout, "customer");
-    const req = (k: string) => cfg[k]?.visible && cfg[k]?.required;
-    if (req("firstName") && !d.firstName.trim()) errors.firstName = "First name is required";
-    if (req("lastName") && !d.lastName.trim()) errors.lastName = "Last name is required";
-    if (req("phone") && normalizePhone(d.phone).length !== 10) errors.phone = "A valid 10-digit phone is required";
-    if (req("email") && !d.email.trim()) errors.email = "Email is required";
-    if (req("street") && !d.street.trim()) errors.street = "Address is required";
-    if (req("howHeard") && !d.howHeard) errors.howHeard = "Please select an option";
-    if (req("smsConsent") && !d.smsConsent) errors.smsConsent = "The customer must agree to receive SMS updates";
-  }
-  if (stepKey === "estimate") {
-    if (!d.estimateChoice) errors.estimateChoice = "Please select one option";
-    if (d.estimateChoice === AMOUNT_OPTION && !d.estimateAmount.trim())
-      errors.estimateAmount = "Enter the maximum amount";
-    if (!d.estimateSignature) errors.estimateSignature = "Customer signature is required";
-  }
-  if (stepKey === "vehicle") {
-    for (const group of ["vehicle", "job"] as const) {
-      const cfg = groupConfig(layout, group);
-      for (const [key, c] of Object.entries(cfg)) {
-        if (!c.visible || !c.required || key === "parts") continue;
-        const v = d[key as keyof CheckinData];
-        if (typeof v === "string" && !v.trim()) errors[key] = "Required";
-      }
+function groupFields(fields: FormField[]): Group[] {
+  const groups: Group[] = [];
+  let current: { kind: "fields"; title?: string; fields: FormField[] } | null = null;
+
+  const flush = () => {
+    if (current && current.fields.length > 0) groups.push(current);
+    current = null;
+  };
+
+  for (const f of fields) {
+    if (f.type === "widget") {
+      flush();
+      groups.push({ kind: "widget", field: f });
+      continue;
     }
-  }
-  if (stepKey === "terms") {
-    const cfg = groupConfig(layout, "terms");
-    if (cfg.deposit?.visible && cfg.deposit?.required && !d.deposit.trim()) errors.deposit = "Required";
-    if (cfg.total?.visible && cfg.total?.required && !d.total.trim()) errors.total = "Required";
-    if (!d.finalSignature) errors.finalSignature = "Customer signature is required";
-  }
-  if (stepKey === "staff") {
-    const cfg = groupConfig(layout, "staff");
-    for (const [key, c] of Object.entries(cfg)) {
-      if (!c.visible || !c.required) continue;
-      const v = d[key as keyof CheckinData];
-      if (typeof v === "string" && !v.trim()) errors[key] = "Required";
+    if (f.type === "heading") {
+      flush();
+      current = { kind: "fields", title: f.label, fields: [] };
+      continue;
     }
+    if (!current) current = { kind: "fields", fields: [] };
+    current.fields.push(f);
   }
-  return errors;
+  flush();
+  return groups;
 }
 
 export function CheckinWizard({
   turnaroundBanner,
-  layout,
+  schema: schemaProp,
   options: optionOverrides,
 }: {
   turnaroundBanner: string;
-  layout: FormLayout;
+  schema?: FormSchema | null;
   options?: FormOptions | null;
 }) {
-  const options = useMemo(() => mergeOptions(optionOverrides), [optionOverrides]);
-  const STEPS = layout.steps
-    .filter((s) => s.enabled && STEP_COMPONENTS[s.key])
-    .map((s) => ({ key: s.key, title: s.title, component: STEP_COMPONENTS[s.key] }));
   const router = useRouter();
+  const schema = useMemo(() => resolveSchema(schemaProp), [schemaProp]);
+  const options = useMemo(() => mergeOptions(optionOverrides), [optionOverrides]);
+  const lookup = useMemo(() => fieldLookup(schema), [schema]);
+  const steps = useMemo(() => schema.steps.filter((s) => s.enabled !== false), [schema]);
+
   const [step, setStep] = useState(0);
   const [data, setData] = useState<CheckinData>(initialCheckinData);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -97,7 +75,8 @@ export function CheckinWizard({
   const [restored, setRestored] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
 
-  // Restore draft
+  /* ---------------- draft persistence ---------------- */
+
   useEffect(() => {
     try {
       const raw = localStorage.getItem(DRAFT_KEY);
@@ -106,15 +85,14 @@ export function CheckinWizard({
         if (saved?.data?.firstName || saved?.data?.phone || (saved?.step ?? 0) > 0) {
           // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time draft restore from localStorage after hydration
           setData({ ...initialCheckinData, ...saved.data });
-          setStep(Math.min(saved.step ?? 0, STEPS.length - 1));
+          setStep(Math.min(saved.step ?? 0, Math.max(0, steps.length - 1)));
           setRestored(true);
         }
       }
     } catch {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once; STEPS derives from a stable server prop
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once on mount
   }, []);
 
-  // Autosave draft (debounced)
   useEffect(() => {
     const t = setTimeout(() => {
       try {
@@ -124,26 +102,85 @@ export function CheckinWizard({
     return () => clearTimeout(t);
   }, [step, data]);
 
-  const set = useCallback(<K extends keyof CheckinData>(key: K, value: CheckinData[K]) => {
-    setData((d) => ({ ...d, [key]: value }));
+  /* ---------------- value plumbing ---------------- */
+
+  const setValue = useCallback((field: FormField, value: unknown) => {
+    setData((d) => {
+      if (field.core) return { ...d, [field.key]: value } as CheckinData;
+      return { ...d, custom: { ...(d.custom || {}), [field.key]: value } };
+    });
     setErrors((e) => {
-      if (!e[key as string]) return e;
+      if (!e[field.key]) return e;
       const next = { ...e };
-      delete next[key as string];
+      delete next[field.key];
       return next;
     });
   }, []);
 
+  const setCore = useCallback(<K extends keyof CheckinData>(key: K, value: CheckinData[K]) => {
+    setData((d) => ({ ...d, [key]: value }));
+  }, []);
+
+  const applyCustomer = useCallback((c: CustomerHit) => {
+    setData((d) => ({
+      ...d,
+      customerId: c.id,
+      firstName: c.firstName,
+      lastName: c.lastName,
+      phone: formatPhoneSafe(c.phone),
+      email: c.email,
+      street: c.street,
+      city: c.city,
+      state: c.state,
+      zip: c.zip,
+      smsConsent: c.smsConsent,
+    }));
+  }, []);
+
+  const widgets: WidgetMap = useMemo(
+    () => ({
+      customerSearch: (
+        <CustomerSearchWidget
+          customerId={data.customerId}
+          onPick={applyCustomer}
+          onDetach={() => setCore("customerId", null)}
+        />
+      ),
+      partsTable: <PartsTableWidget parts={data.parts} onChange={(p: PartLine[]) => setCore("parts", p)} />,
+      driveshaftDesigner: (
+        <DriveshaftDesignerWidget
+          value={data.designerType}
+          onChange={(v) => setCore("designerType", v)}
+          options={options.designerTypes || []}
+        />
+      ),
+    }),
+    [data.customerId, data.parts, data.designerType, applyCustomer, setCore, options.designerTypes]
+  );
+
+  /* ---------------- navigation ---------------- */
+
   const scrollTop = () => topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  const goNext = () => {
-    const errs = validateStep(STEPS[step].key, data, layout);
-    setErrors(errs);
-    if (Object.keys(errs).length > 0) {
-      scrollTop();
-      return;
+  const validateCurrent = useCallback(() => {
+    const current = steps[step];
+    if (!current) return {};
+    const errs = validateFields(current.fields, data as ValueBag, lookup);
+    // Phone needs format validation beyond "not empty".
+    const phoneField = current.fields.find((f) => f.key === "phone") || lookup.get("phone");
+    const phoneVisible =
+      phoneField && current.fields.some((f) => f.key === "phone" || f.children?.some((c) => c.key === "phone"));
+    if (phoneVisible && phoneField?.required && normalizePhone(data.phone).length !== 10) {
+      errs.phone = "A valid 10-digit phone is required";
     }
-    if (step < STEPS.length - 1) {
+    return errs;
+  }, [steps, step, data, lookup]);
+
+  const goNext = () => {
+    const errs = validateCurrent();
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) return scrollTop();
+    if (step < steps.length - 1) {
       setStep(step + 1);
       scrollTop();
     }
@@ -157,7 +194,7 @@ export function CheckinWizard({
   };
 
   const submit = async () => {
-    const errs = validateStep(STEPS[step].key, data, layout);
+    const errs = validateCurrent();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
     setSubmitting(true);
@@ -195,7 +232,6 @@ export function CheckinWizard({
     setRestored(false);
   };
 
-  // Has the user entered anything worth confirming before they leave?
   const isDirty = useMemo(
     () =>
       Boolean(
@@ -209,6 +245,8 @@ export function CheckinWizard({
     router.push("/");
   };
 
+  /* ---------------- render ---------------- */
+
   if (done) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-4">
@@ -216,8 +254,8 @@ export function CheckinWizard({
           <CheckCircle2 className="w-20 h-20 text-emerald-500 mx-auto mb-5" strokeWidth={1.5} />
           <h2 className="text-2xl font-bold text-ink-900 mb-2">Check-in complete!</h2>
           <p className="text-ink-600 mb-8">
-            Entry <span className="font-semibold text-ink-900">#{done.id}</span> was saved. The customer will receive
-            an SMS with the status of the order at every stage.
+            Entry <span className="font-semibold text-ink-900">#{done.id}</span> was saved. The customer will receive an
+            SMS with the status of the order at every stage.
           </p>
           <div className="flex gap-3 justify-center">
             <Button size="lg" onClick={discardDraft}>
@@ -232,12 +270,20 @@ export function CheckinWizard({
     );
   }
 
-  const StepComponent = STEPS[step].component;
-  const isLast = step === STEPS.length - 1;
+  if (steps.length === 0) {
+    return (
+      <div className="py-24 text-center text-ink-500">
+        No steps are enabled. Enable at least one in Admin → Form Builder.
+      </div>
+    );
+  }
+
+  const currentStep = steps[step];
+  const groups = groupFields(currentStep.fields);
+  const isLast = step === steps.length - 1;
 
   return (
     <>
-      {/* Sticky top app bar with a prominent Exit control */}
       <header className="sticky top-0 z-40 bg-white border-b border-ink-200 no-print">
         <div className="mx-auto max-w-3xl px-3 sm:px-4 h-16 flex items-center justify-between gap-3">
           <button
@@ -259,72 +305,94 @@ export function CheckinWizard({
       </header>
 
       <div ref={topRef} className="mx-auto w-full max-w-3xl px-4 pb-32 pt-4 scroll-mt-20">
-        {/* Turnaround banner */}
-        <div className="mb-4 rounded-xl bg-brand-600 text-white text-center font-bold py-2.5 px-4 text-sm shadow-sm">
-          {turnaroundBanner}
-        </div>
+        {turnaroundBanner && (
+          <div className="mb-4 rounded-xl bg-brand-600 text-white text-center font-bold py-2.5 px-4 text-sm shadow-sm">
+            {turnaroundBanner}
+          </div>
+        )}
 
-      {restored && (
-        <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm text-amber-800">
-          <span>Restored an unfinished check-in draft.</span>
-          <button onClick={discardDraft} className="inline-flex items-center gap-1.5 font-semibold hover:underline shrink-0">
-            <RotateCcw className="w-3.5 h-3.5" /> Start fresh
-          </button>
-        </div>
-      )}
+        {restored && (
+          <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm text-amber-800">
+            <span>Restored an unfinished check-in draft.</span>
+            <button onClick={discardDraft} className="inline-flex items-center gap-1.5 font-semibold hover:underline shrink-0">
+              <RotateCcw className="w-3.5 h-3.5" /> Start fresh
+            </button>
+          </div>
+        )}
 
-      {/* Stepper */}
-      <ol className="flex items-center gap-1 mb-6 overflow-x-auto no-scrollbar">
-        {STEPS.map((s, i) => {
-          const active = i === step;
-          const complete = i < step;
-          return (
-            <li key={s.title} className="flex items-center gap-1 shrink-0">
-              {i > 0 && <span className={cn("w-4 sm:w-7 h-px", complete || active ? "bg-brand-500" : "bg-ink-300")} />}
-              <button
-                type="button"
-                onClick={() => i < step && setStep(i)}
-                className={cn(
-                  "flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-full transition-colors",
-                  i < step && "cursor-pointer hover:bg-ink-200/50",
-                  i > step && "cursor-default"
-                )}
-              >
-                <span
+        {/* Stepper */}
+        <ol className="flex items-center gap-1 mb-6 overflow-x-auto no-scrollbar">
+          {steps.map((s, i) => {
+            const active = i === step;
+            const complete = i < step;
+            return (
+              <li key={s.id} className="flex items-center gap-1 shrink-0">
+                {i > 0 && <span className={cn("w-4 sm:w-7 h-px", complete || active ? "bg-brand-500" : "bg-ink-300")} />}
+                <button
+                  type="button"
+                  onClick={() => i < step && setStep(i)}
                   className={cn(
-                    "w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors",
-                    active && "bg-brand-600 text-white",
-                    complete && "bg-brand-100 text-brand-700",
-                    !active && !complete && "bg-ink-200 text-ink-500"
+                    "flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-full transition-colors",
+                    i < step && "cursor-pointer hover:bg-ink-200/50",
+                    i > step && "cursor-default"
                   )}
                 >
-                  {complete ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : i + 1}
-                </span>
-                <span
-                  className={cn(
-                    "text-[13px] font-semibold whitespace-nowrap",
-                    active ? "text-ink-900" : "text-ink-500",
-                    !active && "max-sm:hidden"
-                  )}
-                >
-                  {s.title}
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
+                  <span
+                    className={cn(
+                      "w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors",
+                      active && "bg-brand-600 text-white",
+                      complete && "bg-brand-100 text-brand-700",
+                      !active && !complete && "bg-ink-200 text-ink-500"
+                    )}
+                  >
+                    {complete ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : i + 1}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-[13px] font-semibold whitespace-nowrap",
+                      active ? "text-ink-900" : "text-ink-500",
+                      !active && "max-sm:hidden"
+                    )}
+                  >
+                    {s.title}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
 
-      {/* Step body */}
-      <div className="animate-fade-up" key={step}>
-        <StepComponent data={data} set={set} errors={errors} layout={layout} options={options} />
-      </div>
-
-      {submitError && (
-        <div className="mt-4 rounded-xl border border-brand-300 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-700">
-          {submitError}
+        {/* Step body */}
+        <div className="space-y-6 animate-fade-up" key={currentStep.id}>
+          {groups.map((g, i) => {
+            if (g.kind === "widget") {
+              if (!evaluateConditions(g.field.conditions, data as ValueBag, lookup)) return null;
+              return <div key={g.field.id}>{widgets[g.field.widget || ""] ?? null}</div>;
+            }
+            const anyVisible = g.fields.some((f) => evaluateConditions(f.conditions, data as ValueBag, lookup));
+            if (!anyVisible) return null;
+            return (
+              <Card key={i} className="p-5 sm:p-6">
+                {g.title && <SectionHeading>{g.title}</SectionHeading>}
+                <FormRenderer
+                  fields={g.fields}
+                  values={data as ValueBag}
+                  setValue={setValue}
+                  errors={errors}
+                  options={options}
+                  lookup={lookup}
+                  widgets={widgets}
+                />
+              </Card>
+            );
+          })}
         </div>
-      )}
+
+        {submitError && (
+          <div className="mt-4 rounded-xl border border-brand-300 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-700">
+            {submitError}
+          </div>
+        )}
 
         {/* Sticky nav */}
         <div className="fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur border-t border-ink-200 no-print">
@@ -339,7 +407,7 @@ export function CheckinWizard({
               </Button>
             )}
             <span className="text-sm text-ink-500 font-medium max-sm:hidden">
-              Step {step + 1} of {STEPS.length} — {STEPS[step].title}
+              Step {step + 1} of {steps.length} — {currentStep.title}
             </span>
             {isLast ? (
               <Button size="lg" onClick={submit} disabled={submitting} className="min-w-36">
@@ -355,4 +423,19 @@ export function CheckinWizard({
       </div>
     </>
   );
+}
+
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-3 mb-4">
+      <div className="h-6 w-1.5 rounded-full bg-brand-600" />
+      <h2 className="text-lg font-bold tracking-tight text-ink-900 uppercase">{children}</h2>
+    </div>
+  );
+}
+
+function formatPhoneSafe(p: string) {
+  const d = (p || "").replace(/\D/g, "");
+  if (d.length !== 10) return p || "";
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
 }

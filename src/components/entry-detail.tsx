@@ -557,6 +557,9 @@ export function EntryDetail({
         </div>
       </Card>
 
+      {/* Admin-defined custom fields */}
+      <CustomFieldsCard custom={entry.custom as Record<string, unknown> | null} />
+
       {/* Staff */}
       <Card className="p-5">
         <h2 className="font-bold mb-4">Staff &amp; payment</h2>
@@ -613,6 +616,61 @@ export function EntryDetail({
         </Card>
       </div>
     </div>
+  );
+}
+
+/** Renders values captured by fields the admin added in the Form Builder. */
+function CustomFieldsCard({ custom }: { custom: Record<string, unknown> | null }) {
+  const [labels, setLabels] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (!custom || Object.keys(custom).length === 0) return;
+    fetch("/api/form-schema")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => j?.labels && setLabels(j.labels))
+      .catch(() => {});
+  }, [custom]);
+
+  if (!custom || Object.keys(custom).length === 0) return null;
+
+  const isImage = (v: string) => /^(https?:)?\/|^\/api\/files\//.test(v) && /\.(png|jpe?g|webp|gif)$/i.test(v);
+
+  return (
+    <Card className="p-5">
+      <h2 className="font-bold mb-4">Additional information</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-4">
+        {Object.entries(custom).map(([key, value]) => {
+          const label = labels[key] || key;
+          const list = Array.isArray(value) ? value : null;
+          return (
+            <div key={key} className="min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-400">{label}</p>
+              {list ? (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {list.map((v, i) =>
+                    typeof v === "string" && isImage(v) ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img key={i} src={v} alt={label} className="h-20 rounded-lg border border-ink-200" />
+                    ) : (
+                      <span key={i} className="text-sm text-ink-900">
+                        {typeof v === "object" ? JSON.stringify(v) : String(v)}
+                      </span>
+                    )
+                  )}
+                </div>
+              ) : typeof value === "string" && isImage(value) ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={value} alt={label} className="h-24 rounded-lg border border-ink-200 mt-1" />
+              ) : (
+                <p className="text-sm text-ink-900 mt-0.5 break-words">
+                  {value === true ? "Yes" : value === false ? "No" : String(value ?? "") || "—"}
+                </p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </Card>
   );
 }
 

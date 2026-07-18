@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { and, desc, eq, gte, ilike, lte, or, sql, type SQL } from "drizzle-orm";
 import { getDb, entries, customers } from "@/db";
 import { formatPhone, normalizePhone } from "@/lib/utils";
+import { getSettings } from "@/lib/settings";
+import { allFields, holdsValue } from "@/lib/form-schema";
+import { resolveSchema } from "@/lib/form-schema-default";
 
 function csvCell(v: unknown): string {
   const s = v == null ? "" : String(v);
@@ -49,6 +52,13 @@ export async function GET(req: NextRequest) {
     .orderBy(desc(entries.createdAt))
     .limit(10000);
 
+  // Admin-defined custom fields become extra columns, in schema order.
+  const settings = await getSettings();
+  const schema = resolveSchema(settings.formSchema);
+  const customCols = allFields(schema)
+    .filter((f) => !f.core && holdsValue(f.type) && f.key)
+    .map((f) => ({ key: f.key, label: f.label || f.key }));
+
   const header = [
     "Entry ID", "Created", "Job Number", "Status", "Payment",
     "First Name", "Last Name", "Phone", "Email", "Street", "City", "State", "ZIP", "SMS Consent",
@@ -57,6 +67,7 @@ export async function GET(req: NextRequest) {
     "Complaint", "Notes", "Labor Request", "Driveshaft Pieces", "Material", "U-Joint Serial",
     "Driveshaft Type", "A", "B", "C", "Designer Type", "How Heard",
     "Deposit", "Total", "Employee", "Core", "On Hold Reason", "Assigned Employee", "ETA",
+    ...customCols.map((c) => c.label),
   ];
 
   const lines = [header.map(csvCell).join(",")];
@@ -77,6 +88,13 @@ export async function GET(req: NextRequest) {
         e.driveshaftPieces, e.driveshaftMaterial, e.uJointSerial, e.driveshaftTypeChoice,
         e.measurementA, e.measurementB, e.measurementC, e.designerType, e.howHeard,
         e.deposit ?? "", e.total ?? "", e.employeeName, e.core, e.onHoldReason, e.assignedEmployee, e.etaJob,
+        ...customCols.map((c) => {
+          const v = (e.custom as Record<string, unknown> | null)?.[c.key];
+          if (v == null) return "";
+          if (Array.isArray(v)) return v.join(" | ");
+          if (typeof v === "boolean") return v ? "Yes" : "No";
+          return String(v);
+        }),
       ]
         .map(csvCell)
         .join(",")
