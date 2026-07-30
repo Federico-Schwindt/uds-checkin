@@ -130,6 +130,8 @@ export const entries = pgTable(
 
     // meta
     sourceEntryId: integer("source_entry_id"), // Gravity Forms entry id when imported
+    /** Soft-delete marker. Deleted entries are hidden but recoverable from the log. */
+    deletedAt: timestamp("deleted_at"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
@@ -137,7 +139,29 @@ export const entries = pgTable(
     index("entries_status_idx").on(t.jobStatus),
     index("entries_customer_idx").on(t.customerId),
     index("entries_created_idx").on(t.createdAt),
+    index("entries_deleted_idx").on(t.deletedAt),
     uniqueIndex("entries_source_idx").on(t.sourceEntryId),
+  ]
+);
+
+/** Append-only audit trail of everything that happens in the app. */
+export const activityLog = pgTable(
+  "activity_log",
+  {
+    id: serial("id").primaryKey(),
+    action: text("action").notNull(), // e.g. entry.create, entry.delete, status.change, employee.delete
+    entity: text("entity").notNull().default(""), // entry | customer | employee | settings | auth | location
+    entityId: integer("entity_id"),
+    summary: text("summary").notNull().default(""),
+    details: jsonb("details"),
+    actor: text("actor").notNull().default(""),
+    ip: text("ip").notNull().default(""),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("activity_action_idx").on(t.action),
+    index("activity_entity_idx").on(t.entity, t.entityId),
+    index("activity_created_idx").on(t.createdAt),
   ]
 );
 

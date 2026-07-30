@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { and, count, desc, eq, gte, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, isNull, sql } from "drizzle-orm";
 import { ArrowUpRight } from "lucide-react";
 import { getDb, entries, customers, messageLog } from "@/db";
 import { StatusBadge, Card } from "@/components/ui";
@@ -17,13 +17,15 @@ export default async function AdminDashboard() {
   const monthStart = new Date(todayStart);
   monthStart.setDate(monthStart.getDate() - 29);
 
-  const [today] = await db.select({ n: count() }).from(entries).where(gte(entries.createdAt, todayStart));
-  const [week] = await db.select({ n: count() }).from(entries).where(gte(entries.createdAt, weekStart));
-  const [month] = await db.select({ n: count() }).from(entries).where(gte(entries.createdAt, monthStart));
+  const live = isNull(entries.deletedAt);
+  const [today] = await db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, todayStart)));
+  const [week] = await db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, weekStart)));
+  const [month] = await db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, monthStart)));
 
   const byStatus = await db
     .select({ status: entries.jobStatus, n: count() })
     .from(entries)
+    .where(live)
     .groupBy(entries.jobStatus);
   const statusMap = Object.fromEntries(byStatus.map((r) => [r.status, r.n]));
 
@@ -39,7 +41,7 @@ export default async function AdminDashboard() {
       n: count(),
     })
     .from(entries)
-    .where(gte(entries.createdAt, new Date(todayStart.getTime() - 13 * 86400_000)))
+    .where(and(live, gte(entries.createdAt, new Date(todayStart.getTime() - 13 * 86400_000))))
     .groupBy(sql`to_char(${entries.createdAt}, 'YYYY-MM-DD')`);
   const dailyMap = Object.fromEntries(daily.map((d) => [d.day, d.n]));
   const days = Array.from({ length: 14 }, (_, i) => {
@@ -64,6 +66,7 @@ export default async function AdminDashboard() {
     })
     .from(entries)
     .leftJoin(customers, eq(entries.customerId, customers.id))
+    .where(live)
     .orderBy(desc(entries.createdAt))
     .limit(8);
 

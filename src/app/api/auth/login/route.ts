@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AUTH_COOKIE, createSessionToken } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
+import { logActivity } from "@/lib/audit";
 
 // Simple in-memory throttle: 10 attempts per IP per minute.
 const attempts = new Map<string, { count: number; resetAt: number }>();
@@ -21,6 +22,7 @@ export async function POST(req: NextRequest) {
   const { pin } = await req.json().catch(() => ({ pin: "" }));
   const s = await getSettings();
   if (!pin || String(pin) !== String(s.pin)) {
+    await logActivity({ action: "auth.failed", entity: "auth", summary: "Failed PIN unlock attempt", req });
     return NextResponse.json({ error: "Incorrect PIN" }, { status: 401 });
   }
 

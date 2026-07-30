@@ -694,11 +694,13 @@ export function EntriesWorkstation({
       case "jobNumber":
         return (
           <td key={key} className="px-1.5 py-2 w-32">
-            <InlineText
-              value={r.jobNumber}
-              onSave={(v) => patchRow(r, { entry: { jobNumber: v } }, "Job # updated.")}
-              placeholder="—"
-            />
+            <button
+              onClick={() => router.push(`/entry/${r.id}`)}
+              className="px-2 py-1 rounded-lg font-bold text-brand-700 hover:bg-brand-50 hover:underline text-left transition-colors"
+              title="Open entry"
+            >
+              {r.jobNumber || <span className="text-ink-300 font-normal">— open</span>}
+            </button>
           </td>
         );
       case "status":

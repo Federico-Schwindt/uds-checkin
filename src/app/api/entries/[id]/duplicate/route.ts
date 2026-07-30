@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, entries, parts, statusHistory } from "@/db";
+import { logActivity } from "@/lib/audit";
 
 /**
  * Clones an entry (same customer, vehicle, job info and parts) as a fresh job:
  * status New, no signatures, no job number, new timestamps.
  */
-export async function POST(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const { id: idStr } = await ctx.params;
   const id = parseInt(idStr);
   const db = await getDb();
@@ -50,6 +51,15 @@ export async function POST(_req: NextRequest, ctx: { params: Promise<{ id: strin
     fromStatus: "",
     toStatus: "New",
     note: `Duplicated from entry #${id}`,
+  });
+
+  await logActivity({
+    action: "entry.duplicate",
+    entity: "entry",
+    entityId: created.id,
+    summary: `Duplicated entry #${id} → new entry #${created.id}`,
+    details: { sourceId: id },
+    req,
   });
 
   return NextResponse.json({ id: created.id });

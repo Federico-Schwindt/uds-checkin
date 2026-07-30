@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { and, count, desc, eq, gte, ilike, lte, or, sql, type SQL } from "drizzle-orm";
+import { and, count, desc, eq, gte, ilike, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { getDb, entries, customers, parts, statusHistory, locations } from "@/db";
 import { normalizePhone } from "@/lib/utils";
 import { storeDataUrl } from "@/lib/storage";
 import { notifyForEntry, notifyStatusChange } from "@/lib/notify";
+import { logActivity } from "@/lib/audit";
 import type { CheckinData } from "@/components/checkin/types";
 
 async function maybeStore(value: string, name: string): Promise<string> {
@@ -41,8 +42,34 @@ export async function POST(req: NextRequest) {
   }
 
   const db = await getDb();
+  const toNumeric = (v: string) => {
+    const n = parseFloat((v || "").replace(/[^0-9.]/g, ""));
+    return isNaN(n) ? null : n.toFixed(2);
+  };
 
-  // Upsert customer (dedupe by explicit selection or by phone)
+  // Store binary assets BEFORE the transaction (external I/O, may be slow).
+  let estimateSignature = "", finalSignature = "", vinPhoto = "", productImage = "";
+  let customAssets: Record<string, unknown> | null = null;
+  try {
+    [estimateSignature, finalSignature, vinPhoto, productImage] = await Promise.all([
+      maybeStore(data.estimateSignature, "estimate-signature"),
+      maybeStore(data.finalSignature, "final-signature"),
+      maybeStore(data.vinPhoto, "vin-photo"),
+      maybeStore(data.productImage, "product-image"),
+    ]);
+    customAssets = await storeCustomAssets(data.custom);
+  } catch (err) {
+    console.error("asset storage failed", err);
+    await logActivity({
+      action: "entry.create.error",
+      entity: "entry",
+      summary: `Check-in failed while saving photos/signatures for ${data.firstName} ${data.lastName}`,
+      details: { error: String(err) },
+      req,
+    });
+    return NextResponse.json({ error: "Could not save the attached photos/signatures. Please try again." }, { status: 500 });
+  }
+
   const customerValues = {
     firstName: data.firstName.trim(),
     lastName: data.lastName.trim(),
@@ -55,121 +82,95 @@ export async function POST(req: NextRequest) {
     smsConsent: !!data.smsConsent,
     updatedAt: new Date(),
   };
-
-  let customerId = data.customerId;
-  if (customerId) {
-    const found = await db.select().from(customers).where(eq(customers.id, customerId));
-    if (found.length) {
-      await db.update(customers).set(customerValues).where(eq(customers.id, customerId));
-    } else {
-      customerId = null;
-    }
-  }
-  if (!customerId) {
-    const byPhone = await db.select().from(customers).where(eq(customers.phone, phone));
-    if (byPhone.length) {
-      customerId = byPhone[0].id;
-      await db.update(customers).set(customerValues).where(eq(customers.id, customerId));
-    } else {
-      const inserted = await db.insert(customers).values(customerValues).returning({ id: customers.id });
-      customerId = inserted[0].id;
-    }
-  }
-
-  // Store binary assets
-  const [estimateSignature, finalSignature, vinPhoto, productImage] = await Promise.all([
-    maybeStore(data.estimateSignature, "estimate-signature"),
-    maybeStore(data.finalSignature, "final-signature"),
-    maybeStore(data.vinPhoto, "vin-photo"),
-    maybeStore(data.productImage, "product-image"),
-  ]);
-
-  const [defaultLocation] = await db.select().from(locations).orderBy(locations.id).limit(1);
-
-  const toNumeric = (v: string) => {
-    const n = parseFloat((v || "").replace(/[^0-9.]/g, ""));
-    return isNaN(n) ? null : n.toFixed(2);
-  };
-
   const requestedLocation = Number(data.locationId) || null;
-  const inserted = await db
-    .insert(entries)
-    .values({
-      locationId: requestedLocation ?? defaultLocation?.id ?? null,
-      customerId,
-      estimateChoice: data.estimateChoice || "",
-      estimateAmount: data.estimateAmount || "",
-      estimateSignature,
-      estimateDate: data.estimateDate || "",
-      vehicleYear: data.vehicleYear || "",
-      vehicleMake: data.vehicleMake || "",
-      vehicleModel: data.vehicleModel || "",
-      drive: data.drive || "",
-      axleLocation: data.axleLocation || "",
-      cab: data.cab || "",
-      transmission: data.transmission || "",
-      transmissionSpeed: data.transmissionSpeed || "",
-      engineSize: data.engineSize || "",
-      bedSize: data.bedSize || "",
-      bedSizeOther: data.bedSizeOther || "",
-      wheelbase: data.wheelbase || "",
-      horsePower: data.horsePower || "",
-      stockVehicle: data.stockVehicle || "",
-      stockVehicleExplain: data.stockVehicleExplain || "",
-      vinMethod: data.vinMethod || "",
-      vinPhoto,
-      vin: data.vin || "",
-      mileage: data.mileage || "",
-      saveOldParts: data.saveOldParts || "",
-      complaint: data.complaint || "",
-      complaintOther: data.complaintOther || "",
-      notes: data.notes || "",
-      laborRequest: data.laborRequest || "",
-      laborOther: data.laborOther || "",
-      driveshaftPieces: data.driveshaftPieces || "",
-      driveshaftMaterial: data.driveshaftMaterial || "",
-      uJointSerial: data.uJointSerial || "",
-      driveshaftTypeChoice: data.driveshaftTypeChoice || "",
-      productImage,
-      measurementA: data.measurementA || "",
-      measurementB: data.measurementB || "",
-      measurementC: data.measurementC || "",
-      designerType: data.designerType || "",
-      howHeard: data.howHeard || "",
-      custom: await storeCustomAssets(data.custom),
-      deposit: toNumeric(data.deposit),
-      total: toNumeric(data.total),
-      finalSignature,
-      jobNumber: data.jobNumber || "",
-      employeeName: data.employeeName || "",
-      core: data.core || "",
-      jobStatus: data.jobStatus || "New",
-      onHoldReason: data.jobStatus === "On hold" ? data.onHoldReason || "" : "",
-      payment: data.payment || "",
-      confirmationDate: data.confirmationDate || "",
-      assignedEmployee: data.jobStatus === "Ongoing" ? data.assignedEmployee || "" : "",
-      timeOfJob: data.timeOfJob || "",
-      signingDate: data.signingDate || "",
-      etaJob: data.etaJob || "",
-    })
-    .returning({ id: entries.id });
-
-  const entryId = inserted[0].id;
-
   const partLines = (data.parts || []).filter((p) => p.sku?.trim() || p.name?.trim());
-  if (partLines.length) {
-    await db.insert(parts).values(
-      partLines.map((p) => ({
-        entryId,
-        sku: p.sku || "",
-        name: p.name || "",
-        qty: Math.max(1, Number(p.qty) || 1),
-        price: toNumeric(p.price),
-      }))
-    );
+
+  // Atomic write: customer + entry + parts + first status row all-or-nothing,
+  // so a check-in can never be half-created or silently missing.
+  let entryId: number;
+  try {
+    entryId = await db.transaction(async (tx) => {
+      const [defaultLocation] = await tx.select().from(locations).orderBy(locations.id).limit(1);
+
+      let customerId = data.customerId ?? null;
+      if (customerId) {
+        const found = await tx.select({ id: customers.id }).from(customers).where(eq(customers.id, customerId));
+        if (found.length) await tx.update(customers).set(customerValues).where(eq(customers.id, customerId));
+        else customerId = null;
+      }
+      if (!customerId) {
+        const byPhone = await tx.select({ id: customers.id }).from(customers).where(eq(customers.phone, phone));
+        if (byPhone.length) {
+          customerId = byPhone[0].id;
+          await tx.update(customers).set(customerValues).where(eq(customers.id, customerId));
+        } else {
+          const ins = await tx.insert(customers).values(customerValues).returning({ id: customers.id });
+          customerId = ins[0].id;
+        }
+      }
+
+      const inserted = await tx
+        .insert(entries)
+        .values(buildEntryValues(data, {
+          customerId,
+          locationId: requestedLocation ?? defaultLocation?.id ?? null,
+          estimateSignature,
+          finalSignature,
+          vinPhoto,
+          productImage,
+          custom: customAssets,
+          toNumeric,
+        }))
+        .returning({ id: entries.id });
+      const id = inserted[0].id;
+
+      if (partLines.length) {
+        await tx.insert(parts).values(
+          partLines.map((p) => ({
+            entryId: id,
+            sku: p.sku || "",
+            name: p.name || "",
+            qty: Math.max(1, Number(p.qty) || 1),
+            price: toNumeric(p.price),
+          }))
+        );
+      }
+      await tx.insert(statusHistory).values({ entryId: id, fromStatus: "", toStatus: data.jobStatus || "New" });
+      return id;
+    });
+  } catch (err) {
+    console.error("entry create transaction failed", err);
+    await logActivity({
+      action: "entry.create.error",
+      entity: "entry",
+      summary: `Check-in failed for ${data.firstName} ${data.lastName}`,
+      details: { error: String(err) },
+      req,
+    });
+    return NextResponse.json({ error: "Could not save the check-in. Nothing was stored — please try again." }, { status: 500 });
   }
 
-  await db.insert(statusHistory).values({ entryId, fromStatus: "", toStatus: data.jobStatus || "New" });
+  // Verify the row is actually readable back before telling the client it worked.
+  const check = await db.select({ id: entries.id }).from(entries).where(eq(entries.id, entryId));
+  if (!check.length) {
+    await logActivity({
+      action: "entry.create.error",
+      entity: "entry",
+      entityId: entryId,
+      summary: "Entry insert reported success but the row could not be read back",
+      req,
+    });
+    return NextResponse.json({ error: "Save could not be confirmed. Please check the entries list before retrying." }, { status: 500 });
+  }
+
+  await logActivity({
+    action: "entry.create",
+    entity: "entry",
+    entityId: entryId,
+    summary: `New check-in #${entryId} — ${data.firstName} ${data.lastName}${data.jobNumber ? ` (Job ${data.jobNumber})` : ""}`,
+    details: { vehicle: [data.vehicleYear, data.vehicleMake, data.vehicleModel].filter(Boolean).join(" "), jobStatus: data.jobStatus || "New" },
+    req,
+  });
 
   // Fire notifications; never fail the check-in because of them.
   try {
@@ -185,6 +186,81 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ id: entryId });
 }
 
+/** Maps check-in data to the entries row (shared shape, kept out of the transaction body). */
+function buildEntryValues(
+  data: CheckinData,
+  extra: {
+    customerId: number | null;
+    locationId: number | null;
+    estimateSignature: string;
+    finalSignature: string;
+    vinPhoto: string;
+    productImage: string;
+    custom: Record<string, unknown> | null;
+    toNumeric: (v: string) => string | null;
+  }
+) {
+  const { toNumeric } = extra;
+  return {
+    locationId: extra.locationId,
+    customerId: extra.customerId,
+    estimateChoice: data.estimateChoice || "",
+    estimateAmount: data.estimateAmount || "",
+    estimateSignature: extra.estimateSignature,
+    estimateDate: data.estimateDate || "",
+    vehicleYear: data.vehicleYear || "",
+    vehicleMake: data.vehicleMake || "",
+    vehicleModel: data.vehicleModel || "",
+    drive: data.drive || "",
+    axleLocation: data.axleLocation || "",
+    cab: data.cab || "",
+    transmission: data.transmission || "",
+    transmissionSpeed: data.transmissionSpeed || "",
+    engineSize: data.engineSize || "",
+    bedSize: data.bedSize || "",
+    bedSizeOther: data.bedSizeOther || "",
+    wheelbase: data.wheelbase || "",
+    horsePower: data.horsePower || "",
+    stockVehicle: data.stockVehicle || "",
+    stockVehicleExplain: data.stockVehicleExplain || "",
+    vinMethod: data.vinMethod || "",
+    vinPhoto: extra.vinPhoto,
+    vin: data.vin || "",
+    mileage: data.mileage || "",
+    saveOldParts: data.saveOldParts || "",
+    complaint: data.complaint || "",
+    complaintOther: data.complaintOther || "",
+    notes: data.notes || "",
+    laborRequest: data.laborRequest || "",
+    laborOther: data.laborOther || "",
+    driveshaftPieces: data.driveshaftPieces || "",
+    driveshaftMaterial: data.driveshaftMaterial || "",
+    uJointSerial: data.uJointSerial || "",
+    driveshaftTypeChoice: data.driveshaftTypeChoice || "",
+    productImage: extra.productImage,
+    measurementA: data.measurementA || "",
+    measurementB: data.measurementB || "",
+    measurementC: data.measurementC || "",
+    designerType: data.designerType || "",
+    howHeard: data.howHeard || "",
+    custom: extra.custom,
+    deposit: toNumeric(data.deposit),
+    total: toNumeric(data.total),
+    finalSignature: extra.finalSignature,
+    jobNumber: data.jobNumber || "",
+    employeeName: data.employeeName || "",
+    core: data.core || "",
+    jobStatus: data.jobStatus || "New",
+    onHoldReason: data.jobStatus === "On hold" ? data.onHoldReason || "" : "",
+    payment: data.payment || "",
+    confirmationDate: data.confirmationDate || "",
+    assignedEmployee: data.jobStatus === "Ongoing" ? data.assignedEmployee || "" : "",
+    timeOfJob: data.timeOfJob || "",
+    signingDate: data.signingDate || "",
+    etaJob: data.etaJob || "",
+  };
+}
+
 export async function GET(req: NextRequest) {
   const db = await getDb();
   const p = req.nextUrl.searchParams;
@@ -198,7 +274,8 @@ export async function GET(req: NextRequest) {
   const locationId = parseInt(p.get("locationId") || "");
 
   const conds: SQL[] = [];
-  const baseConds: SQL[] = []; // every filter except status — used for the per-status counters
+  // every filter except status — used for the per-status counters. Always hides soft-deleted rows.
+  const baseConds: SQL[] = [isNull(entries.deletedAt)];
   if (!isNaN(locationId)) baseConds.push(eq(entries.locationId, locationId));
   if (status) conds.push(eq(entries.jobStatus, status));
   if (payment) baseConds.push(eq(entries.payment, payment));

@@ -3,6 +3,7 @@ import { asc, eq } from "drizzle-orm";
 import { getDb, entries, customers, parts, statusHistory, messageLog } from "@/db";
 import { notifyStatusChange } from "@/lib/notify";
 import { normalizePhone } from "@/lib/utils";
+import { diffFields, logActivity } from "@/lib/audit";
 
 async function loadEntry(id: number) {
   const db = await getDb();
@@ -74,8 +75,19 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
     typeof patch.jobStatus === "string" && patch.jobStatus !== "" && patch.jobStatus !== current.jobStatus;
 
   if (Object.keys(patch).length) {
+    const changed = diffFields(current as Record<string, unknown>, patch, Object.keys(patch));
     patch.updatedAt = new Date();
     await db.update(entries).set(patch).where(eq(entries.id, id));
+    if (Object.keys(changed).length && !statusChanged) {
+      await logActivity({
+        action: "entry.update",
+        entity: "entry",
+        entityId: id,
+        summary: `Edited entry #${id} (${Object.keys(changed).join(", ")})`,
+        details: changed,
+        req,
+      });
+    }
   }
 
   // Customer fields
@@ -124,15 +136,46 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
         console.error("notify failed", err);
       }
     }
+    await logActivity({
+      action: "status.change",
+      entity: "entry",
+      entityId: id,
+      summary: `Entry #${id} status: ${current.jobStatus} → ${patch.jobStatus}`,
+      details: { from: current.jobStatus, to: patch.jobStatus, notified: !skipNotify },
+      req,
+    });
   }
 
   const data = await loadEntry(id);
   return NextResponse.json({ ...data, notified, statusChanged });
 }
 
-export async function DELETE(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
-  const { id } = await ctx.params;
+export async function DELETE(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+  const { id: idStr } = await ctx.params;
+  const id = parseInt(idStr);
   const db = await getDb();
-  await db.delete(entries).where(eq(entries.id, parseInt(id)));
+
+  const rows = await db
+    .select()
+    .from(entries)
+    .leftJoin(customers, eq(entries.customerId, customers.id))
+    .where(eq(entries.id, id));
+  if (!rows.length) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const { entries: entry, customers: customer } = rows[0];
+  if (entry.deletedAt) return NextResponse.json({ ok: true, alreadyDeleted: true });
+
+  // Soft-delete: hide it but keep the row and a full snapshot so it is recoverable.
+  await db.update(entries).set({ deletedAt: new Date() }).where(eq(entries.id, id));
+
+  const name = customer ? `${customer.firstName} ${customer.lastName}`.trim() : "";
+  await logActivity({
+    action: "entry.delete",
+    entity: "entry",
+    entityId: id,
+    summary: `Deleted entry #${id}${name ? ` — ${name}` : ""}${entry.jobNumber ? ` (Job ${entry.jobNumber})` : ""}`,
+    details: { entry, customer },
+    req,
+  });
+
   return NextResponse.json({ ok: true });
 }

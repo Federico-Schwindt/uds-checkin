@@ -148,6 +148,20 @@ CREATE TABLE IF NOT EXISTS message_log (
 );
 CREATE INDEX IF NOT EXISTS message_log_entry_idx ON message_log (entry_id);
 CREATE INDEX IF NOT EXISTS message_log_created_idx ON message_log (created_at);
+CREATE TABLE IF NOT EXISTS activity_log (
+  id SERIAL PRIMARY KEY,
+  action TEXT NOT NULL,
+  entity TEXT NOT NULL DEFAULT '',
+  entity_id INTEGER,
+  summary TEXT NOT NULL DEFAULT '',
+  details JSONB,
+  actor TEXT NOT NULL DEFAULT '',
+  ip TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS activity_action_idx ON activity_log (action);
+CREATE INDEX IF NOT EXISTS activity_entity_idx ON activity_log (entity, entity_id);
+CREATE INDEX IF NOT EXISTS activity_created_idx ON activity_log (created_at);
 `;
 
 const DEFAULT_SETTINGS: Record<string, unknown> = {
@@ -343,4 +357,8 @@ export async function bootstrap(db: Db) {
 
   // Micro-migration: JSONB bag for admin-defined custom field values.
   await db.execute(sql.raw("ALTER TABLE entries ADD COLUMN IF NOT EXISTS custom JSONB"));
+
+  // Micro-migration: soft-delete marker for entries.
+  await db.execute(sql.raw("ALTER TABLE entries ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMP"));
+  await db.execute(sql.raw("CREATE INDEX IF NOT EXISTS entries_deleted_idx ON entries (deleted_at)"));
 }

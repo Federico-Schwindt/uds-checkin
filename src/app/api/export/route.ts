@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { and, desc, eq, gte, ilike, lte, or, sql, type SQL } from "drizzle-orm";
+import { and, desc, eq, gte, ilike, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { getDb, entries, customers } from "@/db";
 import { formatPhone, normalizePhone } from "@/lib/utils";
 import { getSettings } from "@/lib/settings";
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
   const from = p.get("from") || "";
   const to = p.get("to") || "";
 
-  const conds: SQL[] = [];
+  const conds: SQL[] = [isNull(entries.deletedAt)];
   if (status) conds.push(eq(entries.jobStatus, status));
   if (payment) conds.push(eq(entries.payment, payment));
   if (from) conds.push(gte(entries.createdAt, new Date(from)));

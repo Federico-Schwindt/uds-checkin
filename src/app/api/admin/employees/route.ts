@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { asc, eq } from "drizzle-orm";
 import { getDb, employees } from "@/db";
+import { logActivity } from "@/lib/audit";
 
 export async function GET() {
   const db = await getDb();
@@ -13,6 +14,7 @@ export async function POST(req: NextRequest) {
   if (!name?.trim()) return NextResponse.json({ error: "Name required" }, { status: 400 });
   const db = await getDb();
   const [row] = await db.insert(employees).values({ name: name.trim(), sortOrder: 99 }).returning();
+  await logActivity({ action: "employee.create", entity: "employee", entityId: row.id, summary: `Added employee “${row.name}”`, req });
   return NextResponse.json({ employee: row });
 }
 
@@ -24,6 +26,7 @@ export async function PUT(req: NextRequest) {
   if (typeof name === "string" && name.trim()) patch.name = name.trim();
   if (typeof active === "boolean") patch.active = active;
   await db.update(employees).set(patch).where(eq(employees.id, id));
+  await logActivity({ action: "employee.update", entity: "employee", entityId: id, summary: `Updated employee #${id}`, details: patch, req });
   return NextResponse.json({ ok: true });
 }
 
@@ -31,6 +34,8 @@ export async function DELETE(req: NextRequest) {
   const { id } = await req.json().catch(() => ({}));
   if (!id) return NextResponse.json({ error: "Id required" }, { status: 400 });
   const db = await getDb();
+  const [row] = await db.select().from(employees).where(eq(employees.id, id));
   await db.delete(employees).where(eq(employees.id, id));
+  await logActivity({ action: "employee.delete", entity: "employee", entityId: id, summary: `Removed employee${row ? ` “${row.name}”` : ` #${id}`}`, req });
   return NextResponse.json({ ok: true });
 }
