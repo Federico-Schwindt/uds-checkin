@@ -1,22 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { MapPin, Search } from "lucide-react";
 import { Input } from "@/components/ui";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export type AddressParts = { street?: string; city?: string; state?: string; zip?: string };
 
-const FALLBACK_CLASSES =
-  "w-full h-12 px-3.5 rounded-xl border border-ink-300 bg-white text-[15px] text-ink-900 placeholder:text-ink-400 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/25";
-
 let bootstrapped = false;
 
-/**
- * Install Google's official inline bootstrap loader, which reliably defines
- * `google.maps.importLibrary`. Awaiting importLibrary("places") then guarantees
- * the (new) Places element is ready — unlike the classic script's onload.
- */
+/** Google's official inline bootstrap loader — reliably defines google.maps.importLibrary. */
 function ensureBootstrap(apiKey: string): boolean {
   if (typeof window === "undefined") return false;
   const w = window as any;
@@ -24,7 +18,6 @@ function ensureBootstrap(apiKey: string): boolean {
   if (bootstrapped) return true;
   bootstrapped = true;
   try {
-    // Minified official loader (developers.google.com/maps/documentation/javascript/load-maps-js-api)
     ((g: any) => {
       let h: any;
       const c = "google";
@@ -57,7 +50,6 @@ function ensureBootstrap(apiKey: string): boolean {
   }
 }
 
-/** Parse the new Place.addressComponents format (longText/shortText/types). */
 function parsePlace(place: any): AddressParts {
   const comps: any[] = place?.addressComponents || [];
   const get = (type: string, short = false) => {
@@ -68,17 +60,16 @@ function parsePlace(place: any): AddressParts {
   const city = get("locality") || get("postal_town") || get("sublocality") || get("administrative_area_level_2");
   const state = get("administrative_area_level_1", true);
   const zip = get("postal_code");
-  return { street: street || place?.formattedAddress || "", city, state, zip };
+  return { street: street || "", city, state, zip };
 }
 
+type Prediction = { id: string; main: string; secondary: string; sug: any };
+
 /**
- * Street-address input backed by Google's PlaceAutocompleteElement. Picking a
- * suggestion fills street/city/state/zip via `onFill`. Falls back to a plain
- * input when no API key is set or the Places element fails to load.
- *
- * The Google element (or a fallback input) is mounted imperatively into a host
- * div that React keeps empty, so React reconciliation never fights the Google
- * web component.
+ * Street-address input with a custom, on-brand Google Places autocomplete
+ * dropdown (built on the Places Data API so it matches the app styling instead
+ * of Google's unstyleable web component). Picking a suggestion fills
+ * street/city/state/zip. Falls back to a plain input without an API key.
  */
 export function AddressAutocomplete({
   value,
@@ -93,78 +84,121 @@ export function AddressAutocomplete({
   apiKey?: string;
   placeholder?: string;
 }) {
-  const hostRef = useRef<HTMLDivElement>(null);
-  // Keep the latest callbacks without re-running the mount effect.
-  const cb = useRef({ onChange, onFill, value, placeholder });
+  const [preds, setPreds] = useState<Prediction[]>([]);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const tokenRef = useRef<any>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
+  const justPickedRef = useRef(false);
+
+  // Close on outside click.
   useEffect(() => {
-    cb.current = { onChange, onFill, value, placeholder };
-  });
-
-  useEffect(() => {
-    if (!apiKey || !hostRef.current) return;
-    const host = hostRef.current;
-    let disposed = false;
-
-    (async () => {
-      let PlaceAutocompleteElement: any;
-      // Install the bootstrap first, THEN read window.google (it may not exist before).
-      const ready = ensureBootstrap(apiKey);
-      const g = (window as any).google;
-      if (ready && g?.maps?.importLibrary) {
-        try {
-          ({ PlaceAutocompleteElement } = await g.maps.importLibrary("places"));
-        } catch {
-          /* ignore */
-        }
-      }
-      if (disposed || !host) return;
-      host.innerHTML = "";
-
-      if (PlaceAutocompleteElement) {
-        try {
-          const el: any = new PlaceAutocompleteElement({ includedRegionCodes: ["us"] });
-          el.style.width = "100%";
-          if (cb.current.value) el.value = cb.current.value;
-          host.appendChild(el);
-          el.addEventListener("gmp-select", async (ev: any) => {
-            try {
-              const place = ev.placePrediction.toPlace();
-              await place.fetchFields({ fields: ["addressComponents", "formattedAddress"] });
-              const parts = parsePlace(place);
-              if (parts.street) cb.current.onChange(parts.street);
-              cb.current.onFill(parts);
-            } catch {
-              /* ignore */
-            }
-          });
-          el.addEventListener("input", (ev: any) => {
-            const v = ev?.target?.value ?? el.value ?? "";
-            if (typeof v === "string") cb.current.onChange(v);
-          });
-          return;
-        } catch {
-          /* fall through to native input */
-        }
-      }
-
-      // Fallback: a plain native input wired to onChange.
-      const inp = document.createElement("input");
-      inp.className = FALLBACK_CLASSES;
-      inp.value = cb.current.value || "";
-      inp.placeholder = cb.current.placeholder || "";
-      inp.autocomplete = "off";
-      inp.addEventListener("input", () => cb.current.onChange(inp.value));
-      host.appendChild(inp);
-    })();
-
-    return () => {
-      disposed = true;
-      host.innerHTML = "";
+    const onDown = (e: MouseEvent) => {
+      if (boxRef.current && !boxRef.current.contains(e.target as Node)) setOpen(false);
     };
-  }, [apiKey]);
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, []);
+
+  // Fetch predictions (debounced) as the user types.
+  useEffect(() => {
+    if (!apiKey) return;
+    if (justPickedRef.current) {
+      justPickedRef.current = false;
+      return;
+    }
+    const q = value.trim();
+    if (q.length < 3) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- clears suggestions when the query is too short
+      setPreds([]);
+      setOpen(false);
+      return;
+    }
+    const t = setTimeout(async () => {
+      if (!ensureBootstrap(apiKey)) return;
+      const g = (window as any).google;
+      try {
+        setLoading(true);
+        const { AutocompleteSuggestion, AutocompleteSessionToken } = await g.maps.importLibrary("places");
+        if (!tokenRef.current) tokenRef.current = new AutocompleteSessionToken();
+        const res = await AutocompleteSuggestion.fetchAutocompleteSuggestions({
+          input: q,
+          sessionToken: tokenRef.current,
+          includedRegionCodes: ["us"],
+        });
+        const list: Prediction[] = (res.suggestions || [])
+          .filter((s: any) => s.placePrediction)
+          .map((s: any) => {
+            const pp = s.placePrediction;
+            return {
+              id: pp.placeId,
+              main: pp.mainText?.text ?? pp.text?.text ?? "",
+              secondary: pp.secondaryText?.text ?? "",
+              sug: s,
+            };
+          });
+        setPreds(list);
+        setOpen(list.length > 0);
+      } catch {
+        setPreds([]);
+        setOpen(false);
+      } finally {
+        setLoading(false);
+      }
+    }, 250);
+    return () => clearTimeout(t);
+  }, [value, apiKey]);
+
+  const pick = async (p: Prediction) => {
+    setOpen(false);
+    justPickedRef.current = true;
+    try {
+      const place = p.sug.placePrediction.toPlace();
+      await place.fetchFields({ fields: ["addressComponents", "formattedAddress"] });
+      const parts = parsePlace(place);
+      if (parts.street) onChange(parts.street);
+      else onChange([p.main, p.secondary].filter(Boolean).join(", "));
+      onFill(parts);
+    } catch {
+      onChange([p.main, p.secondary].filter(Boolean).join(", "));
+    }
+    tokenRef.current = null; // start a fresh billing session after a selection
+  };
 
   if (!apiKey) {
     return <Input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} autoComplete="off" />;
   }
-  return <div ref={hostRef} className="uds-place-autocomplete" />;
+
+  return (
+    <div className="relative" ref={boxRef}>
+      <Search className="w-4.5 h-4.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
+      <Input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={() => preds.length > 0 && setOpen(true)}
+        placeholder={placeholder}
+        className="pl-11"
+        autoComplete="off"
+      />
+      {loading && <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-ink-400">…</span>}
+      {open && preds.length > 0 && (
+        <div className="absolute z-40 mt-2 w-full bg-white rounded-xl border border-ink-200 shadow-pop overflow-hidden max-h-72 overflow-y-auto">
+          {preds.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => pick(p)}
+              className="w-full flex items-start gap-3 px-4 py-2.5 text-left hover:bg-ink-50 border-b border-ink-100 last:border-0"
+            >
+              <MapPin className="w-4.5 h-4.5 text-brand-600 mt-0.5 shrink-0" />
+              <span className="min-w-0">
+                <span className="block font-semibold text-ink-900 text-sm truncate">{p.main}</span>
+                {p.secondary && <span className="block text-xs text-ink-500 truncate">{p.secondary}</span>}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
