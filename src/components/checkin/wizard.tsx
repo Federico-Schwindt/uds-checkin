@@ -55,10 +55,12 @@ export function CheckinWizard({
   turnaroundBanner,
   schema: schemaProp,
   options: optionOverrides,
+  googleMapsKey,
 }: {
   turnaroundBanner: string;
   schema?: FormSchema | null;
   options?: FormOptions | null;
+  googleMapsKey?: string;
 }) {
   const router = useRouter();
   const schema = useMemo(() => resolveSchema(schemaProp), [schemaProp]);
@@ -382,6 +384,7 @@ export function CheckinWizard({
                   options={options}
                   lookup={lookup}
                   widgets={widgets}
+                  googleMapsKey={googleMapsKey}
                 />
               </Card>
             );

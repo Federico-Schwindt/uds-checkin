@@ -170,6 +170,18 @@ export default function SettingsPage() {
               <Input value={str("brandColor")} onChange={(e) => set("brandColor", e.target.value)} placeholder="#dc2626" className="font-mono w-32" />
             </div>
           </Field>
+          <Field
+            label="Google Maps API key"
+            hint="Enables address autocomplete on the check-in form. Needs the Places API enabled."
+            className="sm:col-span-2"
+          >
+            <Input
+              value={str("googleMapsKey")}
+              onChange={(e) => set("googleMapsKey", e.target.value)}
+              placeholder="AIza…"
+              className="font-mono text-sm"
+            />
+          </Field>
         </div>
       </Card>
 

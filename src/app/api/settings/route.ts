@@ -15,7 +15,7 @@ const ALLOWED_KEYS: Array<keyof AppSettings> = [
   "turnaroundBanner", "helpPhone",
   "twilioAccountSid", "twilioAuthToken", "twilioFrom", "twilioMessagingServiceSid", "smsEnabled",
   "smtpHost", "smtpPort", "smtpSecure", "smtpUser", "smtpPass", "smtpFromName", "smtpFromEmail", "emailEnabled",
-  "adminNotifyEnabled", "kioskColumns", "logoUrl", "brandColor", "formLayout", "formSchema", "fieldOptions",
+  "adminNotifyEnabled", "kioskColumns", "logoUrl", "brandColor", "googleMapsKey", "formLayout", "formSchema", "fieldOptions",
 ];
 
 export async function PUT(req: NextRequest) {

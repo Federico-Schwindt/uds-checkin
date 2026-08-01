@@ -192,6 +192,8 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
   // branding — absolute URL so it also renders inside emails
   logoUrl: "https://universaldriveshafts.com/wp-content/uploads/2025/01/uds-logo-rebrand.png",
   brandColor: "#1246ab",
+  // Google Places API key for address autocomplete (client-side)
+  googleMapsKey: "AIzaSyBNoKUZ4FAKUvFXdoNmwds18IJgSypP9BU",
   // kiosk table columns (order + visibility)
   kioskColumns: [
     { key: "customer", visible: true },

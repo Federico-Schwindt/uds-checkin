@@ -10,7 +10,12 @@ export default async function CheckinPage() {
   return (
     <main className="min-h-dvh">
       <IdleLock minutes={Number(s.idleLockMinutes) || 0} />
-      <CheckinWizard turnaroundBanner={s.turnaroundBanner} schema={s.formSchema} options={s.fieldOptions} />
+      <CheckinWizard
+        turnaroundBanner={s.turnaroundBanner}
+        schema={s.formSchema}
+        options={s.fieldOptions}
+        googleMapsKey={s.googleMapsKey}
+      />
     </main>
   );
 }

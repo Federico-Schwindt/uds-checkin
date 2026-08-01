@@ -14,6 +14,7 @@ import {
 } from "@/components/ui";
 import { PhotoInput } from "@/components/photo-input";
 import { SignatureField } from "@/components/signature-pad";
+import { AddressAutocomplete, type AddressParts } from "@/components/address-autocomplete";
 import { cn, formatPhone } from "@/lib/utils";
 import type { FormOptions } from "@/lib/form-options";
 import {
@@ -34,6 +35,7 @@ type RendererProps = {
   options: FormOptions;
   lookup: Map<string, FormField>;
   widgets?: WidgetMap;
+  googleMapsKey?: string;
 };
 
 /** Tailwind can't read dynamic class names, so map widths to static classes. */
@@ -68,11 +70,36 @@ export function FormRenderer(props: RendererProps) {
 }
 
 function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) {
-  const { values, setValue, errors, options, widgets } = ctx;
+  const { values, setValue, errors, options, widgets, lookup, googleMapsKey } = ctx;
   const error = errors[field.key] || errors[field.id];
   const value = readValue(values, field);
   const str = value == null ? "" : String(value);
   const set = (v: unknown) => setValue(field, v);
+
+  // Street address → Google Places autocomplete that also fills city/state/zip.
+  if (field.key === "street" && (field.type === "text" || field.type === "textarea")) {
+    const fill = (parts: AddressParts) => {
+      const apply = (key: string, v?: string) => {
+        if (!v) return;
+        const f = lookup.get(key);
+        if (f) setValue(f, v);
+      };
+      apply("city", parts.city);
+      apply("state", parts.state);
+      apply("zip", parts.zip);
+    };
+    return (
+      <Field label={field.label} required={field.required} hint={field.help} error={error}>
+        <AddressAutocomplete
+          value={str}
+          onChange={set}
+          onFill={fill}
+          apiKey={googleMapsKey}
+          placeholder={field.placeholder || "Start typing an address…"}
+        />
+      </Field>
+    );
+  }
   const choices = field.options?.length ? field.options : options[field.optionsSource || ""] || [];
 
   switch (field.type) {

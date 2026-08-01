@@ -833,16 +833,22 @@ export function EntriesWorkstation({
           rows.map((r) => (
             <Card key={r.id} className="p-3.5">
               <div className="flex items-start justify-between gap-2">
-                <button onClick={() => router.push(`/entry/${r.id}`)} className="text-left min-w-0 flex-1">
-                  <span className="font-bold text-ink-900 flex items-center gap-1.5 truncate">
+                <div className="min-w-0 flex-1">
+                  <button
+                    onClick={() => router.push(`/entry/${r.id}`)}
+                    className="font-bold text-brand-700 hover:underline flex items-center gap-1.5 text-left"
+                    title="Open entry"
+                  >
+                    {r.jobNumber ? `Job ${r.jobNumber}` : `Entry #${r.id}`}
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                  </button>
+                  <button
+                    onClick={() => router.push(`/entry/${r.id}`)}
+                    className="block text-left font-semibold text-ink-900 truncate max-w-full"
+                  >
                     {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : `Entry #${r.id}`}
-                    <ExternalLink className="w-3.5 h-3.5 text-ink-400 shrink-0" />
-                  </span>
-                  <span className="block text-xs text-ink-400">
-                    #{r.id}
-                    {r.jobNumber ? ` · Job ${r.jobNumber}` : ""}
-                  </span>
-                </button>
+                  </button>
+                </div>
                 <InlineStatus row={r} onApply={(patch, skipNotify) => patchRow(r, { entry: patch, skipNotify })} />
               </div>
               <div className="mt-2 flex items-center justify-between gap-2 text-sm">

@@ -8,6 +8,7 @@ export type AppSettings = {
   kioskColumns: KioskColumn[];
   logoUrl: string;
   brandColor: string;
+  googleMapsKey: string;
   /** Legacy simple layout, superseded by formSchema. Kept so old stored values load. */
   formLayout: unknown;
   formSchema: FormSchema | null;

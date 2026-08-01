@@ -83,6 +83,12 @@ input[type="number"]::-webkit-inner-spin-button {
   display: none;
 }
 
+/* Google Places autocomplete element — stretch to the field width */
+.uds-place-autocomplete gmp-place-autocomplete {
+  width: 100%;
+  display: block;
+}
+
 /* Print styles for the job sheet */
 @media print {
   .no-print { display: none !important; }
