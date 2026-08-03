@@ -15,6 +15,7 @@ import {
 import { PhotoInput } from "@/components/photo-input";
 import { SignatureField } from "@/components/signature-pad";
 import { AddressAutocomplete, type AddressParts } from "@/components/address-autocomplete";
+import { YEARS_FROM_2010, isServiceMake, makeHasModels, modelsFor } from "@/lib/vehicle-data";
 import { cn, formatPhone } from "@/lib/utils";
 import type { FormOptions } from "@/lib/form-options";
 import {
@@ -101,6 +102,63 @@ function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) 
     );
   }
   const choices = field.options?.length ? field.options : options[field.optionsSource || ""] || [];
+
+  // Vehicle Make → Year → Model dynamic chain.
+  if (field.key === "vehicleMake" && field.type === "select") {
+    const setMake = (v: string) => {
+      set(v);
+      // Reset dependent fields so stale year/model can't linger.
+      const yf = lookup.get("vehicleYear");
+      const mf = lookup.get("vehicleModel");
+      if (yf) setValue(yf, "");
+      if (mf) setValue(mf, "");
+    };
+    return (
+      <Field label={field.label} required={field.required} hint={field.help} error={error}>
+        <Select value={str} onChange={(e) => setMake(e.target.value)} placeholder={field.placeholder || "Select make…"}>
+          <SelectOptions options={choices} />
+        </Select>
+      </Field>
+    );
+  }
+
+  if (field.key === "vehicleYear" && field.type === "select") {
+    const make = String(readValue(values, lookup.get("vehicleMake") || { key: "vehicleMake", core: true }) ?? "");
+    const yearOpts = isServiceMake(make) ? YEARS_FROM_2010 : choices;
+    const setYear = (v: string) => {
+      set(v);
+      const mf = lookup.get("vehicleModel");
+      if (mf) setValue(mf, "");
+    };
+    return (
+      <Field label={field.label} required={field.required} hint={field.help} error={error}>
+        <Select value={str} onChange={(e) => setYear(e.target.value)} placeholder="Select year…">
+          <SelectOptions options={yearOpts} />
+        </Select>
+      </Field>
+    );
+  }
+
+  if (field.key === "vehicleModel") {
+    const make = String(readValue(values, lookup.get("vehicleMake") || { key: "vehicleMake", core: true }) ?? "");
+    const year = String(readValue(values, lookup.get("vehicleYear") || { key: "vehicleYear", core: true }) ?? "");
+    if (makeHasModels(make)) {
+      const modelOpts = modelsFor(make, year);
+      return (
+        <Field label={field.label} required={field.required} hint={field.help} error={error}>
+          <Select value={str} onChange={(e) => set(e.target.value)} placeholder={modelOpts.length ? "Select model…" : "No models for this year"}>
+            <SelectOptions options={modelOpts} />
+          </Select>
+        </Field>
+      );
+    }
+    // Makes without catalog data keep a free-text model.
+    return (
+      <Field label={field.label} required={field.required} hint={field.help} error={error}>
+        <Input value={str} onChange={(e) => set(e.target.value)} placeholder={field.placeholder || "Model"} />
+      </Field>
+    );
+  }
 
   switch (field.type) {
     /* ---------- presentation ---------- */
