@@ -166,7 +166,7 @@ const vehicleStep: FormStep = {
       core("vehicleModel", "Model", "text", {
         width: 4,
         placeholder: "Model",
-        conditions: { action: "show", logic: "all", rules: [{ field: "vehicleYear", op: "notEmpty", value: "" }] },
+        conditions: { action: "show", logic: "all", rules: [{ field: "vehicleMake", op: "notEmpty", value: "" }] },
       }),
     ]),
     row("driveCab", [

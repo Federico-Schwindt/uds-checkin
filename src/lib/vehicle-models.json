@@ -1,1 +1,9376 @@
-{"Audi":{"2010":["A3","A4","A5","A6","A8L","Q5","Q7","S4","S5","TT"],"2011":["A3","A4","A5","A6","A8L","Q5","Q7","S4","S5","TT"],"2012":["A3","A4","A5","A6","A7","A8L","Q5","Q7","RS5","S4","S5","TT"],"2013":["A3","A4","A5","A6","A7","A8","A8L","Allroad","Q5","Q7","RS5","S4","S5","S6","S7","S8","SQ5","TT"],"2014":["A4","A5","A6","A7","A8","A8L","Allroad","Q5","Q7","RS5","RS7","S4","S5","S6","S7","S8","SQ5","TT"],"2015":["A4","A5","A6","A7","A8","A8L","Allroad","Q3","Q5","Q7","RS5","RS7","S4","S5","S6","S7","S8","SQ5","TT"],"2016":["A4","A5","A6","A7","A8","A8L","Allroad","Q3","Q5","RS7","S4","S5","S6","S7","S8","SQ5"],"2017":["A4","A5","A6","A7","A8","A8L","Q3","Q5","Q7","RS7","S5","S6","S7","S8","SQ5"],"2018":["A4","A5","RS7","S6","S7"],"2019":["A4"],"2020":["A4"]},"BMW":{"2010":["128i","135i","328i","328xi","335d","335i","528i","535I GT","535i","535xi","550i","550i GT","650i","750i","750il","M3","M5","M6","X3","X5","X5M","X6","X6M","Z4","Z4 Roadster"],"2011":["128i","135i","328i","328xi","335d","335i","528i","535I GT","535i","550i","550i GT","740i","740il","750i","750il","ActiveHybrid 7","Countryman","M1","M3","X3","X5","X5M","X6","X6M","Z4","Z4 Roadster"],"2012":["128i","135i","320i","328i","328xi","335d","335i","528i","535I GT","535i","550i","550i GT","640i","650i","740i","740il","750i","750il","ActiveHybrid 5","ActiveHybrid 7","Countryman","M1","M3","M5","M6","X1","X3","X5","X5M","X6","X6M","Z4"],"2013":["128i","135i","320i","328i","328xi","335d","335i","435i","528i","535I GT","535i","550i","550i GT","640i","650i","740i","740il","750i","750il","ActiveHybrid 3","ActiveHybrid 5","ActiveHybrid 7","Countryman","M3","M5","M6","Paceman","X1","X3","X5","X5M","X6","X6M","Z4"],"2014":["228i","320i","328d","328i","328i GT","335i","335i GT","428i","435i","528i","535I GT","535i","550i","550i GT","640i","650i","740i","740il","750i","750il","ActiveHybrid 3","ActiveHybrid 5","ActiveHybrid 7","Countryman","M235i","M5","M6","Paceman","X1","X3","X5","X6","X6M","Z4"],"2015":["228i","320i","328d","328i","328i GT","335i","335i GT","428i","435i","528i","535I GT","535i","550i","550i GT","640i","650i","740i","740ild","750i","750il","ActiveHybrid 3","ActiveHybrid 5","ActiveHybrid 7","Countryman","M235i","M235iX","M5","M6","Paceman","X1","X3","X4","X5","X5M","X6","X6M","Z4"],"2016":["228i","320i","320xi","328d","328i","328i GT","328xi","330e","335i GT","340i","340i GT","428i","435i","528i","535I GT","535i","550i","550i GT","640i","650i","740i","750i","ActiveHybrid 5","Clubman","Countryman","M235i","M235iX","M5","M6","Paceman","X1","X3","X4","X5","X5M","X6","X6M","Z4"],"2017":["230i","320i","320xi","328d","328xi","330ci","330e","330i","330i GT","340i","340i GT","430i","440i","530i","535I GT","535i","540i","540iX","550i GT","640i","650i","740i","750i","Clubman","Countryman","M2","M240i","M6","X1","X3","X4","X5","X5M","X6","X6M"],"2018":["230i","320i","320xi","328d","328xi","330e","330i","330i GT","340i","340i GT","430i","440i","530i","540i","540iX","640i","650i","740i","750i","Countryman","M2","M240i","M3","M4","M6","X1","X2","X3","X4","X5","X6","X6M"],"2019":["230i","330i","330i GT","340i","340i GT","430i","440i","530i","540i","540iX","640i","650i","740i","750i","M2","M240i","M340i","M4","M6","X3","X4","X5","X6M","X7"],"2020":["230i","330i","340ix","430i","540i","540iX","M2","M240i","M340i","M340iX","M4","M550i","X3","X4","X5","X7","Z4 M40i"],"2021":["230i","330i","340ix","540iX","M240i","M340i","M340iX","M440i","M440iX","M550i","X3","X4","X5","Z4 M40i"],"2022":["330i","540iX","M340i","M340iX","M440i","M440iX","M550i","X3","X4","X5","Z4 M40i"],"2023":["540iX","M340i","M340iX","M440i","M440iX","M550i","X3","X4","X7","Z4 M40i"],"2024":["M340i","M340iX","M440i","M440iX","X7"],"2025":["M440iX","X7"]},"Buick":{"2010":["Allure","Enclave","LaCrosse"],"2011":["Enclave"],"2012":["Enclave"],"2013":["Enclave","Encore"],"2014":["Enclave","Encore","Regal"],"2015":["Enclave","Encore","Regal"],"2016":["Enclave","Encore","Envision","Regal"],"2017":["Enclave","Encore","Envision","Regal"],"2018":["Encore","Envision"],"2019":["Encore","Envision"],"2020":["Encore","Envision"],"2021":["Encore"],"2022":["Encore"]},"Cadillac":{"2010":["CTS","CTS-V","Escalade","Escalade ESV","Escalade EXT","SRX","STS"],"2011":["CTS","CTS-V","Escalade","Escalade ESV","Escalade EXT","SRX","STS"],"2012":["CTS","CTS-V","Escalade","Escalade ESV","Escalade EXT","SRX"],"2013":["ATS","CTS","CTS-V","Escalade","Escalade ESV","Escalade EXT","SRX","XTS"],"2014":["ATS","CTS","CTS-V","Escalade","Escalade ESV","SRX","XTS"],"2015":["ATS","CTS","CTS-V","Escalade","Escalade ESV","SRX","XTS"],"2016":["ATS","ATS-V","CT6","CTS","Escalade","Escalade ESV","SRX","XTS"],"2017":["ATS","ATS-V","CT6","CTS","Escalade","Escalade ESV","XTS"],"2018":["ATS","ATS-V","CT6","CTS","Escalade","Escalade ESV","XTS"],"2019":["ATS-V","CT6","CTS","Escalade","Escalade ESV","XTS"],"2020":["CT6","Escalade","Escalade ESV"],"2021":["Escalade","Escalade ESV"],"2022":["Escalade","Escalade ESV"],"2023":["Escalade ESV"]},"Chevrolet":{"2010":["Avalanche 1500","Camaro","Colorado","Equinox","Express 1500","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban 1500","Suburban 2500","Tahoe 1500","Traverse"],"2011":["Avalanche 1500","Camaro","Caprice","Colorado","Equinox","Express 1500","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban 1500","Suburban 2500","Tahoe 1500","Traverse"],"2012":["Avalanche 1500","Camaro","Caprice","Captiva Sport","Colorado","Equinox","Express 1500","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban 1500","Suburban 2500","Tahoe 1500","Traverse"],"2013":["Avalanche 1500","Camaro","Caprice","Equinox","Express 1500","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban 1500","Suburban 2500","Tahoe 1500","Traverse","Trax"],"2014":["Camaro","Caprice","Equinox","Express 1500","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban 1500","Tahoe 1500","Traverse","Trax"],"2015":["Camaro","Caprice","Colorado","Equinox","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban 1500","Tahoe 1500","Traverse","Trax"],"2016":["Camaro","Caprice","Colorado","Equinox","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban 1500","Suburban 3500","Tahoe 1500","Traverse","Trax"],"2017":["Camaro","Caprice","Colorado","Equinox","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban 1500","Suburban 3500","Tahoe 1500","Traverse","Trax"],"2018":["Camaro","Colorado","Equinox","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban","Suburban 1500","Suburban 3500","Tahoe","Tahoe 1500","Trax"],"2019":["Camaro","Colorado","Equinox","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban","Suburban 1500","Tahoe","Tahoe 1500","Trax"],"2020":["Camaro","Colorado","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban","Suburban 1500","Tahoe","Tahoe 1500","Trax"],"2021":["Camaro","Colorado","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban","Tahoe","Trax"],"2022":["Colorado","Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban","Suburban 1500","Tahoe"],"2023":["Express 2500","Express 3500","Express 4500","Silverado 1500","Silverado 2500","Silverado 3500","Suburban","Suburban 1500","Tahoe"],"2024":["Silverado 2500","Silverado 3500","Tahoe"],"2025":["Silverado 2500","Silverado 3500","Tahoe"]},"Chrysler":{"2010":["300"],"2011":["300"],"2012":["300"],"2013":["300"],"2014":["300"],"2015":["200","300"],"2016":["200","300"],"2017":["200","300"],"2018":["300"],"2019":["300"],"2020":["300"],"2021":["300"],"2022":["300"]},"Dodge":{"2010":["Challenger","Charger","Dakota","Journey","Magnum","Nitro","Ram 1500","Ram 2500","Ram 3500","Ram 4500","Ram 5500"],"2011":["Challenger","Charger","Dakota","Durango","Journey","Magnum","Nitro","Ram 1500","Ram 2500","Ram 3500","Ram 4500","Ram 5500"],"2012":["Challenger","Charger","Durango","Journey","Magnum","Ram 1500","Ram 2500","Ram 3500","Ram 4500","Ram 5500"],"2013":["Challenger","Charger","Durango","Journey","Magnum","Ram 1500","Ram 2500","Ram 3500","Ram 4500","Ram 5500"],"2014":["Challenger","Charger","Durango","Journey","Magnum","Ram 1500","Ram 2500","Ram 3500","Ram 4500","Ram 5500"],"2015":["Challenger","Charger","Durango","Journey","Ram 1500","Ram 2500","Ram 3500","Ram 4500","Ram 5500"],"2016":["Challenger","Charger","Durango","Journey","Ram 1500","Ram 2500","Ram 3500","Ram 4500","Ram 5500"],"2017":["Challenger","Charger","Durango","Journey","Ram 1500","Ram 2500","Ram 3500","Ram 4500","Ram 5500"],"2018":["Challenger","Charger","Durango","Journey","Ram 1500","Ram 2500","Ram 3500","Ram 4500","Ram 5500"],"2019":["Challenger","Charger","Durango","Journey","Ram 1500","Ram 3500"],"2020":["Challenger","Charger","Durango","Ram 1500","Ram 3500"],"2021":["Challenger","Charger","Durango","Ram 1500","Ram 3500"],"2022":["Challenger","Charger","Ram 1500","Ram 3500"],"2023":["Challenger","Charger","Ram 1500","Ram 3500"],"2024":["Ram 1500"],"2025":["Ram 1500"],"2026":["Ram 1500"]},"Ford":{"2010":["Crown Victoria","E150 Van","E250 Van","E350 Super Duty","E450 Super Duty","Edge","Escape","Expedition","Explorer","Explorer Sport-Trac","F150","F150 Raptor","F250 Super Duty","F350 Super Duty","F450 Super Duty","F550 Super Duty","Flex","Fusion","Mustang","Ranger","Taurus"],"2011":["Crown Victoria","E150 Van","E250 Van","E350 Super Duty","E450 Super Duty","Edge","Escape","Expedition","Explorer","F150","F150 Raptor","F250 Super Duty","F350 Super Duty","F450 Super Duty","F53 Motor Home","F550 Super Duty","Flex","Fusion","Mustang","Ranger","Taurus"],"2012":["E150 Van","E250 Van","E350 Super Duty","E450 Super Duty","Edge","Escape","Expedition","Explorer","F150","F150 Raptor","F250 Super Duty","F350 Super Duty","F450 Super Duty","F53 Motor Home","F550 Super Duty","Flex","Fusion","Mustang","Taurus"],"2013":["E150 Van","E250 Van","E350 Super Duty","E450 Super Duty","Edge","Escape","Expedition","Explorer","F150","F150 Raptor","F250 Super Duty","F350 Super Duty","F450 Super Duty","F53 Motor Home","F550 Super Duty","Flex","Fusion","MKZ","Mustang","Taurus"],"2014":["E150 Van","E250 Van","E350 Super Duty","E450 Super Duty","Edge","Escape","Expedition","Explorer","F150","F150 Raptor","F250 Super Duty","F350 Super Duty","F450 Super Duty","F53 Motor Home","F550 Super Duty","Flex","Fusion","MKZ","Mustang","Taurus"],"2015":["E350 Super Duty","E450 Super Duty","Edge","Escape","Expedition","Explorer","F150","F250 Super Duty","F350 Super Duty","F450 Super Duty","F53 Motor Home","F550 Super Duty","Flex","Fusion","MKZ","Mustang","Navigator","Taurus","Transit 150","Transit 250","Transit 350"],"2016":["E350 Super Duty","E450 Super Duty","Edge","Escape","Expedition","Explorer","F150","F250 Super Duty","F350 Super Duty","F450 Super Duty","F550 Super Duty","Flex","Focus RS","Fusion","MKZ","Mustang","Navigator","Taurus","Transit 150","Transit 250","Transit 350"],"2017":["E350 Super Duty","E450 Super Duty","Edge","Escape","Expedition","Explorer","F150","F150 Raptor","F250 Super Duty","F350 Super Duty","F450 Super Duty","F550 Super Duty","Flex","Focus RS","Fusion","Mustang","Navigator","Taurus","Transit 150","Transit 250","Transit 350"],"2018":["E350 Super Duty","E450 Super Duty","Ecosport","Edge","Escape","Expedition","Explorer","F150","F150 Raptor","F250 Super Duty","F350 Super Duty","F450 Super Duty","F550 Super Duty","Flex","Focus RS","Fusion","Mustang","Navigator","Taurus","Transit 150","Transit 250","Transit 350"],"2019":["E350 Super Duty","E450 Super Duty","Ecosport","Edge","Escape","Expedition","Explorer","F150","F150 Raptor","F250 Super Duty","F350 Super Duty","F450 Super Duty","F550 Super Duty","Flex","Fusion","Mustang","Navigator","Ranger","Transit 150","Transit 250","Transit 350"],"2020":["E350 Super Duty","Ecosport","Edge","Expedition","F150","F150 Raptor","F250 Super Duty","F350 Super Duty","F450 Super Duty","F550 Super Duty","Mustang","Navigator","Ranger","Transit 150","Transit 250","Transit 350"],"2021":["Bronco","E350 Super Duty","Ecosport","Edge","Expedition","F150","F250 Super Duty","F350 Super Duty","F450 Super Duty","F550 Super Duty","Mustang","Navigator","Ranger","Transit 150","Transit 250","Transit 350"],"2022":["Bronco","E350 Super Duty","Ecosport","Expedition","F150","F250 Super Duty","F350 Super Duty","F450 Super Duty","F550 Super Duty","Mustang","Ranger","Transit 150","Transit 250","Transit 350"],"2023":["Bronco","E350 Super Duty","Expedition","F150","Ranger","Transit 150","Transit 250","Transit 350"],"2024":["Expedition","F150"],"2025":["F150"]},"GMC":{"2010":["Acadia","Canyon","Savana 1500","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 3500","Terrain","Yukon 1500","Yukon 1500 Denali","Yukon XL 1500","Yukon XL 1500 Denali","Yukon XL 2500"],"2011":["Acadia","Canyon","Savana 1500","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Terrain","Yukon 1500","Yukon 1500 Denali","Yukon XL 1500","Yukon XL 1500 Denali","Yukon XL 2500"],"2012":["Acadia","Canyon","Savana 1500","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Terrain","Yukon 1500","Yukon 1500 Denali","Yukon XL 1500","Yukon XL 1500 Denali","Yukon XL 2500"],"2013":["Acadia","Savana 1500","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Terrain","Yukon 1500","Yukon 1500 Denali","Yukon XL 1500","Yukon XL 1500 Denali","Yukon XL 2500"],"2014":["Acadia","Savana 1500","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Terrain","Yukon 1500","Yukon 1500 Denali","Yukon XL 1500","Yukon XL 1500 Denali"],"2015":["Acadia","Canyon","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Terrain","Yukon 1500","Yukon XL","Yukon XL 1500"],"2016":["Acadia","Canyon","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Terrain","Yukon 1500","Yukon XL","Yukon XL 1500"],"2017":["Acadia","Canyon","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Terrain","Yukon 1500","Yukon XL","Yukon XL 1500"],"2018":["Canyon","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Yukon","Yukon 1500","Yukon XL","Yukon XL 1500"],"2019":["Canyon","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Yukon","Yukon 1500","Yukon XL","Yukon XL 1500"],"2020":["Canyon","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Yukon","Yukon 1500","Yukon XL","Yukon XL 1500"],"2021":["Canyon","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Yukon","Yukon XL","Yukon XL 1500"],"2022":["Canyon","Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Yukon 1500","Yukon XL","Yukon XL 1500"],"2023":["Savana 2500","Savana 3500","Savana 4500","Sierra 1500","Sierra 1500 Denali","Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Yukon","Yukon XL"],"2024":["Sierra 2500","Sierra 2500 Denali","Sierra 3500","Sierra 3500 Denali","Yukon"],"2025":["Sierra 2500","Sierra 3500","Yukon"]},"Honda":{"2010":["CRV","Crosstour","Element","Pilot","Ridgeline"],"2011":["CRV","Crosstour","Element","Pilot","Ridgeline"],"2012":["CRV","Crosstour","Pilot","Ridgeline"],"2013":["CRV","Crosstour","Pilot","Ridgeline"],"2014":["CRV","Crosstour","Pilot","Ridgeline"],"2015":["CRV","Crosstour","Pilot"],"2016":["CRV","Pilot"],"2017":["Pilot","Ridgeline"],"2018":["Pilot","Ridgeline"],"2019":["Pilot","Ridgeline"],"2020":["Pilot","Ridgeline"],"2021":["Pilot","Ridgeline"],"2022":["Pilot","Ridgeline"],"2023":["Pilot","Ridgeline"],"2024":["Pilot"]},"Infiniti":{"2010":["EX35","FX35","FX50","G37","G37X","M35","M35X","M45","M45X","QX56"],"2011":["EX35","FX35","FX50","G25","G25X","G37","G37X","M37","M37X","M56","QX56"],"2012":["EX35","FX35","FX50","G25","G25X","G37","G37X","M35h","M37","M37X","M56","QX56"],"2013":["EX37","FX37","FX50","G37","G37X","JX35","M35h","M37","M37X","M56","QX56","QX60"],"2014":["Q50","Q60","Q70","QX50","QX60","QX70","QX80"],"2015":["Q40","Q40X","Q50","Q60","Q70","QX50","QX60","QX70","QX80"],"2016":["Q50","Q60","Q70","QX50","QX60","QX70","QX80"],"2017":["Armada","Q50","Q60","Q70","QX50","QX60","QX70","QX80"],"2018":["Armada","Q50","Q60","Q70","QX60","QX80"],"2019":["Q50","Q60","Q70","QX60"],"2020":["Q50","Q60","QX60"]},"Jeep":{"2010":["Commander","Compass","Grand Cherokee","Liberty","Patriot","Wrangler"],"2011":["Compass","Grand Cherokee","Liberty","Patriot","Wrangler"],"2012":["Compass","Grand Cherokee","Liberty","Patriot","Wrangler"],"2013":["Compass","Grand Cherokee","Patriot","Wrangler"],"2014":["Cherokee","Compass","Grand Cherokee","Patriot","Wrangler"],"2015":["Cherokee","Compass","Grand Cherokee","Patriot","Renegade","Wrangler"],"2016":["Cherokee","Compass","Grand Cherokee","Patriot","Renegade","Wrangler"],"2017":["Cherokee","Grand Cherokee","Renegade","Wrangler"],"2018":["Cherokee","Grand Cherokee","Renegade","Wrangler"],"2019":["Cherokee","Grand Cherokee","Wrangler"],"2020":["Cherokee","Gladiator","Grand Cherokee","Wrangler"],"2021":["Cherokee","Gladiator","Grand Cherokee","Wrangler"],"2022":["Cherokee","Gladiator","Grand Cherokee","Grand Wagoneer","Wrangler"],"2023":["Cherokee","Gladiator","Wrangler"],"2024":["Gladiator","Wrangler"],"2025":["Gladiator","Wrangler"]},"Kia":{"2010":["Borrego","Sportage"],"2011":["Borrego","Sorento","Sportage"],"2012":["Sorento","Sportage"],"2013":["Sorento","Sportage"],"2014":["Sorento","Sportage"],"2015":["Sorento","Sportage"],"2016":["Sportage","Tucson"],"2017":["Tucson"],"2018":["Stinger","Tucson"],"2019":["K900","Stinger"],"2020":["K900","Stinger"]},"Lexus":{"2010":["GS350","GS450H","GS460","GX460","IS F","IS250","IS350","LS460","LS600HL","LX570","RX350","SC430"],"2011":["GS350","GS450H","GS460","GX460","IS F","IS250","IS350","LS460","LS600HL","LX570","RX350"],"2012":["GS350","GX460","IS F","IS250","IS350","LS460","LS600HL","LX570","RX350"],"2013":["GS350","GS450H","GX460","IS F","IS250","IS350","LS460","LS600HL","LX570","RX350"],"2014":["GS350","GS450H","GX460","IS F","IS250","IS350","LS460","LS600HL","LX570","RX350"],"2015":["GS350","GS450H","GX460","IS250","IS350","LS460","LS600HL","LX570","NX200T","NX300h","RC F","RC350","RX350"],"2016":["GS F","GS200T","GS350","GS450H","GX460","IS200T","IS300","IS350","LS460","LS600HL","LX570","NX200T","NX300h","RC F","RC200T","RC300","RC350"],"2017":["GS F","GS200T","GS350","GS450H","GX460","IS200T","IS300","IS350","LS460","LX570","NX200T","NX300h","RC F","RC200T","RC300","RC350"],"2018":["GS F","GS300","GS350","GS450H","IS300","IS350","LS500","LX570","NX300","NX300h","RC F","RC300","RC350"],"2019":["GS300","GS350","IS300","IS350","LS500","LX570","NX300","RC F","RC300","RC350"],"2020":["IS300","IS350","LS500","LX570","NX300"],"2021":["IS300","IS350","LX570","NX300"],"2022":["IS300","IS350"],"2023":["IS300","IS350"],"2024":["IS300","IS350"],"2025":["IS300","IS350"]},"Mazda":{"2010":["B2300","B4000","CX-7","CX-9","MX5-Miata","RX8","Tribute"],"2011":["CX-7","CX-9","MX5-Miata","RX8","Tribute"],"2012":["CX-7","CX-9","MX5-Miata"],"2013":["CX-5","CX-9","MX5-Miata"],"2014":["CX-5","CX-9","MX5-Miata"],"2015":["CX-5","CX-9"],"2016":["CX-5","MX5-Miata"],"2017":["CX-5","MX5-Miata"],"2018":["MX5-Miata"],"2019":["MX5-Miata"],"2020":["MX5-Miata"],"2021":["MX5-Miata"],"2022":["MX5-Miata"]},"Mercedes":{"2010":["C250","C300","C350","C63","CL550","CL600","CL65 AMG","CLS550","CLS63","E350","E550","E63","G55","G550","GL350","GL450","GL550","GLK350","ML350","ML450","ML550","ML63","R350","S400","S450","S550","S600","S63","S65","SL550","SLK55","Sprinter Van 2500","Sprinter Van 3500"],"2011":["C250","C300","C350","C63","CL550","CL600","CL65 AMG","CLS550","CLS63","E350","E550","E63","G55","G550","GL350","GL450","GL550","GLK350","ML350","ML450","ML550","ML63","R350","S400","S450","S550","S600","S63","S65","SL550","SL65","SLK55","Sprinter Van 2500","Sprinter Van 3500"],"2012":["C250","C300","C350","C63","CL550","CL600","CL65 AMG","CLS550","E350","E550","G550","GL350","GL450","GL550","GLK350","ML350","ML450","ML550","ML63","R350","S350","S400","S550","S600","S63","S65","SL550","SLK250","SLK350","Sprinter Van 2500","Sprinter Van 3500"],"2013":["C250","C300","C350","C63","CL550","CL600","CL65 AMG","CLS550","E300","E350","E550","G550","G63","GL350","GL450","GL550","GL63","GLK250","GLK350","ML350","ML550","ML63","R350","S350","S400","S550","S600","S63","S65","SLK250","SLK350","Sprinter Van 2500","Sprinter Van 3500"],"2014":["C250","C300","C350","C63","CL550","CL600","CL65 AMG","CLA250","CLS550","CLS63","E250","E300","E350","E550","E63","G550","G63","GL350","GL450","GL550","GL63","GLK250","GLK350","ML350","ML550","ML63","S550","S63","SLK250","SLK350","Sprinter Van 2500","Sprinter Van 3500"],"2015":["B250","C250","C300","C350","C400","C63","CLA250","CLA45 AMG","CLS400","CLS550","CLS63S","E250","E300","E350","E400","E550","E63","E63S","G550","G63","GL350","GL450","GL550","GL63","GLA250","GLA45 AMG","GLK250","GLK350","ML250","ML350","ML400","ML63","S400","S550","S63","S65","SLK250","SLK350","Sprinter Van 2500","Sprinter Van 3500"],"2016":["B250","C300","C450","CLA250","CLA45 AMG","CLS400","CLS550","CLS63S","E250","E350","E400","E550","E63S","G550","G63","G65","GL350","GL450","GL550","GL63","GLA250","GLA45 AMG","GLC300","GLE300D","GLE350","GLE400","GLE450","GLE63","GLE63s","Metris","S400","S550","S600 Maybach","S63","S65","SLK350","Sprinter Van 2500","Sprinter Van 3500"],"2017":["B250","C300","C43","C43 AMG","CLA250","CLA45 AMG","CLS400","CLS550","CLS63S","E300","E400","E43 AMG","E550","G550","G63","G65","GLA250","GLA45 AMG","GLC300","GLC43 AMG","GLE350","GLE400","GLE43","GLE63","GLE63s","GLS450","GLS63","Maybach S550","Metris","S550","Sprinter Van 2500","Sprinter Van 3500"],"2018":["B250","C300","C43","C43 AMG","CLA250","CLA45 AMG","CLS550","E300","E400","E43 AMG","E63","E63 AMG S","G550","G63","G65","GLA250","GLA45 AMG","GLC300","GLC43 AMG","GLC63 AMG","GLC63 AMG S","GLE400","GLE43","GLE63","GLE63s","GLS450","GLS63","Metris","S450","S560","Sprinter Van 2500","Sprinter Van 3500"],"2019":["B250","C300","C43","C43 AMG","CLA250","CLA45 AMG","E300","E43 AMG","E450","E63","E63 AMG S","GLA250","GLA45 AMG","GLC300","GLC43 AMG","GLC63 AMG","GLC63 AMG S","GLE400","GLE43","GLE63","GLE63s","GLS450","GLS63","Metris","S450","S560","Sprinter Van 1500","Sprinter Van 2500","Sprinter Van 3500","Sprinter Van 3500XD"],"2020":["C300","C43","C43 AMG","E350","E43 AMG","E450","E63","E63 AMG","E63 AMG S","GLA250","GLC300","GLC43 AMG","GLC63 AMG","GLC63 AMG S","GLE350","GLE53","GLS450","Metris","S450","S560","Sprinter Van 1500","Sprinter Van 2500","Sprinter Van 3500","Sprinter Van 3500XD"],"2021":["C43","C43 AMG","E63","GLC300","GLC43 AMG","GLC63 AMG","GLC63 AMG S","GLE350","GLE53","Sprinter Van 2500","Sprinter Van 3500","Sprinter Van 3500XD"],"2022":["C43","GLC43 AMG","GLE350","GLE53"],"2023":["GLE350","GLE53"]},"Nissan":{"2011":["370Z","Armada","Frontier","Juke","Murano","Pathfinder","Rogue","Titan","Xterra"],"2012":["370Z","Armada","Frontier","Juke","Murano","NV 1500","NV 2500","NV 3500","Pathfinder","Rogue","Titan","Xterra"],"2013":["370Z","Armada","Frontier","Juke","Murano","NV 1500","NV 2500","NV 3500","Pathfinder","Rogue","Titan","Xterra"],"2014":["370Z","Armada","Frontier","Juke","Murano","NV 1500","NV 2500","NV 3500","Pathfinder","Rogue","Titan","Xterra"],"2015":["370Z","Armada","Frontier","Juke","Murano","NV 1500","NV 2500","NV 3500","Pathfinder","Rogue","Titan","Xterra"],"2016":["370Z","Frontier","Juke","Murano","NV 1500","NV 2500","NV 3500","Pathfinder","Rogue","Titan XD"],"2017":["370Z","Armada","Frontier","Juke","Murano","NV 1500","NV 2500","NV 3500","Pathfinder","Qashqai","Rogue","Rouge Sport","Titan","Titan XD"],"2018":["370Z","Armada","Frontier","NV 1500","NV 2500","NV 3500","Pathfinder","Qashqai","Rogue","Rouge Sport","Titan","Titan XD"],"2019":["370Z","Altima","Armada","Frontier","Pathfinder","Qashqai","Rogue","Rouge Sport","Titan","Titan XD"],"2020":["370Z","Altima","Armada","Pathfinder","Rogue","Titan","Titan XD"],"2021":["370Z","Altima","Pathfinder","Titan","Titan XD"],"2022":["Altima","Titan"],"2023":["Z"]},"Pontiac":{"2010":["Vibe"]},"Porsche":{"2010":["Cayenne"],"2011":["Cayenne"],"2012":["Cayenne"],"2013":["Cayenne"],"2014":["Cayenne"],"2015":["Cayenne","Macan"],"2016":["Cayenne","Macan"],"2017":["Cayenne","Macan"],"2018":["Cayenne","Macan"]},"Toyota":{"2010":["4 Runner","FJ Cruiser","Highlander","Land Cruiser","Matrix","RAV4","Sequoia","Sienna","Tacoma","Tundra","Venza"],"2011":["4 Runner","FJ Cruiser","Highlander","Land Cruiser","Matrix","RAV4","Sequoia","Sienna","Tacoma","Tundra","Venza"],"2012":["4 Runner","FJ Cruiser","Highlander","Land Cruiser","Matrix","RAV4","Sequoia","Sienna","Tacoma","Tundra","Venza"],"2013":["4 Runner","FJ Cruiser","Highlander","Land Cruiser","Matrix","RAV4","Sequoia","Sienna","Tacoma","Tundra","Venza"],"2014":["4 Runner","FJ Cruiser","Highlander","Land Cruiser","RAV4","Sequoia","Sienna","Tacoma","Tundra","Venza"],"2015":["4 Runner","Highlander","Land Cruiser","RAV4","Sequoia","Sienna","Tacoma","Tundra","Venza"],"2016":["4 Runner","Highlander","Land Cruiser","RAV4","Tacoma","Tundra"],"2017":["86","Highlander","Land Cruiser","RAV4","Tacoma","Tundra"],"2018":["Highlander","Land Cruiser","RAV4","Tacoma","Tundra"],"2019":["Highlander","Land Cruiser","Tacoma","Tundra"],"2020":["GR Supra","Land Cruiser","Supra","Tacoma","Tundra"],"2021":["GR Supra","Land Cruiser","Supra","Tacoma","Tundra"],"2022":["GR Supra","Supra","Tacoma"]},"Suzuki":{"2010":["Custom CV","Equator"],"2011":["Custom CV","Equator"],"2012":["Custom CV","Equator"],"2013":["Custom CV","Equator"],"2014":["Custom CV"],"2015":["Custom CV"],"2016":["Custom CV"],"2017":["Custom CV"],"2018":["Custom CV"],"2019":["Custom CV"],"2020":["Custom CV"],"2021":["Custom CV"],"2022":["Custom CV"]},"Volkswagen":{"2010":["Tiguan","Touareg"],"2011":["Tiguan","Touareg"],"2012":["Golf","Tiguan","Touareg"],"2013":["Golf","Tiguan","Touareg"],"2014":["Tiguan","Touareg"],"2015":["Tiguan","Touareg"],"2016":["Tiguan","Touareg"],"2017":["Tiguan","Touareg"],"2018":["Tiguan"],"2019":["Tiguan"],"2020":["Tiguan"]},"Volvo":{"2010":["S40","S80","V50","XC60","XC70","XC90"],"2011":["S60","S80","XC60","XC70","XC90"],"2012":["S60","S80","XC60","XC70","XC90"],"2013":["S60","XC60","XC70","XC90"],"2014":["S60","XC60","XC70","XC90"],"2015":["S60","XC60","XC70"],"2016":["S60","V60","XC60","XC70","XC90"],"2017":["S60","V60","XC60","XC90"],"2018":["S60","V60","XC90"],"2019":["XC90"],"2020":["XC90"],"2021":["XC90"]},"International":{"2010":["4300"],"2011":["4300","4300M7"],"2012":["4300"],"2013":["4300"],"2015":["4300"],"2016":["4300"]}}
+{
+  "Audi": {
+    "1982": [
+      "Quattro"
+    ],
+    "1983": [
+      "4000",
+      "Quattro"
+    ],
+    "1984": [
+      "4000",
+      "Quattro"
+    ],
+    "1985": [
+      "4000",
+      "Quattro"
+    ],
+    "1986": [
+      "4000",
+      "5000",
+      "5000T",
+      "Quattro"
+    ],
+    "1987": [
+      "4000",
+      "5000",
+      "5000T",
+      "Quattro"
+    ],
+    "1988": [
+      "5000",
+      "5000T",
+      "80/90"
+    ],
+    "1989": [
+      "100",
+      "200",
+      "80/90"
+    ],
+    "1990": [
+      "200",
+      "80/90",
+      "V8"
+    ],
+    "1991": [
+      "200",
+      "80/90",
+      "V8"
+    ],
+    "1992": [
+      "100",
+      "80/90",
+      "S4",
+      "V8"
+    ],
+    "1993": [
+      "100",
+      "80/90",
+      "S4",
+      "V8"
+    ],
+    "1994": [
+      "100",
+      "80/90",
+      "S4",
+      "V8"
+    ],
+    "1995": [
+      "80/90",
+      "A6",
+      "S6"
+    ],
+    "1996": [
+      "A4",
+      "A6",
+      "S6"
+    ],
+    "1997": [
+      "A4",
+      "A6",
+      "A8",
+      "S6"
+    ],
+    "1998": [
+      "A4",
+      "A6",
+      "A8",
+      "S6"
+    ],
+    "1999": [
+      "A4",
+      "A6",
+      "A8",
+      "S4"
+    ],
+    "2000": [
+      "A4",
+      "A6",
+      "A8",
+      "A8L",
+      "S4",
+      "S8",
+      "TT"
+    ],
+    "2001": [
+      "A4",
+      "A6",
+      "A8",
+      "A8L",
+      "Allroad",
+      "S4",
+      "S8",
+      "TT"
+    ],
+    "2002": [
+      "A4",
+      "A6",
+      "A8",
+      "A8L",
+      "Allroad",
+      "S4",
+      "S6",
+      "S8",
+      "TT"
+    ],
+    "2003": [
+      "A4",
+      "A6",
+      "A8",
+      "A8L",
+      "Allroad",
+      "RS6",
+      "S6",
+      "S8",
+      "TT"
+    ],
+    "2004": [
+      "A4",
+      "A6",
+      "A8",
+      "A8L",
+      "Allroad",
+      "RS6",
+      "S4",
+      "TT"
+    ],
+    "2005": [
+      "A4",
+      "A6",
+      "A8",
+      "A8L",
+      "Allroad",
+      "S4",
+      "TT"
+    ],
+    "2006": [
+      "A3",
+      "A4",
+      "A6",
+      "A8",
+      "A8L",
+      "S4",
+      "TT"
+    ],
+    "2007": [
+      "A3",
+      "A4",
+      "A6",
+      "A8",
+      "A8L",
+      "Q7",
+      "RS4",
+      "S4",
+      "S8"
+    ],
+    "2008": [
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A8",
+      "A8L",
+      "Q7",
+      "RS4",
+      "S4",
+      "S5",
+      "S8",
+      "TT"
+    ],
+    "2009": [
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A8",
+      "A8L",
+      "Q5",
+      "Q7",
+      "S4",
+      "S5",
+      "S8",
+      "TT"
+    ],
+    "2010": [
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A8L",
+      "Q5",
+      "Q7",
+      "S4",
+      "S5",
+      "TT"
+    ],
+    "2011": [
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A8L",
+      "Q5",
+      "Q7",
+      "S4",
+      "S5",
+      "TT"
+    ],
+    "2012": [
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8L",
+      "Q5",
+      "Q7",
+      "RS5",
+      "S4",
+      "S5",
+      "TT"
+    ],
+    "2013": [
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8",
+      "A8L",
+      "Allroad",
+      "Q5",
+      "Q7",
+      "RS5",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "S8",
+      "SQ5",
+      "TT"
+    ],
+    "2014": [
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8",
+      "A8L",
+      "Allroad",
+      "Q5",
+      "Q7",
+      "RS5",
+      "RS7",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "S8",
+      "SQ5",
+      "TT"
+    ],
+    "2015": [
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8",
+      "A8L",
+      "Allroad",
+      "Q3",
+      "Q5",
+      "Q7",
+      "RS5",
+      "RS7",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "S8",
+      "SQ5",
+      "TT"
+    ],
+    "2016": [
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8",
+      "A8L",
+      "Allroad",
+      "Q3",
+      "Q5",
+      "RS7",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "S8",
+      "SQ5"
+    ],
+    "2017": [
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8",
+      "A8L",
+      "Q3",
+      "Q5",
+      "Q7",
+      "RS7",
+      "S5",
+      "S6",
+      "S7",
+      "S8",
+      "SQ5"
+    ],
+    "2018": [
+      "A4",
+      "A5",
+      "RS7",
+      "S6",
+      "S7"
+    ],
+    "2019": [
+      "A4"
+    ],
+    "2020": [
+      "A4"
+    ]
+  },
+  "BMW": {
+    "1965": [
+      "2000cs"
+    ],
+    "1966": [
+      "2000cs"
+    ],
+    "1967": [
+      "2000cs"
+    ],
+    "1968": [
+      "1602",
+      "2000cs",
+      "2002"
+    ],
+    "1969": [
+      "1602",
+      "2000cs",
+      "2002",
+      "2500",
+      "2800/Bavaria"
+    ],
+    "1970": [
+      "1602",
+      "2002",
+      "2500",
+      "2800/Bavaria",
+      "2800cs"
+    ],
+    "1971": [
+      "1602",
+      "2002",
+      "2800/Bavaria",
+      "2800cs"
+    ],
+    "1972": [
+      "1602",
+      "2002",
+      "2002tii",
+      "3.0cs",
+      "3.0s/Bavaria"
+    ],
+    "1973": [
+      "1602",
+      "2002",
+      "2002tii",
+      "3.0cs",
+      "3.0s/Bavaria"
+    ],
+    "1974": [
+      "1602",
+      "2002",
+      "2002tii",
+      "3.0Si",
+      "3.0cs",
+      "3.0s/Bavaria",
+      "3.0si"
+    ],
+    "1975": [
+      "1602",
+      "2002",
+      "3.0Si",
+      "3.0si",
+      "530i"
+    ],
+    "1976": [
+      "1602",
+      "2002",
+      "3.0Si",
+      "3.0si",
+      "320i",
+      "530i"
+    ],
+    "1977": [
+      "320i",
+      "530i",
+      "630csi"
+    ],
+    "1978": [
+      "320i",
+      "530i",
+      "630csi",
+      "633csi",
+      "733i"
+    ],
+    "1979": [
+      "320i",
+      "528i",
+      "530i",
+      "630csi",
+      "633csi",
+      "733i"
+    ],
+    "1980": [
+      "320i",
+      "528i",
+      "630csi",
+      "633csi",
+      "733i"
+    ],
+    "1981": [
+      "320i",
+      "528i",
+      "630csi",
+      "633csi",
+      "733i"
+    ],
+    "1982": [
+      "318i",
+      "320i",
+      "528e",
+      "630csi",
+      "633csi",
+      "733i"
+    ],
+    "1983": [
+      "318i",
+      "528e",
+      "533i",
+      "633csi",
+      "733i"
+    ],
+    "1984": [
+      "318i",
+      "325e",
+      "524td",
+      "528e",
+      "533i",
+      "633csi",
+      "635csi",
+      "733i"
+    ],
+    "1985": [
+      "318i",
+      "325e",
+      "524td",
+      "528e",
+      "535i",
+      "635csi",
+      "735i"
+    ],
+    "1986": [
+      "325e",
+      "325i",
+      "528e",
+      "535i",
+      "635csi",
+      "735i"
+    ],
+    "1987": [
+      "325e",
+      "325i",
+      "528e",
+      "535i",
+      "635csi",
+      "735i",
+      "750il",
+      "L6",
+      "M3",
+      "M5",
+      "M6"
+    ],
+    "1988": [
+      "325e",
+      "325i",
+      "325ix",
+      "525i",
+      "528e",
+      "535i",
+      "635csi",
+      "735i",
+      "735il",
+      "750il",
+      "M3",
+      "M6"
+    ],
+    "1989": [
+      "318i",
+      "318is",
+      "325e",
+      "325i",
+      "325ix",
+      "525i",
+      "535i",
+      "635csi",
+      "735i",
+      "735il",
+      "750il",
+      "M3",
+      "M5"
+    ],
+    "1990": [
+      "318i",
+      "318is",
+      "325e",
+      "325i",
+      "325ic",
+      "325ix",
+      "525i",
+      "535i",
+      "735i",
+      "735il",
+      "750il",
+      "850i",
+      "M3",
+      "M5"
+    ],
+    "1991": [
+      "318i",
+      "318is",
+      "325e",
+      "325i",
+      "325ic",
+      "325is",
+      "325ix",
+      "525i",
+      "535i",
+      "735i",
+      "735il",
+      "750il",
+      "850i",
+      "M3",
+      "M5"
+    ],
+    "1992": [
+      "318i",
+      "318is",
+      "320i",
+      "325i",
+      "325ic",
+      "325is",
+      "525i",
+      "525it",
+      "535i",
+      "540i",
+      "735i",
+      "735il",
+      "740i",
+      "740il",
+      "750il",
+      "850i",
+      "M5"
+    ],
+    "1993": [
+      "318i",
+      "318is",
+      "320i",
+      "325i",
+      "325ic",
+      "325is",
+      "525i",
+      "525it",
+      "530i",
+      "535i",
+      "540i",
+      "740i",
+      "740il",
+      "750il",
+      "840i",
+      "850i",
+      "M3",
+      "M5"
+    ],
+    "1994": [
+      "318i",
+      "318is",
+      "318ti",
+      "320i",
+      "325i",
+      "325ic",
+      "325is",
+      "328i",
+      "525i",
+      "525it",
+      "530i",
+      "540i",
+      "740i",
+      "740il",
+      "750il",
+      "840i",
+      "850ci",
+      "850i",
+      "M3",
+      "M5"
+    ],
+    "1995": [
+      "318i",
+      "318is",
+      "318ti",
+      "320i",
+      "325i",
+      "325ic",
+      "325is",
+      "328i",
+      "525i",
+      "525it",
+      "530i",
+      "540i",
+      "740i",
+      "740il",
+      "750il",
+      "840ci",
+      "840i",
+      "850ci",
+      "850i",
+      "M3"
+    ],
+    "1996": [
+      "318i",
+      "318is",
+      "318ti",
+      "323ci",
+      "323i",
+      "323is",
+      "328i",
+      "528i",
+      "530i",
+      "540i",
+      "740i",
+      "740il",
+      "750il",
+      "840ci",
+      "850ci",
+      "850i",
+      "M3",
+      "Z3"
+    ],
+    "1997": [
+      "318i",
+      "318is",
+      "318ti",
+      "323ci",
+      "323i",
+      "323is",
+      "325ci",
+      "328i",
+      "528i",
+      "530i",
+      "540i",
+      "740i",
+      "740il",
+      "750il",
+      "840ci",
+      "850ci",
+      "850i",
+      "M3",
+      "Z3"
+    ],
+    "1998": [
+      "318i",
+      "318is",
+      "318ti",
+      "323ci",
+      "323i",
+      "323is",
+      "325ci",
+      "328ci",
+      "328i",
+      "528i",
+      "530i",
+      "540i",
+      "740i",
+      "740il",
+      "750il",
+      "840ci",
+      "M3",
+      "Z3"
+    ],
+    "1999": [
+      "318ti",
+      "323ci",
+      "323i",
+      "323is",
+      "325ci",
+      "328ci",
+      "328i",
+      "330ci",
+      "528i",
+      "530i",
+      "540i",
+      "740i",
+      "740il",
+      "750il",
+      "M3",
+      "M5",
+      "X5",
+      "Z3"
+    ],
+    "2000": [
+      "320i",
+      "323ci",
+      "323i",
+      "325ci",
+      "325i",
+      "325xi",
+      "328ci",
+      "328i",
+      "330ci",
+      "330i",
+      "330xi",
+      "525i",
+      "528i",
+      "530i",
+      "540i",
+      "740i",
+      "740il",
+      "745Li",
+      "745i",
+      "750il",
+      "M5",
+      "X5",
+      "Z3"
+    ],
+    "2001": [
+      "320i",
+      "325ci",
+      "325i",
+      "325xi",
+      "330ci",
+      "330i",
+      "330xi",
+      "525i",
+      "530i",
+      "540i",
+      "740i",
+      "740il",
+      "745Li",
+      "745i",
+      "750il",
+      "M3",
+      "M5",
+      "X5",
+      "Z3"
+    ],
+    "2002": [
+      "325ci",
+      "325i",
+      "325xi",
+      "330ci",
+      "330i",
+      "330xi",
+      "525i",
+      "530i",
+      "540i",
+      "745Li",
+      "745i",
+      "760il",
+      "M3",
+      "M5",
+      "X5",
+      "Z3",
+      "Z4"
+    ],
+    "2003": [
+      "325ci",
+      "325i",
+      "325xi",
+      "330ci",
+      "330i",
+      "330xi",
+      "525i",
+      "530i",
+      "540i",
+      "750i",
+      "750il",
+      "760il",
+      "M3",
+      "M5",
+      "X5",
+      "Z4"
+    ],
+    "2004": [
+      "325ci",
+      "325i",
+      "325xi",
+      "330ci",
+      "330i",
+      "330xi",
+      "525i",
+      "530i",
+      "545i",
+      "645ci",
+      "645i",
+      "750i",
+      "750il",
+      "760il",
+      "M3",
+      "X3",
+      "X5",
+      "Z4"
+    ],
+    "2005": [
+      "325ci",
+      "325i",
+      "325xi",
+      "330ci",
+      "330i",
+      "330xi",
+      "525i",
+      "530i",
+      "545i",
+      "645ci",
+      "645i",
+      "750i",
+      "750il",
+      "760i",
+      "760il",
+      "M3",
+      "X3",
+      "X5",
+      "Z4"
+    ],
+    "2006": [
+      "325ci",
+      "325i",
+      "325xi",
+      "330ci",
+      "330i",
+      "330xi",
+      "525i",
+      "525xi",
+      "530i",
+      "530xi",
+      "550i",
+      "650i",
+      "750i",
+      "750il",
+      "760i",
+      "760il",
+      "M3",
+      "M5",
+      "M6",
+      "X3",
+      "X5",
+      "Z4",
+      "Z4 M"
+    ],
+    "2007": [
+      "325i",
+      "328i",
+      "328xi",
+      "335i",
+      "525i",
+      "525xi",
+      "530i",
+      "530xi",
+      "550i",
+      "650i",
+      "750i",
+      "750il",
+      "760il",
+      "Alpina B7",
+      "M5",
+      "M6",
+      "X3",
+      "X5",
+      "Z4",
+      "Z4 M"
+    ],
+    "2008": [
+      "128i",
+      "135i",
+      "328i",
+      "328xi",
+      "335i",
+      "528i",
+      "535i",
+      "535xi",
+      "550i",
+      "650i",
+      "750i",
+      "750il",
+      "760il",
+      "Alpina B7",
+      "M3",
+      "M5",
+      "M6",
+      "X3",
+      "X5",
+      "X6",
+      "Z4",
+      "Z4 M"
+    ],
+    "2009": [
+      "128i",
+      "135i",
+      "328i",
+      "328xi",
+      "335d",
+      "335i",
+      "528i",
+      "535i",
+      "535xi",
+      "550i",
+      "650i",
+      "750i",
+      "750il",
+      "M3",
+      "M5",
+      "M6",
+      "X3",
+      "X5",
+      "X6",
+      "Z4",
+      "Z4 Roadster"
+    ],
+    "2010": [
+      "128i",
+      "135i",
+      "328i",
+      "328xi",
+      "335d",
+      "335i",
+      "528i",
+      "535I GT",
+      "535i",
+      "535xi",
+      "550i",
+      "550i GT",
+      "650i",
+      "750i",
+      "750il",
+      "M3",
+      "M5",
+      "M6",
+      "X3",
+      "X5",
+      "X5M",
+      "X6",
+      "X6M",
+      "Z4",
+      "Z4 Roadster"
+    ],
+    "2011": [
+      "128i",
+      "135i",
+      "328i",
+      "328xi",
+      "335d",
+      "335i",
+      "528i",
+      "535I GT",
+      "535i",
+      "550i",
+      "550i GT",
+      "740i",
+      "740il",
+      "750i",
+      "750il",
+      "ActiveHybrid 7",
+      "Countryman",
+      "M1",
+      "M3",
+      "X3",
+      "X5",
+      "X5M",
+      "X6",
+      "X6M",
+      "Z4",
+      "Z4 Roadster"
+    ],
+    "2012": [
+      "128i",
+      "135i",
+      "320i",
+      "328i",
+      "328xi",
+      "335d",
+      "335i",
+      "528i",
+      "535I GT",
+      "535i",
+      "550i",
+      "550i GT",
+      "640i",
+      "650i",
+      "740i",
+      "740il",
+      "750i",
+      "750il",
+      "ActiveHybrid 5",
+      "ActiveHybrid 7",
+      "Countryman",
+      "M1",
+      "M3",
+      "M5",
+      "M6",
+      "X1",
+      "X3",
+      "X5",
+      "X5M",
+      "X6",
+      "X6M",
+      "Z4"
+    ],
+    "2013": [
+      "128i",
+      "135i",
+      "320i",
+      "328i",
+      "328xi",
+      "335d",
+      "335i",
+      "435i",
+      "528i",
+      "535I GT",
+      "535i",
+      "550i",
+      "550i GT",
+      "640i",
+      "650i",
+      "740i",
+      "740il",
+      "750i",
+      "750il",
+      "ActiveHybrid 3",
+      "ActiveHybrid 5",
+      "ActiveHybrid 7",
+      "Countryman",
+      "M3",
+      "M5",
+      "M6",
+      "Paceman",
+      "X1",
+      "X3",
+      "X5",
+      "X5M",
+      "X6",
+      "X6M",
+      "Z4"
+    ],
+    "2014": [
+      "228i",
+      "320i",
+      "328d",
+      "328i",
+      "328i GT",
+      "335i",
+      "335i GT",
+      "428i",
+      "435i",
+      "528i",
+      "535I GT",
+      "535i",
+      "550i",
+      "550i GT",
+      "640i",
+      "650i",
+      "740i",
+      "740il",
+      "750i",
+      "750il",
+      "ActiveHybrid 3",
+      "ActiveHybrid 5",
+      "ActiveHybrid 7",
+      "Countryman",
+      "M235i",
+      "M5",
+      "M6",
+      "Paceman",
+      "X1",
+      "X3",
+      "X5",
+      "X6",
+      "X6M",
+      "Z4"
+    ],
+    "2015": [
+      "228i",
+      "320i",
+      "328d",
+      "328i",
+      "328i GT",
+      "335i",
+      "335i GT",
+      "428i",
+      "435i",
+      "528i",
+      "535I GT",
+      "535i",
+      "550i",
+      "550i GT",
+      "640i",
+      "650i",
+      "740i",
+      "740ild",
+      "750i",
+      "750il",
+      "ActiveHybrid 3",
+      "ActiveHybrid 5",
+      "ActiveHybrid 7",
+      "Countryman",
+      "M235i",
+      "M235iX",
+      "M5",
+      "M6",
+      "Paceman",
+      "X1",
+      "X3",
+      "X4",
+      "X5",
+      "X5M",
+      "X6",
+      "X6M",
+      "Z4"
+    ],
+    "2016": [
+      "228i",
+      "320i",
+      "320xi",
+      "328d",
+      "328i",
+      "328i GT",
+      "328xi",
+      "330e",
+      "335i GT",
+      "340i",
+      "340i GT",
+      "428i",
+      "435i",
+      "528i",
+      "535I GT",
+      "535i",
+      "550i",
+      "550i GT",
+      "640i",
+      "650i",
+      "740i",
+      "750i",
+      "ActiveHybrid 5",
+      "Clubman",
+      "Countryman",
+      "M235i",
+      "M235iX",
+      "M5",
+      "M6",
+      "Paceman",
+      "X1",
+      "X3",
+      "X4",
+      "X5",
+      "X5M",
+      "X6",
+      "X6M",
+      "Z4"
+    ],
+    "2017": [
+      "230i",
+      "320i",
+      "320xi",
+      "328d",
+      "328xi",
+      "330ci",
+      "330e",
+      "330i",
+      "330i GT",
+      "340i",
+      "340i GT",
+      "430i",
+      "440i",
+      "530i",
+      "535I GT",
+      "535i",
+      "540i",
+      "540iX",
+      "550i GT",
+      "640i",
+      "650i",
+      "740i",
+      "750i",
+      "Clubman",
+      "Countryman",
+      "M2",
+      "M240i",
+      "M6",
+      "X1",
+      "X3",
+      "X4",
+      "X5",
+      "X5M",
+      "X6",
+      "X6M"
+    ],
+    "2018": [
+      "230i",
+      "320i",
+      "320xi",
+      "328d",
+      "328xi",
+      "330e",
+      "330i",
+      "330i GT",
+      "340i",
+      "340i GT",
+      "430i",
+      "440i",
+      "530i",
+      "540i",
+      "540iX",
+      "640i",
+      "650i",
+      "740i",
+      "750i",
+      "Countryman",
+      "M2",
+      "M240i",
+      "M3",
+      "M4",
+      "M6",
+      "X1",
+      "X2",
+      "X3",
+      "X4",
+      "X5",
+      "X6",
+      "X6M"
+    ],
+    "2019": [
+      "230i",
+      "330i",
+      "330i GT",
+      "340i",
+      "340i GT",
+      "430i",
+      "440i",
+      "530i",
+      "540i",
+      "540iX",
+      "640i",
+      "650i",
+      "740i",
+      "750i",
+      "M2",
+      "M240i",
+      "M340i",
+      "M4",
+      "M6",
+      "X3",
+      "X4",
+      "X5",
+      "X6M",
+      "X7"
+    ],
+    "2020": [
+      "230i",
+      "330i",
+      "340ix",
+      "430i",
+      "540i",
+      "540iX",
+      "M2",
+      "M240i",
+      "M340i",
+      "M340iX",
+      "M4",
+      "M550i",
+      "X3",
+      "X4",
+      "X5",
+      "X7",
+      "Z4 M40i"
+    ],
+    "2021": [
+      "230i",
+      "330i",
+      "340ix",
+      "540iX",
+      "M240i",
+      "M340i",
+      "M340iX",
+      "M440i",
+      "M440iX",
+      "M550i",
+      "X3",
+      "X4",
+      "X5",
+      "Z4 M40i"
+    ],
+    "2022": [
+      "330i",
+      "540iX",
+      "M340i",
+      "M340iX",
+      "M440i",
+      "M440iX",
+      "M550i",
+      "X3",
+      "X4",
+      "X5",
+      "Z4 M40i"
+    ],
+    "2023": [
+      "540iX",
+      "M340i",
+      "M340iX",
+      "M440i",
+      "M440iX",
+      "M550i",
+      "X3",
+      "X4",
+      "X7",
+      "Z4 M40i"
+    ],
+    "2024": [
+      "M340i",
+      "M340iX",
+      "M440i",
+      "M440iX",
+      "X7"
+    ],
+    "2025": [
+      "M440iX",
+      "X7"
+    ]
+  },
+  "Buick": {
+    "1961": [
+      "Electra",
+      "Invicta",
+      "LeSabre",
+      "Wildcat"
+    ],
+    "1962": [
+      "Electra",
+      "Invicta",
+      "LeSabre",
+      "Wildcat"
+    ],
+    "1963": [
+      "Electra",
+      "Invicta",
+      "LeSabre",
+      "Riviera",
+      "Wildcat"
+    ],
+    "1964": [
+      "Electra",
+      "Invicta",
+      "LeSabre",
+      "Riviera",
+      "Wildcat"
+    ],
+    "1965": [
+      "LeSabre",
+      "Riviera",
+      "Wildcat"
+    ],
+    "1966": [
+      "LeSabre",
+      "Riviera",
+      "Wildcat"
+    ],
+    "1967": [
+      "LeSabre",
+      "Riviera",
+      "Wildcat"
+    ],
+    "1968": [
+      "LeSabre",
+      "Riviera",
+      "Wildcat"
+    ],
+    "1969": [
+      "Riviera"
+    ],
+    "1970": [
+      "Riviera"
+    ],
+    "1978": [
+      "Century",
+      "Regal"
+    ],
+    "1979": [
+      "Century",
+      "Regal"
+    ],
+    "1980": [
+      "Century",
+      "Regal"
+    ],
+    "1981": [
+      "Century",
+      "Regal"
+    ],
+    "1982": [
+      "Regal"
+    ],
+    "1983": [
+      "Regal"
+    ],
+    "1984": [
+      "Regal"
+    ],
+    "1985": [
+      "Regal"
+    ],
+    "1986": [
+      "Regal"
+    ],
+    "1987": [
+      "Regal"
+    ],
+    "1991": [
+      "Roadmaster"
+    ],
+    "1992": [
+      "Roadmaster"
+    ],
+    "1993": [
+      "Roadmaster"
+    ],
+    "1994": [
+      "Roadmaster"
+    ],
+    "1995": [
+      "Roadmaster"
+    ],
+    "1996": [
+      "Roadmaster"
+    ],
+    "2002": [
+      "Rendezvous"
+    ],
+    "2003": [
+      "Rendezvous"
+    ],
+    "2004": [
+      "Rainier",
+      "Rendezvous"
+    ],
+    "2005": [
+      "Rainier",
+      "Rendezvous",
+      "Terraza"
+    ],
+    "2006": [
+      "Rainier",
+      "Rendezvous",
+      "Terraza"
+    ],
+    "2007": [
+      "Rainier"
+    ],
+    "2008": [
+      "Enclave"
+    ],
+    "2009": [
+      "Enclave"
+    ],
+    "2010": [
+      "Allure",
+      "Enclave",
+      "LaCrosse"
+    ],
+    "2011": [
+      "Enclave"
+    ],
+    "2012": [
+      "Enclave"
+    ],
+    "2013": [
+      "Enclave",
+      "Encore"
+    ],
+    "2014": [
+      "Enclave",
+      "Encore",
+      "Regal"
+    ],
+    "2015": [
+      "Enclave",
+      "Encore",
+      "Regal"
+    ],
+    "2016": [
+      "Enclave",
+      "Encore",
+      "Envision",
+      "Regal"
+    ],
+    "2017": [
+      "Enclave",
+      "Encore",
+      "Envision",
+      "Regal"
+    ],
+    "2018": [
+      "Encore",
+      "Envision"
+    ],
+    "2019": [
+      "Encore",
+      "Envision"
+    ],
+    "2020": [
+      "Encore",
+      "Envision"
+    ],
+    "2021": [
+      "Encore"
+    ],
+    "2022": [
+      "Encore"
+    ]
+  },
+  "Cadillac": {
+    "1999": [
+      "Escalade"
+    ],
+    "2000": [
+      "Escalade"
+    ],
+    "2002": [
+      "Escalade",
+      "Escalade EXT"
+    ],
+    "2003": [
+      "CTS",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT"
+    ],
+    "2004": [
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX"
+    ],
+    "2005": [
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX",
+      "STS"
+    ],
+    "2006": [
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX",
+      "STS",
+      "STS-V"
+    ],
+    "2007": [
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX",
+      "STS",
+      "STS-V"
+    ],
+    "2008": [
+      "CTS",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX",
+      "STS",
+      "STS-V"
+    ],
+    "2009": [
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX",
+      "STS",
+      "STS-V"
+    ],
+    "2010": [
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX",
+      "STS"
+    ],
+    "2011": [
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX",
+      "STS"
+    ],
+    "2012": [
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX"
+    ],
+    "2013": [
+      "ATS",
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "Escalade EXT",
+      "SRX",
+      "XTS"
+    ],
+    "2014": [
+      "ATS",
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "SRX",
+      "XTS"
+    ],
+    "2015": [
+      "ATS",
+      "CTS",
+      "CTS-V",
+      "Escalade",
+      "Escalade ESV",
+      "SRX",
+      "XTS"
+    ],
+    "2016": [
+      "ATS",
+      "ATS-V",
+      "CT6",
+      "CTS",
+      "Escalade",
+      "Escalade ESV",
+      "SRX",
+      "XTS"
+    ],
+    "2017": [
+      "ATS",
+      "ATS-V",
+      "CT6",
+      "CTS",
+      "Escalade",
+      "Escalade ESV",
+      "XTS"
+    ],
+    "2018": [
+      "ATS",
+      "ATS-V",
+      "CT6",
+      "CTS",
+      "Escalade",
+      "Escalade ESV",
+      "XTS"
+    ],
+    "2019": [
+      "ATS-V",
+      "CT6",
+      "CTS",
+      "Escalade",
+      "Escalade ESV",
+      "XTS"
+    ],
+    "2020": [
+      "CT6",
+      "Escalade",
+      "Escalade ESV"
+    ],
+    "2021": [
+      "Escalade",
+      "Escalade ESV"
+    ],
+    "2022": [
+      "Escalade",
+      "Escalade ESV"
+    ],
+    "2023": [
+      "Escalade ESV"
+    ]
+  },
+  "Chevrolet": {
+    "1973": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban"
+    ],
+    "1974": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban"
+    ],
+    "1975": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban"
+    ],
+    "1976": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban"
+    ],
+    "1977": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban"
+    ],
+    "1978": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500",
+      "El Camino",
+      "G20/G2500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "Malibu",
+      "Monte Carlo"
+    ],
+    "1979": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500",
+      "El Camino",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "Malibu",
+      "Monte Carlo",
+      "P30/P3500 Step Van"
+    ],
+    "1980": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500",
+      "C30/C3500",
+      "El Camino",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Malibu",
+      "Monte Carlo",
+      "P30/P3500 Step Van"
+    ],
+    "1981": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500",
+      "C30/C3500",
+      "El Camino",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Malibu",
+      "Monte Carlo",
+      "P30/P3500 Step Van"
+    ],
+    "1982": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500",
+      "C30/C3500",
+      "Camaro",
+      "Caprice",
+      "El Camino",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Impala",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Malibu",
+      "Monte Carlo",
+      "P30/P3500 Step Van",
+      "S10"
+    ],
+    "1983": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500",
+      "C30/C3500",
+      "Camaro",
+      "Caprice",
+      "El Camino",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Impala",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Malibu",
+      "Monte Carlo",
+      "P30/P3500 Step Van",
+      "S10",
+      "S10 Blazer"
+    ],
+    "1984": [
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500",
+      "C30/C3500",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "El Camino",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Impala",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Monte Carlo",
+      "P30/P3500 Step Van",
+      "S10",
+      "S10 Blazer"
+    ],
+    "1985": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500",
+      "C30/C3500",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "El Camino",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Impala",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Monte Carlo",
+      "S10",
+      "S10 Blazer"
+    ],
+    "1986": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500",
+      "C30/C3500",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "El Camino",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Monte Carlo",
+      "S10",
+      "S10 Blazer"
+    ],
+    "1987": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C30/C3500",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "El Camino",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Monte Carlo",
+      "S10",
+      "S10 Blazer"
+    ],
+    "1988": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Monte Carlo",
+      "S10",
+      "S10 Blazer"
+    ],
+    "1989": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500"
+    ],
+    "1990": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500"
+    ],
+    "1991": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500"
+    ],
+    "1992": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500",
+      "Suburban 1500",
+      "Suburban 2500"
+    ],
+    "1993": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500",
+      "Suburban 1500",
+      "Suburban 2500"
+    ],
+    "1994": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "Impala",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500",
+      "Suburban 1500",
+      "Suburban 2500"
+    ],
+    "1995": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "Impala",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500"
+    ],
+    "1996": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Caprice",
+      "Corvette",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "G30/G3500 Van",
+      "Impala",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500"
+    ],
+    "1997": [
+      "Astro",
+      "Blazer",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500"
+    ],
+    "1998": [
+      "Astro",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500"
+    ],
+    "1999": [
+      "Astro",
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500"
+    ],
+    "2000": [
+      "Astro",
+      "C20/C2500 Pickup",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500"
+    ],
+    "2001": [
+      "Astro",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500"
+    ],
+    "2002": [
+      "Astro",
+      "Avalanche 1500",
+      "Avalanche 2500",
+      "C30/C3500 Pickup",
+      "Camaro",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "S10",
+      "S10 Blazer",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Trailblazer",
+      "Venture"
+    ],
+    "2003": [
+      "Astro",
+      "Avalanche 1500",
+      "Avalanche 2500",
+      "Camaro",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "S10",
+      "S10 Blazer",
+      "SSR",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Trailblazer",
+      "Venture"
+    ],
+    "2004": [
+      "Astro",
+      "Avalanche 1500",
+      "Avalanche 2500",
+      "Colorado",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "S10",
+      "S10 Blazer",
+      "SSR",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Trailblazer",
+      "Venture"
+    ],
+    "2005": [
+      "Astro",
+      "Avalanche 1500",
+      "Avalanche 2500",
+      "Colorado",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "S10",
+      "S10 Blazer",
+      "SSR",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Trailblazer",
+      "Uplander",
+      "Venture"
+    ],
+    "2006": [
+      "Avalanche 1500",
+      "Avalanche 2500",
+      "Colorado",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "SSR",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Trailblazer",
+      "Uplander"
+    ],
+    "2007": [
+      "Avalanche 1500",
+      "Colorado",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Trailblazer"
+    ],
+    "2008": [
+      "Avalanche 1500",
+      "Colorado",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Trailblazer"
+    ],
+    "2009": [
+      "Avalanche 1500",
+      "Colorado",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Trailblazer",
+      "Traverse"
+    ],
+    "2010": [
+      "Avalanche 1500",
+      "Camaro",
+      "Colorado",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Traverse"
+    ],
+    "2011": [
+      "Avalanche 1500",
+      "Camaro",
+      "Caprice",
+      "Colorado",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Traverse"
+    ],
+    "2012": [
+      "Avalanche 1500",
+      "Camaro",
+      "Caprice",
+      "Captiva Sport",
+      "Colorado",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Traverse"
+    ],
+    "2013": [
+      "Avalanche 1500",
+      "Camaro",
+      "Caprice",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Tahoe 1500",
+      "Traverse",
+      "Trax"
+    ],
+    "2014": [
+      "Camaro",
+      "Caprice",
+      "Equinox",
+      "Express 1500",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Tahoe 1500",
+      "Traverse",
+      "Trax"
+    ],
+    "2015": [
+      "Camaro",
+      "Caprice",
+      "Colorado",
+      "Equinox",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Tahoe 1500",
+      "Traverse",
+      "Trax"
+    ],
+    "2016": [
+      "Camaro",
+      "Caprice",
+      "Colorado",
+      "Equinox",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 3500",
+      "Tahoe 1500",
+      "Traverse",
+      "Trax"
+    ],
+    "2017": [
+      "Camaro",
+      "Caprice",
+      "Colorado",
+      "Equinox",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban 1500",
+      "Suburban 3500",
+      "Tahoe 1500",
+      "Traverse",
+      "Trax"
+    ],
+    "2018": [
+      "Camaro",
+      "Colorado",
+      "Equinox",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban",
+      "Suburban 1500",
+      "Suburban 3500",
+      "Tahoe",
+      "Tahoe 1500",
+      "Trax"
+    ],
+    "2019": [
+      "Camaro",
+      "Colorado",
+      "Equinox",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban",
+      "Suburban 1500",
+      "Tahoe",
+      "Tahoe 1500",
+      "Trax"
+    ],
+    "2020": [
+      "Camaro",
+      "Colorado",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban",
+      "Suburban 1500",
+      "Tahoe",
+      "Tahoe 1500",
+      "Trax"
+    ],
+    "2021": [
+      "Camaro",
+      "Colorado",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban",
+      "Tahoe",
+      "Trax"
+    ],
+    "2022": [
+      "Colorado",
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban",
+      "Suburban 1500",
+      "Tahoe"
+    ],
+    "2023": [
+      "Express 2500",
+      "Express 3500",
+      "Express 4500",
+      "Silverado 1500",
+      "Silverado 2500",
+      "Silverado 3500",
+      "Suburban",
+      "Suburban 1500",
+      "Tahoe"
+    ],
+    "2024": [
+      "Silverado 2500",
+      "Silverado 3500",
+      "Tahoe"
+    ],
+    "2025": [
+      "Silverado 2500",
+      "Silverado 3500",
+      "Tahoe"
+    ]
+  },
+  "Chrysler": {
+    "1990": [
+      "Laser"
+    ],
+    "1991": [
+      "Laser"
+    ],
+    "1992": [
+      "Laser",
+      "Town & Country"
+    ],
+    "1993": [
+      "Laser",
+      "Town & Country"
+    ],
+    "1994": [
+      "Laser",
+      "Town & Country"
+    ],
+    "1995": [
+      "Town & Country"
+    ],
+    "1996": [
+      "Town & Country"
+    ],
+    "1997": [
+      "Town & Country"
+    ],
+    "1998": [
+      "Town & Country"
+    ],
+    "1999": [
+      "Town & Country"
+    ],
+    "2000": [
+      "Town & Country"
+    ],
+    "2001": [
+      "Town & Country"
+    ],
+    "2002": [
+      "Town & Country"
+    ],
+    "2003": [
+      "Pacifica",
+      "Town & Country"
+    ],
+    "2004": [
+      "Aspen",
+      "Crossfire",
+      "Pacifica",
+      "Town & Country"
+    ],
+    "2005": [
+      "300",
+      "Aspen",
+      "Crossfire",
+      "Pacifica",
+      "Town & Country"
+    ],
+    "2006": [
+      "300",
+      "Aspen",
+      "Crossfire",
+      "Pacifica"
+    ],
+    "2007": [
+      "300",
+      "Aspen",
+      "Crossfire",
+      "Pacifica"
+    ],
+    "2008": [
+      "300",
+      "Aspen",
+      "Crossfire",
+      "Pacifica",
+      "Sebring"
+    ],
+    "2009": [
+      "300",
+      "Aspen"
+    ],
+    "2010": [
+      "300"
+    ],
+    "2011": [
+      "300"
+    ],
+    "2012": [
+      "300"
+    ],
+    "2013": [
+      "300"
+    ],
+    "2014": [
+      "300"
+    ],
+    "2015": [
+      "200",
+      "300"
+    ],
+    "2016": [
+      "200",
+      "300"
+    ],
+    "2017": [
+      "200",
+      "300"
+    ],
+    "2018": [
+      "300"
+    ],
+    "2019": [
+      "300"
+    ],
+    "2020": [
+      "300"
+    ],
+    "2021": [
+      "300"
+    ],
+    "2022": [
+      "300"
+    ]
+  },
+  "Dodge": {
+    "1969": [
+      "D100"
+    ],
+    "1970": [
+      "D100"
+    ],
+    "1971": [
+      "B100",
+      "B200",
+      "B300",
+      "D100"
+    ],
+    "1972": [
+      "B100",
+      "B200",
+      "B300",
+      "D100"
+    ],
+    "1973": [
+      "B100",
+      "B200",
+      "B300",
+      "D100"
+    ],
+    "1974": [
+      "B100",
+      "B200",
+      "B300",
+      "B350",
+      "D100"
+    ],
+    "1975": [
+      "B100",
+      "B200",
+      "B300",
+      "B350",
+      "D100"
+    ],
+    "1976": [
+      "B100",
+      "B200",
+      "B300",
+      "D100"
+    ],
+    "1977": [
+      "B100",
+      "B200",
+      "B300",
+      "D100"
+    ],
+    "1978": [
+      "B100",
+      "B200",
+      "B300",
+      "D100",
+      "D150",
+      "Ramcharger"
+    ],
+    "1979": [
+      "B100",
+      "B200",
+      "B300",
+      "D100",
+      "D150",
+      "Ramcharger"
+    ],
+    "1980": [
+      "B100",
+      "B200",
+      "B300",
+      "D100",
+      "D150",
+      "Ramcharger"
+    ],
+    "1981": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "Ramcharger"
+    ],
+    "1982": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "Ramcharger"
+    ],
+    "1983": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "Ramcharger"
+    ],
+    "1984": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "D250",
+      "Ramcharger"
+    ],
+    "1985": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "D250",
+      "Ramcharger"
+    ],
+    "1986": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "D250",
+      "Ramcharger"
+    ],
+    "1987": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "D250",
+      "Dakota",
+      "Ramcharger",
+      "W100",
+      "W150",
+      "W250",
+      "W350"
+    ],
+    "1988": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "D250",
+      "Dakota",
+      "Ramcharger",
+      "W100",
+      "W150",
+      "W250",
+      "W350"
+    ],
+    "1989": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "D250",
+      "Dakota",
+      "Ramcharger",
+      "W100",
+      "W150",
+      "W250",
+      "W350"
+    ],
+    "1990": [
+      "B150",
+      "B250",
+      "B350",
+      "D100",
+      "D150",
+      "D250",
+      "Dakota",
+      "Ramcharger",
+      "W150",
+      "W250",
+      "W350"
+    ],
+    "1991": [
+      "B150",
+      "B250",
+      "B350",
+      "Caravan",
+      "D150",
+      "D250",
+      "Dakota",
+      "Ramcharger",
+      "Stealth",
+      "W150",
+      "W250",
+      "W350"
+    ],
+    "1992": [
+      "Caravan",
+      "Dakota",
+      "Ramcharger",
+      "Stealth",
+      "Viper",
+      "W150",
+      "W250",
+      "W350"
+    ],
+    "1993": [
+      "Caravan",
+      "Dakota",
+      "Ramcharger",
+      "Stealth",
+      "Viper",
+      "W150",
+      "W250",
+      "W350"
+    ],
+    "1994": [
+      "Caravan",
+      "Dakota",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Stealth",
+      "Viper"
+    ],
+    "1995": [
+      "Caravan",
+      "Dakota",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Stealth",
+      "Viper"
+    ],
+    "1996": [
+      "Caravan",
+      "Dakota",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Stealth",
+      "Viper"
+    ],
+    "1997": [
+      "Caravan",
+      "Dakota",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Stealth",
+      "Viper"
+    ],
+    "1998": [
+      "Caravan",
+      "Dakota",
+      "Durango",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Stealth",
+      "Viper"
+    ],
+    "1999": [
+      "Caravan",
+      "Dakota",
+      "Durango",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Stealth",
+      "Viper"
+    ],
+    "2000": [
+      "Caravan",
+      "Dakota",
+      "Durango",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Viper"
+    ],
+    "2001": [
+      "Caravan",
+      "Dakota",
+      "Durango",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Viper"
+    ],
+    "2002": [
+      "Caravan",
+      "Dakota",
+      "Durango",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500",
+      "Viper"
+    ],
+    "2003": [
+      "Caravan",
+      "Dakota",
+      "Durango",
+      "Ram 1500",
+      "Ram 1500 Van",
+      "Ram 2500",
+      "Ram 2500 Van",
+      "Ram 3500",
+      "Ram 3500 Van",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2004": [
+      "Caravan",
+      "Dakota",
+      "Durango",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2005": [
+      "Caravan",
+      "Dakota",
+      "Durango",
+      "Magnum",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2006": [
+      "Charger",
+      "Dakota",
+      "Durango",
+      "Magnum",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2007": [
+      "Avenger",
+      "Caliber",
+      "Charger",
+      "Dakota",
+      "Durango",
+      "Magnum",
+      "Nitro",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2008": [
+      "Avenger",
+      "Caliber",
+      "Challenger",
+      "Charger",
+      "Dakota",
+      "Durango",
+      "Magnum",
+      "Nitro",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2009": [
+      "Caliber",
+      "Challenger",
+      "Charger",
+      "Dakota",
+      "Durango",
+      "Journey",
+      "Magnum",
+      "Nitro",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2010": [
+      "Challenger",
+      "Charger",
+      "Dakota",
+      "Journey",
+      "Magnum",
+      "Nitro",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500"
+    ],
+    "2011": [
+      "Challenger",
+      "Charger",
+      "Dakota",
+      "Durango",
+      "Journey",
+      "Magnum",
+      "Nitro",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500"
+    ],
+    "2012": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Journey",
+      "Magnum",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500"
+    ],
+    "2013": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Journey",
+      "Magnum",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500"
+    ],
+    "2014": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Journey",
+      "Magnum",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500"
+    ],
+    "2015": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Journey",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500"
+    ],
+    "2016": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Journey",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500"
+    ],
+    "2017": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Journey",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500"
+    ],
+    "2018": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Journey",
+      "Ram 1500",
+      "Ram 2500",
+      "Ram 3500",
+      "Ram 4500",
+      "Ram 5500"
+    ],
+    "2019": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Journey",
+      "Ram 1500",
+      "Ram 3500"
+    ],
+    "2020": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Ram 1500",
+      "Ram 3500"
+    ],
+    "2021": [
+      "Challenger",
+      "Charger",
+      "Durango",
+      "Ram 1500",
+      "Ram 3500"
+    ],
+    "2022": [
+      "Challenger",
+      "Charger",
+      "Ram 1500",
+      "Ram 3500"
+    ],
+    "2023": [
+      "Challenger",
+      "Charger",
+      "Ram 1500",
+      "Ram 3500"
+    ],
+    "2024": [
+      "Ram 1500"
+    ],
+    "2025": [
+      "Ram 1500"
+    ],
+    "2026": [
+      "Ram 1500"
+    ]
+  },
+  "Ford": {
+    "1955": [
+      "F250"
+    ],
+    "1956": [
+      "F250"
+    ],
+    "1977": [
+      "F250"
+    ],
+    "1978": [
+      "F250"
+    ],
+    "1979": [
+      "E250",
+      "F250",
+      "F350",
+      "Mustang"
+    ],
+    "1980": [
+      "Bronco",
+      "E250",
+      "F150",
+      "F250",
+      "F350",
+      "Mustang"
+    ],
+    "1981": [
+      "Bronco",
+      "E250",
+      "F150",
+      "F250",
+      "F350",
+      "Mustang"
+    ],
+    "1982": [
+      "Bronco",
+      "Capri",
+      "E250",
+      "F150",
+      "F250",
+      "F350",
+      "Mustang"
+    ],
+    "1983": [
+      "Bronco",
+      "Capri",
+      "E250",
+      "F100",
+      "F150",
+      "F250",
+      "F350",
+      "Mustang",
+      "Ranger"
+    ],
+    "1984": [
+      "Bronco",
+      "Bronco II",
+      "Capri",
+      "E250",
+      "F150",
+      "F250",
+      "F350",
+      "Mustang",
+      "Ranger"
+    ],
+    "1985": [
+      "Bronco",
+      "Bronco II",
+      "Capri",
+      "E250",
+      "F150",
+      "F250",
+      "F350",
+      "Mustang",
+      "Ranger"
+    ],
+    "1986": [
+      "Bronco",
+      "Bronco II",
+      "Capri",
+      "E250",
+      "E350 Econoline",
+      "F150",
+      "F250",
+      "F350",
+      "Mustang",
+      "Ranger"
+    ],
+    "1987": [
+      "Bronco",
+      "Bronco II",
+      "E250",
+      "E350 Econoline",
+      "F150",
+      "F250",
+      "F350",
+      "Mustang",
+      "Ranger"
+    ],
+    "1988": [
+      "Bronco",
+      "Bronco II",
+      "E250",
+      "E350 Econoline",
+      "F150",
+      "F250",
+      "F350",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1989": [
+      "Bronco",
+      "Bronco II",
+      "E250",
+      "E350 Econoline",
+      "F150",
+      "F250",
+      "F350",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1990": [
+      "Aerostar",
+      "Bronco",
+      "Bronco II",
+      "E250",
+      "E350 Econoline",
+      "F150",
+      "F250",
+      "F350",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1991": [
+      "Aerostar",
+      "Bronco",
+      "E250",
+      "E350 Econoline",
+      "Explorer",
+      "F150",
+      "F250",
+      "F350",
+      "F350 Super Duty",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1992": [
+      "Aerostar",
+      "Bronco",
+      "Crown Victoria",
+      "E250",
+      "E350 Econoline",
+      "Explorer",
+      "F150",
+      "F250",
+      "F350",
+      "F350 Super Duty",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1993": [
+      "Aerostar",
+      "Bronco",
+      "Crown Victoria",
+      "E250",
+      "E350",
+      "E350 Econoline",
+      "Explorer",
+      "F150",
+      "F250",
+      "F350",
+      "F350 Super Duty",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1994": [
+      "Aerostar",
+      "Bronco",
+      "Crown Victoria",
+      "E250",
+      "E350",
+      "E350 Econoline",
+      "Explorer",
+      "F150",
+      "F250",
+      "F350",
+      "F350 Super Duty",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1995": [
+      "Aerostar",
+      "Bronco",
+      "Crown Victoria",
+      "E250",
+      "E350",
+      "E350 Econoline",
+      "Explorer",
+      "F150",
+      "F250",
+      "F350",
+      "F350 Super Duty",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1996": [
+      "Aerostar",
+      "Bronco",
+      "Crown Victoria",
+      "E250",
+      "E350",
+      "E350 Econoline",
+      "E450",
+      "E450 Super Duty",
+      "Explorer",
+      "F150",
+      "F250",
+      "F350",
+      "F350 Super Duty",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1997": [
+      "Aerostar",
+      "Crown Victoria",
+      "E150 Van",
+      "E250",
+      "E250 Van",
+      "E350",
+      "E350 Econoline",
+      "Econoline Super Duty",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F250",
+      "F350",
+      "F350 Super Duty",
+      "F450",
+      "Mustang",
+      "Ranger"
+    ],
+    "1998": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250",
+      "E250 Van",
+      "E350",
+      "E350 Econoline",
+      "Econoline Super Duty",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F250",
+      "F350 Super Duty",
+      "Mustang",
+      "Ranger"
+    ],
+    "1999": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250",
+      "E250 Van",
+      "E350",
+      "E350 Super Duty",
+      "E450 Econoline Super Duty",
+      "E450 Super Duty",
+      "E450 Super Duty Van",
+      "E450SD Cutaway",
+      "Econoline Super Duty",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F250",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Mustang",
+      "Ranger"
+    ],
+    "2000": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Stripped Chassis",
+      "E450 Super Duty Van",
+      "Excursion",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Mustang",
+      "Ranger"
+    ],
+    "2001": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Stripped Chassis",
+      "E450 Super Duty",
+      "E450 Super Duty Van",
+      "Escape",
+      "Excursion",
+      "Expedition",
+      "Explorer",
+      "Explorer Sport-Trac",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Mustang",
+      "Ranger"
+    ],
+    "2002": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Econoline Super Duty",
+      "E450 Stripped Chassis",
+      "E450 Super Duty",
+      "E450 Super Duty Van",
+      "Escape",
+      "Excursion",
+      "Expedition",
+      "Explorer",
+      "Explorer Sport-Trac",
+      "F150",
+      "F250 Super Duty",
+      "F350",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Mustang",
+      "Ranger",
+      "Thunderbird"
+    ],
+    "2003": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Econoline Super Duty",
+      "E450 Stripped Chassis",
+      "E450 Super Duty Van",
+      "Escape",
+      "Excursion",
+      "Expedition",
+      "Explorer",
+      "Explorer Sport-Trac",
+      "F150",
+      "F250 Super Duty",
+      "F350",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Mustang",
+      "Ranger",
+      "Thunderbird"
+    ],
+    "2004": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Econoline Super Duty",
+      "E450 Stripped Chassis",
+      "E450 Super Duty Van",
+      "Escape",
+      "Excursion",
+      "Expedition",
+      "Explorer",
+      "Explorer Sport-Trac",
+      "F150",
+      "F250 Super Duty",
+      "F350",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Mustang",
+      "Ranger",
+      "Thunderbird"
+    ],
+    "2005": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty Van",
+      "Escape",
+      "Excursion",
+      "Expedition",
+      "Explorer",
+      "Explorer Sport-Trac",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Five Hundred",
+      "Freestyle",
+      "Mustang",
+      "Navigator",
+      "Ranger",
+      "Thunderbird"
+    ],
+    "2006": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty Van",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Five Hundred",
+      "Freestyle",
+      "Mustang",
+      "Navigator",
+      "Ranger"
+    ],
+    "2007": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty Van",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "Explorer Sport-Trac",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Five Hundred",
+      "Freestyle",
+      "Fusion",
+      "Mustang",
+      "Ranger"
+    ],
+    "2008": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "Explorer Sport-Trac",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Fusion",
+      "Mustang",
+      "Ranger",
+      "Taurus"
+    ],
+    "2009": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "Explorer Sport-Trac",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Flex",
+      "Fusion",
+      "Mustang",
+      "Ranger",
+      "Taurus"
+    ],
+    "2010": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "Explorer Sport-Trac",
+      "F150",
+      "F150 Raptor",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Flex",
+      "Fusion",
+      "Mustang",
+      "Ranger",
+      "Taurus"
+    ],
+    "2011": [
+      "Crown Victoria",
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F150 Raptor",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Flex",
+      "Fusion",
+      "Mustang",
+      "Ranger",
+      "Taurus"
+    ],
+    "2012": [
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F150 Raptor",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Flex",
+      "Fusion",
+      "Mustang",
+      "Taurus"
+    ],
+    "2013": [
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F150 Raptor",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Flex",
+      "Fusion",
+      "MKZ",
+      "Mustang",
+      "Taurus"
+    ],
+    "2014": [
+      "E150 Van",
+      "E250 Van",
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F150 Raptor",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Flex",
+      "Fusion",
+      "MKZ",
+      "Mustang",
+      "Taurus"
+    ],
+    "2015": [
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F53 Motor Home",
+      "F550 Super Duty",
+      "Flex",
+      "Fusion",
+      "MKZ",
+      "Mustang",
+      "Navigator",
+      "Taurus",
+      "Transit 150",
+      "Transit 250",
+      "Transit 350"
+    ],
+    "2016": [
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Flex",
+      "Focus RS",
+      "Fusion",
+      "MKZ",
+      "Mustang",
+      "Navigator",
+      "Taurus",
+      "Transit 150",
+      "Transit 250",
+      "Transit 350"
+    ],
+    "2017": [
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F150 Raptor",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Flex",
+      "Focus RS",
+      "Fusion",
+      "Mustang",
+      "Navigator",
+      "Taurus",
+      "Transit 150",
+      "Transit 250",
+      "Transit 350"
+    ],
+    "2018": [
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Ecosport",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F150 Raptor",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Flex",
+      "Focus RS",
+      "Fusion",
+      "Mustang",
+      "Navigator",
+      "Taurus",
+      "Transit 150",
+      "Transit 250",
+      "Transit 350"
+    ],
+    "2019": [
+      "E350 Super Duty",
+      "E450 Super Duty",
+      "Ecosport",
+      "Edge",
+      "Escape",
+      "Expedition",
+      "Explorer",
+      "F150",
+      "F150 Raptor",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Flex",
+      "Fusion",
+      "Mustang",
+      "Navigator",
+      "Ranger",
+      "Transit 150",
+      "Transit 250",
+      "Transit 350"
+    ],
+    "2020": [
+      "E350 Super Duty",
+      "Ecosport",
+      "Edge",
+      "Expedition",
+      "F150",
+      "F150 Raptor",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Mustang",
+      "Navigator",
+      "Ranger",
+      "Transit 150",
+      "Transit 250",
+      "Transit 350"
+    ],
+    "2021": [
+      "Bronco",
+      "E350 Super Duty",
+      "Ecosport",
+      "Edge",
+      "Expedition",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Mustang",
+      "Navigator",
+      "Ranger",
+      "Transit 150",
+      "Transit 250",
+      "Transit 350"
+    ],
+    "2022": [
+      "Bronco",
+      "E350 Super Duty",
+      "Ecosport",
+      "Expedition",
+      "F150",
+      "F250 Super Duty",
+      "F350 Super Duty",
+      "F450 Super Duty",
+      "F550 Super Duty",
+      "Mustang",
+      "Ranger",
+      "Transit 150",
+      "Transit 250",
+      "Transit 350"
+    ],
+    "2023": [
+      "Bronco",
+      "E350 Super Duty",
+      "Expedition",
+      "F150",
+      "Ranger",
+      "Transit 150",
+      "Transit 250",
+      "Transit 350"
+    ],
+    "2024": [
+      "Expedition",
+      "F150"
+    ],
+    "2025": [
+      "F150"
+    ]
+  },
+  "GMC": {
+    "1973": [
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban"
+    ],
+    "1974": [
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban"
+    ],
+    "1975": [
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban"
+    ],
+    "1976": [
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban"
+    ],
+    "1977": [
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban"
+    ],
+    "1978": [
+      "2500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "Sprint"
+    ],
+    "1979": [
+      "2500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "Sprint"
+    ],
+    "1980": [
+      "2500",
+      "3500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Sprint"
+    ],
+    "1981": [
+      "2500",
+      "3500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "Sprint"
+    ],
+    "1982": [
+      "2500",
+      "3500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "Sprint"
+    ],
+    "1983": [
+      "2500",
+      "3500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Sprint"
+    ],
+    "1984": [
+      "2500",
+      "3500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Sprint"
+    ],
+    "1985": [
+      "2500",
+      "3500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari",
+      "Sprint"
+    ],
+    "1986": [
+      "2500",
+      "3500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari",
+      "Sprint"
+    ],
+    "1987": [
+      "2500",
+      "3500",
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari",
+      "Sprint"
+    ],
+    "1988": [
+      "C10/C1500 Pick Up",
+      "C10/C1500 Suburban",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari"
+    ],
+    "1989": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari",
+      "Sierra 1500"
+    ],
+    "1990": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari",
+      "Sierra 1500"
+    ],
+    "1991": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K10/K1500 Suburban",
+      "K20/K2500 Pick Up",
+      "K20/K2500 Suburban",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari",
+      "Sierra 1500",
+      "Sonoma",
+      "Syclone",
+      "Typhoon"
+    ],
+    "1992": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari",
+      "Sierra 1500",
+      "Sonoma",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Syclone",
+      "Typhoon",
+      "Van 3500",
+      "Yukon 1500"
+    ],
+    "1993": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari",
+      "Sierra 1500",
+      "Sonoma",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Syclone",
+      "Typhoon",
+      "Van 3500",
+      "Yukon 1500"
+    ],
+    "1994": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S15",
+      "S15 Jimmy",
+      "Safari",
+      "Sierra 1500",
+      "Sonoma",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Syclone",
+      "Van 3500",
+      "Yukon 1500",
+      "Yukon 2500"
+    ],
+    "1995": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "G10/G1500 Van",
+      "G20/G2500 Van",
+      "G30/G3500 Van",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S15 Jimmy",
+      "Safari",
+      "Sierra 1500",
+      "Sonoma",
+      "Suburban 1500",
+      "Suburban 2500",
+      "Syclone",
+      "Van 3500",
+      "Yukon 1500"
+    ],
+    "1996": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sonoma",
+      "Suburban 1500",
+      "Syclone",
+      "Van 3500",
+      "Yukon 1500"
+    ],
+    "1997": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sonoma",
+      "Suburban 1500",
+      "Syclone",
+      "Yukon 1500"
+    ],
+    "1998": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "Envoy",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sonoma",
+      "Suburban 1500",
+      "Syclone",
+      "Yukon 1500"
+    ],
+    "1999": [
+      "C10/C1500 Pick Up",
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "Envoy",
+      "Jimmy",
+      "K10/K1500 Pick Up",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Sonoma",
+      "Suburban 1500",
+      "Syclone",
+      "Yukon 1500"
+    ],
+    "2000": [
+      "C20/C2500 Pick Up",
+      "C30/C3500 Pick Up",
+      "Envoy",
+      "Jimmy",
+      "K20/K2500 Pick Up",
+      "K30/K3500 Pick Up",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Sonoma",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2001": [
+      "C30/C3500 Pick Up",
+      "Jimmy",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Sonoma",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2002": [
+      "C30/C3500 Pick Up",
+      "Envoy",
+      "Jimmy",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Sonoma",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2003": [
+      "Envoy",
+      "Jimmy",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Sonoma",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2004": [
+      "Canyon",
+      "Envoy",
+      "Jimmy",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Sonoma",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2005": [
+      "Canyon",
+      "Envoy",
+      "Envoy Denali",
+      "Jimmy",
+      "S15 Jimmy",
+      "Safari",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Sonoma",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2006": [
+      "Canyon",
+      "Envoy",
+      "Envoy Denali",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2007": [
+      "Acadia",
+      "Canyon",
+      "Envoy",
+      "Envoy Denali",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2008": [
+      "Acadia",
+      "Canyon",
+      "Envoy",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2009": [
+      "Acadia",
+      "Canyon",
+      "Envoy",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2010": [
+      "Acadia",
+      "Canyon",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 3500",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2011": [
+      "Acadia",
+      "Canyon",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2012": [
+      "Acadia",
+      "Canyon",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2013": [
+      "Acadia",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali",
+      "Yukon XL 2500"
+    ],
+    "2014": [
+      "Acadia",
+      "Savana 1500",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon 1500 Denali",
+      "Yukon XL 1500",
+      "Yukon XL 1500 Denali"
+    ],
+    "2015": [
+      "Acadia",
+      "Canyon",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon XL",
+      "Yukon XL 1500"
+    ],
+    "2016": [
+      "Acadia",
+      "Canyon",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon XL",
+      "Yukon XL 1500"
+    ],
+    "2017": [
+      "Acadia",
+      "Canyon",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Terrain",
+      "Yukon 1500",
+      "Yukon XL",
+      "Yukon XL 1500"
+    ],
+    "2018": [
+      "Canyon",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Yukon",
+      "Yukon 1500",
+      "Yukon XL",
+      "Yukon XL 1500"
+    ],
+    "2019": [
+      "Canyon",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Yukon",
+      "Yukon 1500",
+      "Yukon XL",
+      "Yukon XL 1500"
+    ],
+    "2020": [
+      "Canyon",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Yukon",
+      "Yukon 1500",
+      "Yukon XL",
+      "Yukon XL 1500"
+    ],
+    "2021": [
+      "Canyon",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Yukon",
+      "Yukon XL",
+      "Yukon XL 1500"
+    ],
+    "2022": [
+      "Canyon",
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Yukon 1500",
+      "Yukon XL",
+      "Yukon XL 1500"
+    ],
+    "2023": [
+      "Savana 2500",
+      "Savana 3500",
+      "Savana 4500",
+      "Sierra 1500",
+      "Sierra 1500 Denali",
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Yukon",
+      "Yukon XL"
+    ],
+    "2024": [
+      "Sierra 2500",
+      "Sierra 2500 Denali",
+      "Sierra 3500",
+      "Sierra 3500 Denali",
+      "Yukon"
+    ],
+    "2025": [
+      "Sierra 2500",
+      "Sierra 3500",
+      "Yukon"
+    ]
+  },
+  "Honda": {
+    "1994": [
+      "Passport"
+    ],
+    "1995": [
+      "Passport"
+    ],
+    "1996": [
+      "Passport"
+    ],
+    "1997": [
+      "CRV",
+      "Passport"
+    ],
+    "1998": [
+      "CRV",
+      "Passport"
+    ],
+    "1999": [
+      "CRV",
+      "Passport"
+    ],
+    "2000": [
+      "CRV",
+      "Passport",
+      "S2000"
+    ],
+    "2001": [
+      "CRV",
+      "Passport",
+      "S2000"
+    ],
+    "2002": [
+      "CRV",
+      "Passport",
+      "S2000"
+    ],
+    "2003": [
+      "CRV",
+      "Element",
+      "Pilot",
+      "S2000"
+    ],
+    "2004": [
+      "CRV",
+      "Element",
+      "Pilot",
+      "S2000"
+    ],
+    "2005": [
+      "CRV",
+      "Element",
+      "Pilot",
+      "S2000"
+    ],
+    "2006": [
+      "CRV",
+      "Element",
+      "Pilot",
+      "Ridgeline",
+      "S2000"
+    ],
+    "2007": [
+      "CRV",
+      "Element",
+      "Pilot",
+      "Ridgeline",
+      "S2000"
+    ],
+    "2008": [
+      "CRV",
+      "Element",
+      "Pilot",
+      "Ridgeline",
+      "S2000"
+    ],
+    "2009": [
+      "CRV",
+      "Element",
+      "Pilot",
+      "Ridgeline",
+      "S2000"
+    ],
+    "2010": [
+      "CRV",
+      "Crosstour",
+      "Element",
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2011": [
+      "CRV",
+      "Crosstour",
+      "Element",
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2012": [
+      "CRV",
+      "Crosstour",
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2013": [
+      "CRV",
+      "Crosstour",
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2014": [
+      "CRV",
+      "Crosstour",
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2015": [
+      "CRV",
+      "Crosstour",
+      "Pilot"
+    ],
+    "2016": [
+      "CRV",
+      "Pilot"
+    ],
+    "2017": [
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2018": [
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2019": [
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2020": [
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2021": [
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2022": [
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2023": [
+      "Pilot",
+      "Ridgeline"
+    ],
+    "2024": [
+      "Pilot"
+    ]
+  },
+  "Infiniti": {
+    "1990": [
+      "J30",
+      "M30",
+      "Q45"
+    ],
+    "1991": [
+      "J30",
+      "M30",
+      "Q45"
+    ],
+    "1992": [
+      "J30",
+      "M30",
+      "Q45"
+    ],
+    "1993": [
+      "J30",
+      "Q45"
+    ],
+    "1994": [
+      "J30",
+      "Q45"
+    ],
+    "1995": [
+      "J30",
+      "Q45"
+    ],
+    "1996": [
+      "J30",
+      "Q45"
+    ],
+    "1997": [
+      "J30",
+      "Q45",
+      "QX4"
+    ],
+    "1998": [
+      "Q45",
+      "QX4"
+    ],
+    "1999": [
+      "Q45",
+      "QX4"
+    ],
+    "2000": [
+      "Q45",
+      "QX4"
+    ],
+    "2001": [
+      "Q45",
+      "QX4"
+    ],
+    "2002": [
+      "Q45",
+      "QX4"
+    ],
+    "2003": [
+      "FX35",
+      "FX45",
+      "G35",
+      "G35X",
+      "M45",
+      "Q45",
+      "QX4"
+    ],
+    "2004": [
+      "FX35",
+      "FX45",
+      "G35",
+      "G35X",
+      "M45",
+      "Q45",
+      "QX56"
+    ],
+    "2005": [
+      "FX35",
+      "FX45",
+      "G35",
+      "G35X",
+      "Q45",
+      "QX56"
+    ],
+    "2006": [
+      "FX35",
+      "FX45",
+      "G35",
+      "G35X",
+      "M35",
+      "M35X",
+      "M45",
+      "Q45",
+      "QX56"
+    ],
+    "2007": [
+      "FX35",
+      "FX45",
+      "G35",
+      "G35X",
+      "M35",
+      "M35X",
+      "M45",
+      "QX56"
+    ],
+    "2008": [
+      "EX35",
+      "FX35",
+      "FX45",
+      "G35",
+      "G35X",
+      "G37",
+      "M35",
+      "M35X",
+      "M45",
+      "M45X",
+      "QX56"
+    ],
+    "2009": [
+      "EX35",
+      "FX35",
+      "FX50",
+      "G37",
+      "G37X",
+      "M35",
+      "M35X",
+      "M45",
+      "M45X",
+      "QX56"
+    ],
+    "2010": [
+      "EX35",
+      "FX35",
+      "FX50",
+      "G37",
+      "G37X",
+      "M35",
+      "M35X",
+      "M45",
+      "M45X",
+      "QX56"
+    ],
+    "2011": [
+      "EX35",
+      "FX35",
+      "FX50",
+      "G25",
+      "G25X",
+      "G37",
+      "G37X",
+      "M37",
+      "M37X",
+      "M56",
+      "QX56"
+    ],
+    "2012": [
+      "EX35",
+      "FX35",
+      "FX50",
+      "G25",
+      "G25X",
+      "G37",
+      "G37X",
+      "M35h",
+      "M37",
+      "M37X",
+      "M56",
+      "QX56"
+    ],
+    "2013": [
+      "EX37",
+      "FX37",
+      "FX50",
+      "G37",
+      "G37X",
+      "JX35",
+      "M35h",
+      "M37",
+      "M37X",
+      "M56",
+      "QX56",
+      "QX60"
+    ],
+    "2014": [
+      "Q50",
+      "Q60",
+      "Q70",
+      "QX50",
+      "QX60",
+      "QX70",
+      "QX80"
+    ],
+    "2015": [
+      "Q40",
+      "Q40X",
+      "Q50",
+      "Q60",
+      "Q70",
+      "QX50",
+      "QX60",
+      "QX70",
+      "QX80"
+    ],
+    "2016": [
+      "Q50",
+      "Q60",
+      "Q70",
+      "QX50",
+      "QX60",
+      "QX70",
+      "QX80"
+    ],
+    "2017": [
+      "Armada",
+      "Q50",
+      "Q60",
+      "Q70",
+      "QX50",
+      "QX60",
+      "QX70",
+      "QX80"
+    ],
+    "2018": [
+      "Armada",
+      "Q50",
+      "Q60",
+      "Q70",
+      "QX60",
+      "QX80"
+    ],
+    "2019": [
+      "Q50",
+      "Q60",
+      "Q70",
+      "QX60"
+    ],
+    "2020": [
+      "Q50",
+      "Q60",
+      "QX60"
+    ]
+  },
+  "International": {
+    "2001": [
+      "4300",
+      "4700"
+    ],
+    "2002": [
+      "4300"
+    ],
+    "2003": [
+      "4300"
+    ],
+    "2004": [
+      "4300"
+    ],
+    "2005": [
+      "4300"
+    ],
+    "2006": [
+      "4300"
+    ],
+    "2007": [
+      "4300"
+    ],
+    "2008": [
+      "4300",
+      "4300M7"
+    ],
+    "2009": [
+      "4300",
+      "7400"
+    ],
+    "2010": [
+      "4300"
+    ],
+    "2011": [
+      "4300",
+      "4300M7"
+    ],
+    "2012": [
+      "4300"
+    ],
+    "2013": [
+      "4300"
+    ],
+    "2015": [
+      "4300"
+    ],
+    "2016": [
+      "4300"
+    ]
+  },
+  "Jeep": {
+    "1967": [
+      "JEEPSTER"
+    ],
+    "1968": [
+      "JEEPSTER"
+    ],
+    "1969": [
+      "JEEPSTER"
+    ],
+    "1970": [
+      "JEEPSTER"
+    ],
+    "1971": [
+      "JEEPSTER"
+    ],
+    "1972": [
+      "CJ6",
+      "JEEPSTER"
+    ],
+    "1973": [
+      "CJ6",
+      "JEEPSTER"
+    ],
+    "1974": [
+      "CJ6",
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1975": [
+      "CJ6",
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1976": [
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1977": [
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1978": [
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1979": [
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1980": [
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1981": [
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1982": [
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1983": [
+      "Cherokee",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1984": [
+      "Cherokee",
+      "Grand Wagoneer",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1985": [
+      "Cherokee",
+      "Grand Wagoneer",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1986": [
+      "Cherokee",
+      "Comanche",
+      "Grand Wagoneer",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer"
+    ],
+    "1987": [
+      "Cherokee",
+      "Comanche",
+      "Grand Wagoneer",
+      "J-Series Truck (J10)",
+      "J-Series Truck (J20)",
+      "Wagoneer",
+      "Wrangler"
+    ],
+    "1988": [
+      "Cherokee",
+      "Comanche",
+      "Grand Wagoneer",
+      "J-Series Truck (J20)",
+      "Wagoneer",
+      "Wrangler"
+    ],
+    "1989": [
+      "Cherokee",
+      "Comanche",
+      "Grand Wagoneer",
+      "Wagoneer",
+      "Wrangler"
+    ],
+    "1990": [
+      "Cherokee",
+      "Comanche",
+      "Grand Wagoneer",
+      "Wagoneer",
+      "Wrangler"
+    ],
+    "1991": [
+      "Cherokee",
+      "Comanche",
+      "Grand Wagoneer",
+      "Wrangler"
+    ],
+    "1992": [
+      "Cherokee",
+      "Comanche",
+      "Wrangler"
+    ],
+    "1993": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Grand Wagoneer",
+      "Wrangler"
+    ],
+    "1994": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "1995": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "1996": [
+      "Cherokee",
+      "Grand Cherokee"
+    ],
+    "1997": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "1998": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "1999": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "2000": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "2001": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "2002": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Liberty",
+      "Wrangler"
+    ],
+    "2003": [
+      "Grand Cherokee",
+      "Liberty",
+      "Wrangler"
+    ],
+    "2004": [
+      "Grand Cherokee",
+      "Liberty",
+      "Wrangler"
+    ],
+    "2005": [
+      "Grand Cherokee",
+      "Liberty",
+      "Wrangler"
+    ],
+    "2006": [
+      "Commander",
+      "Grand Cherokee",
+      "Liberty",
+      "Wrangler"
+    ],
+    "2007": [
+      "Commander",
+      "Compass",
+      "Grand Cherokee",
+      "Liberty",
+      "Patriot",
+      "Wrangler"
+    ],
+    "2008": [
+      "Commander",
+      "Compass",
+      "Grand Cherokee",
+      "Liberty",
+      "Patriot",
+      "Wrangler"
+    ],
+    "2009": [
+      "Commander",
+      "Compass",
+      "Grand Cherokee",
+      "Liberty",
+      "Patriot",
+      "Wrangler"
+    ],
+    "2010": [
+      "Commander",
+      "Compass",
+      "Grand Cherokee",
+      "Liberty",
+      "Patriot",
+      "Wrangler"
+    ],
+    "2011": [
+      "Compass",
+      "Grand Cherokee",
+      "Liberty",
+      "Patriot",
+      "Wrangler"
+    ],
+    "2012": [
+      "Compass",
+      "Grand Cherokee",
+      "Liberty",
+      "Patriot",
+      "Wrangler"
+    ],
+    "2013": [
+      "Compass",
+      "Grand Cherokee",
+      "Patriot",
+      "Wrangler"
+    ],
+    "2014": [
+      "Cherokee",
+      "Compass",
+      "Grand Cherokee",
+      "Patriot",
+      "Wrangler"
+    ],
+    "2015": [
+      "Cherokee",
+      "Compass",
+      "Grand Cherokee",
+      "Patriot",
+      "Renegade",
+      "Wrangler"
+    ],
+    "2016": [
+      "Cherokee",
+      "Compass",
+      "Grand Cherokee",
+      "Patriot",
+      "Renegade",
+      "Wrangler"
+    ],
+    "2017": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Renegade",
+      "Wrangler"
+    ],
+    "2018": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Renegade",
+      "Wrangler"
+    ],
+    "2019": [
+      "Cherokee",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "2020": [
+      "Cherokee",
+      "Gladiator",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "2021": [
+      "Cherokee",
+      "Gladiator",
+      "Grand Cherokee",
+      "Wrangler"
+    ],
+    "2022": [
+      "Cherokee",
+      "Gladiator",
+      "Grand Cherokee",
+      "Grand Wagoneer",
+      "Wrangler"
+    ],
+    "2023": [
+      "Cherokee",
+      "Gladiator",
+      "Wrangler"
+    ],
+    "2024": [
+      "Gladiator",
+      "Wrangler"
+    ],
+    "2025": [
+      "Gladiator",
+      "Wrangler"
+    ]
+  },
+  "Kia": {
+    "1995": [
+      "Sportage"
+    ],
+    "1996": [
+      "Sportage"
+    ],
+    "1997": [
+      "Sportage"
+    ],
+    "1998": [
+      "Sportage"
+    ],
+    "1999": [
+      "Sportage"
+    ],
+    "2000": [
+      "Sportage"
+    ],
+    "2001": [
+      "Sportage"
+    ],
+    "2002": [
+      "Sportage"
+    ],
+    "2003": [
+      "Sorento"
+    ],
+    "2004": [
+      "Sorento"
+    ],
+    "2005": [
+      "Sorento",
+      "Sportage"
+    ],
+    "2006": [
+      "Sorento",
+      "Sportage"
+    ],
+    "2007": [
+      "Sorento",
+      "Sportage"
+    ],
+    "2008": [
+      "Sorento",
+      "Sportage"
+    ],
+    "2009": [
+      "Borrego",
+      "Sorento",
+      "Sportage"
+    ],
+    "2010": [
+      "Borrego",
+      "Sportage"
+    ],
+    "2011": [
+      "Borrego",
+      "Sorento",
+      "Sportage"
+    ],
+    "2012": [
+      "Sorento",
+      "Sportage"
+    ],
+    "2013": [
+      "Sorento",
+      "Sportage"
+    ],
+    "2014": [
+      "Sorento",
+      "Sportage"
+    ],
+    "2015": [
+      "Sorento",
+      "Sportage"
+    ],
+    "2016": [
+      "Sportage",
+      "Tucson"
+    ],
+    "2017": [
+      "Tucson"
+    ],
+    "2018": [
+      "Stinger",
+      "Tucson"
+    ],
+    "2019": [
+      "K900",
+      "Stinger"
+    ],
+    "2020": [
+      "K900",
+      "Stinger"
+    ]
+  },
+  "Lexus": {
+    "1990": [
+      "LS400"
+    ],
+    "1991": [
+      "LS400"
+    ],
+    "1992": [
+      "LS400",
+      "SC300",
+      "SC400"
+    ],
+    "1993": [
+      "GS300",
+      "LS400",
+      "SC300",
+      "SC400"
+    ],
+    "1994": [
+      "GS300",
+      "LS400",
+      "SC300",
+      "SC400"
+    ],
+    "1995": [
+      "GS300",
+      "LS400",
+      "SC300",
+      "SC400"
+    ],
+    "1996": [
+      "GS300",
+      "LS400",
+      "LX450",
+      "SC300",
+      "SC400"
+    ],
+    "1997": [
+      "GS300",
+      "LS400",
+      "LX450",
+      "SC300",
+      "SC400"
+    ],
+    "1998": [
+      "GS300",
+      "GS400",
+      "LS400",
+      "LX450",
+      "LX470",
+      "SC300",
+      "SC400"
+    ],
+    "1999": [
+      "GS300",
+      "GS400",
+      "LS400",
+      "LX470",
+      "RX300",
+      "SC300",
+      "SC400"
+    ],
+    "2000": [
+      "GS300",
+      "GS400",
+      "LS400",
+      "LX470",
+      "RX300",
+      "SC300",
+      "SC400"
+    ],
+    "2001": [
+      "GS300",
+      "GS430",
+      "IS300",
+      "LS430",
+      "LX470",
+      "RX300"
+    ],
+    "2002": [
+      "GS300",
+      "GS430",
+      "IS300",
+      "LS430",
+      "LX470",
+      "RX300",
+      "SC430"
+    ],
+    "2003": [
+      "GS300",
+      "GS430",
+      "GX470",
+      "IS300",
+      "LS430",
+      "LX470",
+      "RX300",
+      "SC430"
+    ],
+    "2004": [
+      "GS300",
+      "GS430",
+      "GX470",
+      "IS300",
+      "LS430",
+      "LX470",
+      "RX330",
+      "SC430"
+    ],
+    "2005": [
+      "GS300",
+      "GS430",
+      "GX470",
+      "IS300",
+      "LS430",
+      "LX470",
+      "RX330",
+      "SC430"
+    ],
+    "2006": [
+      "GS300",
+      "GS430",
+      "GX470",
+      "IS250",
+      "IS350",
+      "LS430",
+      "LX470",
+      "RX330",
+      "SC430"
+    ],
+    "2007": [
+      "GS350",
+      "GS430",
+      "GS450H",
+      "GX470",
+      "IS250",
+      "IS350",
+      "LS460",
+      "LX470",
+      "RX330",
+      "RX350",
+      "SC430"
+    ],
+    "2008": [
+      "GS350",
+      "GS450H",
+      "GS460",
+      "GX470",
+      "IS F",
+      "IS250",
+      "IS350",
+      "LS460",
+      "LS600HL",
+      "LX570",
+      "RX350",
+      "SC430"
+    ],
+    "2009": [
+      "GS350",
+      "GS450H",
+      "GS460",
+      "GX470",
+      "IS F",
+      "IS250",
+      "IS350",
+      "LS460",
+      "LS600HL",
+      "LX570",
+      "RX350",
+      "SC430"
+    ],
+    "2010": [
+      "GS350",
+      "GS450H",
+      "GS460",
+      "GX460",
+      "IS F",
+      "IS250",
+      "IS350",
+      "LS460",
+      "LS600HL",
+      "LX570",
+      "RX350",
+      "SC430"
+    ],
+    "2011": [
+      "GS350",
+      "GS450H",
+      "GS460",
+      "GX460",
+      "IS F",
+      "IS250",
+      "IS350",
+      "LS460",
+      "LS600HL",
+      "LX570",
+      "RX350"
+    ],
+    "2012": [
+      "GS350",
+      "GX460",
+      "IS F",
+      "IS250",
+      "IS350",
+      "LS460",
+      "LS600HL",
+      "LX570",
+      "RX350"
+    ],
+    "2013": [
+      "GS350",
+      "GS450H",
+      "GX460",
+      "IS F",
+      "IS250",
+      "IS350",
+      "LS460",
+      "LS600HL",
+      "LX570",
+      "RX350"
+    ],
+    "2014": [
+      "GS350",
+      "GS450H",
+      "GX460",
+      "IS F",
+      "IS250",
+      "IS350",
+      "LS460",
+      "LS600HL",
+      "LX570",
+      "RX350"
+    ],
+    "2015": [
+      "GS350",
+      "GS450H",
+      "GX460",
+      "IS250",
+      "IS350",
+      "LS460",
+      "LS600HL",
+      "LX570",
+      "NX200T",
+      "NX300h",
+      "RC F",
+      "RC350",
+      "RX350"
+    ],
+    "2016": [
+      "GS F",
+      "GS200T",
+      "GS350",
+      "GS450H",
+      "GX460",
+      "IS200T",
+      "IS300",
+      "IS350",
+      "LS460",
+      "LS600HL",
+      "LX570",
+      "NX200T",
+      "NX300h",
+      "RC F",
+      "RC200T",
+      "RC300",
+      "RC350"
+    ],
+    "2017": [
+      "GS F",
+      "GS200T",
+      "GS350",
+      "GS450H",
+      "GX460",
+      "IS200T",
+      "IS300",
+      "IS350",
+      "LS460",
+      "LX570",
+      "NX200T",
+      "NX300h",
+      "RC F",
+      "RC200T",
+      "RC300",
+      "RC350"
+    ],
+    "2018": [
+      "GS F",
+      "GS300",
+      "GS350",
+      "GS450H",
+      "IS300",
+      "IS350",
+      "LS500",
+      "LX570",
+      "NX300",
+      "NX300h",
+      "RC F",
+      "RC300",
+      "RC350"
+    ],
+    "2019": [
+      "GS300",
+      "GS350",
+      "IS300",
+      "IS350",
+      "LS500",
+      "LX570",
+      "NX300",
+      "RC F",
+      "RC300",
+      "RC350"
+    ],
+    "2020": [
+      "IS300",
+      "IS350",
+      "LS500",
+      "LX570",
+      "NX300"
+    ],
+    "2021": [
+      "IS300",
+      "IS350",
+      "LX570",
+      "NX300"
+    ],
+    "2022": [
+      "IS300",
+      "IS350"
+    ],
+    "2023": [
+      "IS300",
+      "IS350"
+    ],
+    "2024": [
+      "IS300",
+      "IS350"
+    ],
+    "2025": [
+      "IS300",
+      "IS350"
+    ]
+  },
+  "Mazda": {
+    "1979": [
+      "626",
+      "GLC",
+      "RX7"
+    ],
+    "1980": [
+      "626",
+      "GLC",
+      "RX7"
+    ],
+    "1981": [
+      "626",
+      "RX7"
+    ],
+    "1982": [
+      "626",
+      "GLC",
+      "RX7"
+    ],
+    "1983": [
+      "GLC",
+      "RX7"
+    ],
+    "1984": [
+      "GLC",
+      "RX7"
+    ],
+    "1985": [
+      "GLC",
+      "RX7"
+    ],
+    "1986": [
+      "B2000",
+      "GLC",
+      "RX7"
+    ],
+    "1987": [
+      "B2000",
+      "B2200",
+      "B2600",
+      "RX7"
+    ],
+    "1988": [
+      "929",
+      "B2200",
+      "B2600",
+      "RX7"
+    ],
+    "1989": [
+      "929",
+      "B2200",
+      "B2600",
+      "MPV",
+      "RX7"
+    ],
+    "1990": [
+      "929",
+      "B2200",
+      "B2600",
+      "MPV",
+      "MX5-Miata",
+      "RX7"
+    ],
+    "1991": [
+      "929",
+      "B2200",
+      "B2600",
+      "MPV",
+      "MX5-Miata",
+      "Navajo",
+      "RX7"
+    ],
+    "1992": [
+      "929",
+      "B2200",
+      "B2600",
+      "MPV",
+      "MX5-Miata",
+      "Navajo",
+      "RX7"
+    ],
+    "1993": [
+      "929",
+      "B2200",
+      "B2600",
+      "MPV",
+      "MX5-Miata",
+      "Navajo",
+      "RX7"
+    ],
+    "1994": [
+      "929",
+      "B2300",
+      "B3000",
+      "B4000",
+      "MPV",
+      "MX5-Miata",
+      "Navajo",
+      "RX7"
+    ],
+    "1995": [
+      "929",
+      "B2300",
+      "B3000",
+      "B4000",
+      "MPV",
+      "MX5-Miata",
+      "RX7"
+    ],
+    "1996": [
+      "B2300",
+      "B3000",
+      "B4000",
+      "MPV",
+      "MX5-Miata"
+    ],
+    "1997": [
+      "B2300",
+      "B3000",
+      "B4000",
+      "MPV",
+      "MX5-Miata"
+    ],
+    "1998": [
+      "B2300",
+      "B2500",
+      "B3000",
+      "B4000",
+      "MPV"
+    ],
+    "1999": [
+      "B2300",
+      "B2500",
+      "B3000",
+      "B4000",
+      "MX5-Miata"
+    ],
+    "2000": [
+      "B2300",
+      "B2500",
+      "B3000",
+      "B4000",
+      "MX5-Miata"
+    ],
+    "2001": [
+      "B2300",
+      "B2500",
+      "B3000",
+      "B4000",
+      "MX5-Miata",
+      "Tribute"
+    ],
+    "2002": [
+      "B2300",
+      "B3000",
+      "B4000",
+      "MX5-Miata",
+      "Tribute"
+    ],
+    "2003": [
+      "B2300",
+      "B3000",
+      "B4000",
+      "MX5-Miata",
+      "Tribute"
+    ],
+    "2004": [
+      "B2300",
+      "B3000",
+      "B4000",
+      "MX5-Miata",
+      "RX8",
+      "Tribute"
+    ],
+    "2005": [
+      "B2300",
+      "B3000",
+      "B4000",
+      "MX5-Miata",
+      "RX8",
+      "Tribute"
+    ],
+    "2006": [
+      "B2300",
+      "B3000",
+      "B4000",
+      "MX5-Miata",
+      "RX8",
+      "Tribute"
+    ],
+    "2007": [
+      "B2300",
+      "B3000",
+      "B4000",
+      "CX-7",
+      "CX-9",
+      "MX5-Miata",
+      "RX8"
+    ],
+    "2008": [
+      "B2300",
+      "B3000",
+      "B4000",
+      "CX-7",
+      "CX-9",
+      "MX5-Miata",
+      "RX8",
+      "Tribute"
+    ],
+    "2009": [
+      "B2300",
+      "B4000",
+      "CX-7",
+      "CX-9",
+      "MX5-Miata",
+      "RX8",
+      "Tribute"
+    ],
+    "2010": [
+      "B2300",
+      "B4000",
+      "CX-7",
+      "CX-9",
+      "MX5-Miata",
+      "RX8",
+      "Tribute"
+    ],
+    "2011": [
+      "CX-7",
+      "CX-9",
+      "MX5-Miata",
+      "RX8",
+      "Tribute"
+    ],
+    "2012": [
+      "CX-7",
+      "CX-9",
+      "MX5-Miata"
+    ],
+    "2013": [
+      "CX-5",
+      "CX-9",
+      "MX5-Miata"
+    ],
+    "2014": [
+      "CX-5",
+      "CX-9",
+      "MX5-Miata"
+    ],
+    "2015": [
+      "CX-5",
+      "CX-9"
+    ],
+    "2016": [
+      "CX-5",
+      "MX5-Miata"
+    ],
+    "2017": [
+      "CX-5",
+      "MX5-Miata"
+    ],
+    "2018": [
+      "MX5-Miata"
+    ],
+    "2019": [
+      "MX5-Miata"
+    ],
+    "2020": [
+      "MX5-Miata"
+    ],
+    "2021": [
+      "MX5-Miata"
+    ],
+    "2022": [
+      "MX5-Miata"
+    ]
+  },
+  "Mercedes": {
+    "1957": [
+      "300SL"
+    ],
+    "1958": [
+      "300SL"
+    ],
+    "1959": [
+      "300SL"
+    ],
+    "1960": [
+      "300SL"
+    ],
+    "1961": [
+      "300SL"
+    ],
+    "1962": [
+      "300SL"
+    ],
+    "1963": [
+      "300SL"
+    ],
+    "1965": [
+      "230SL",
+      "250S",
+      "250SE"
+    ],
+    "1966": [
+      "230SL",
+      "250S",
+      "250SE"
+    ],
+    "1967": [
+      "220D",
+      "250S",
+      "250SE",
+      "250SL",
+      "280S",
+      "280SE",
+      "280SEC",
+      "600"
+    ],
+    "1968": [
+      "220D",
+      "230",
+      "250",
+      "250S",
+      "250SE",
+      "280S",
+      "280SE",
+      "280SEC",
+      "280SEL",
+      "280SL",
+      "300SEL",
+      "600"
+    ],
+    "1969": [
+      "220",
+      "220D",
+      "230",
+      "250",
+      "250S",
+      "250SE",
+      "280S",
+      "280SE",
+      "280SEC",
+      "280SEL",
+      "280SL",
+      "300SEL",
+      "600"
+    ],
+    "1970": [
+      "220",
+      "220D",
+      "250",
+      "250C",
+      "280S",
+      "280SE",
+      "280SEC",
+      "280SEL",
+      "280SL",
+      "300SEL",
+      "600"
+    ],
+    "1971": [
+      "220",
+      "220D",
+      "250",
+      "250C",
+      "280S",
+      "280SE",
+      "280SEC",
+      "280SEL",
+      "280SL",
+      "300SEL",
+      "600"
+    ],
+    "1972": [
+      "220",
+      "220D",
+      "250",
+      "250C",
+      "280SE",
+      "300SEL",
+      "450SE",
+      "450SL",
+      "450SLC",
+      "600"
+    ],
+    "1973": [
+      "220",
+      "220D",
+      "240D",
+      "280",
+      "280C",
+      "280SE",
+      "300SEL",
+      "450SE",
+      "450SEL",
+      "450SL",
+      "450SLC"
+    ],
+    "1974": [
+      "230",
+      "240D",
+      "280",
+      "280C",
+      "450SE",
+      "450SEL",
+      "450SL",
+      "450SLC"
+    ],
+    "1975": [
+      "230",
+      "240D",
+      "280",
+      "280C",
+      "280S",
+      "300D",
+      "450SE",
+      "450SEL",
+      "450SL",
+      "450SLC"
+    ],
+    "1976": [
+      "230",
+      "240D",
+      "280",
+      "280C",
+      "280S",
+      "300D",
+      "450SE",
+      "450SEL",
+      "450SL",
+      "450SLC"
+    ],
+    "1977": [
+      "240D",
+      "280E",
+      "280SE",
+      "300D",
+      "450SE",
+      "450SEL",
+      "450SL",
+      "450SLC"
+    ],
+    "1978": [
+      "240D",
+      "280E",
+      "280SE",
+      "300CD",
+      "300D",
+      "300SD",
+      "450SE",
+      "450SEL",
+      "450SL",
+      "450SLC"
+    ],
+    "1979": [
+      "240D",
+      "280CE",
+      "280E",
+      "280SE",
+      "300CD",
+      "300D",
+      "300SD",
+      "300TD",
+      "450SE",
+      "450SEL",
+      "450SL",
+      "450SLC"
+    ],
+    "1980": [
+      "240D",
+      "280CE",
+      "280E",
+      "280SE",
+      "300CD",
+      "300D",
+      "300SD",
+      "300TD",
+      "450SE",
+      "450SEL",
+      "450SL",
+      "450SLC"
+    ],
+    "1981": [
+      "240D",
+      "280CE",
+      "280E",
+      "300CD",
+      "300D",
+      "300SD",
+      "300TD",
+      "380SE",
+      "380SEL",
+      "380SL",
+      "380SLC"
+    ],
+    "1982": [
+      "240D",
+      "300CD",
+      "300D",
+      "300SD",
+      "300TD",
+      "380SEC",
+      "380SEL",
+      "380SL"
+    ],
+    "1983": [
+      "240D",
+      "300CD",
+      "300D",
+      "300SD",
+      "300TD",
+      "380SEC",
+      "380SEL",
+      "380SL"
+    ],
+    "1984": [
+      "190D",
+      "190E",
+      "300CD",
+      "300D",
+      "300SD",
+      "300TD",
+      "380SE",
+      "380SL",
+      "500SEC",
+      "500SEL"
+    ],
+    "1985": [
+      "190D",
+      "190E",
+      "300CD",
+      "300D",
+      "300SD",
+      "300TD",
+      "380SE",
+      "380SL",
+      "500SEC",
+      "500SEL"
+    ],
+    "1986": [
+      "190D",
+      "190E",
+      "300D",
+      "300E",
+      "300SDL",
+      "420SEL",
+      "560SEC",
+      "560SEL",
+      "560SL"
+    ],
+    "1987": [
+      "190D",
+      "190E",
+      "260E",
+      "300D",
+      "300E",
+      "300SDL",
+      "300TD",
+      "420SEL",
+      "560SEC",
+      "560SEL",
+      "560SL"
+    ],
+    "1988": [
+      "190D",
+      "190E",
+      "260E",
+      "300CE",
+      "300E",
+      "300SE",
+      "300SEL",
+      "300TE",
+      "420SEL",
+      "560SEC",
+      "560SEL",
+      "560SL"
+    ],
+    "1989": [
+      "190D",
+      "190E",
+      "260E",
+      "300CE",
+      "300E",
+      "300SE",
+      "300SEL",
+      "300TE",
+      "420SEL",
+      "560SEC",
+      "560SEL",
+      "560SL"
+    ],
+    "1990": [
+      "190E",
+      "260E",
+      "300CE",
+      "300D",
+      "300E",
+      "300SE",
+      "300SEL",
+      "300SL",
+      "300TE",
+      "350SD",
+      "350SDL",
+      "420SEL",
+      "500SL",
+      "560SEC",
+      "560SEL"
+    ],
+    "1991": [
+      "190E",
+      "260E",
+      "300CE",
+      "300D",
+      "300E",
+      "300SE",
+      "300SEL",
+      "300SL",
+      "300TE",
+      "350SD",
+      "350SDL",
+      "420SEL",
+      "500SL",
+      "560SEC",
+      "560SEL"
+    ],
+    "1992": [
+      "190E",
+      "260E",
+      "300CE",
+      "300D",
+      "300E",
+      "300SD",
+      "300SE",
+      "300SL",
+      "300TE",
+      "400E",
+      "400SE",
+      "500E",
+      "500SEL",
+      "500SL",
+      "600SEL",
+      "S350"
+    ],
+    "1993": [
+      "190E",
+      "300CE",
+      "300D",
+      "300E",
+      "300SD",
+      "300SE",
+      "300SL",
+      "300TE",
+      "400E",
+      "400SEL",
+      "500E",
+      "500SEC",
+      "500SEL",
+      "500SL",
+      "600SEC",
+      "600SEL",
+      "S350",
+      "S600",
+      "SL600"
+    ],
+    "1994": [
+      "300D",
+      "600SEC",
+      "600SL",
+      "C220",
+      "C280",
+      "E320",
+      "E420",
+      "E500",
+      "S320",
+      "S350",
+      "S350D",
+      "S420",
+      "S500",
+      "S600",
+      "SL320",
+      "SL500"
+    ],
+    "1995": [
+      "300D",
+      "600SEC",
+      "600SL",
+      "C220",
+      "C280",
+      "C36",
+      "E300D",
+      "E320",
+      "E420",
+      "E500",
+      "S320",
+      "S350",
+      "S350D",
+      "S420",
+      "S500",
+      "S600",
+      "SL320",
+      "SL500"
+    ],
+    "1996": [
+      "300D",
+      "500SEL",
+      "600SEL",
+      "C220",
+      "C280",
+      "C36",
+      "E300D",
+      "E320",
+      "S320",
+      "S420",
+      "S500",
+      "S600",
+      "SL320",
+      "SL500",
+      "SL600"
+    ],
+    "1997": [
+      "300D",
+      "500SEL",
+      "600SEL",
+      "C230",
+      "C280",
+      "C36",
+      "E300D",
+      "E320",
+      "E420",
+      "S320",
+      "S420",
+      "S500",
+      "S600",
+      "SL320",
+      "SL500",
+      "SL600",
+      "SLK230"
+    ],
+    "1998": [
+      "300D",
+      "500SEL",
+      "600SEL",
+      "C230",
+      "C280",
+      "C43 AMG",
+      "CL500",
+      "CL600",
+      "CLK320",
+      "E300TD",
+      "E320",
+      "E430",
+      "ML230",
+      "ML320",
+      "S320",
+      "S420",
+      "S500",
+      "S600",
+      "SL500",
+      "SL600",
+      "SLK230"
+    ],
+    "1999": [
+      "300D",
+      "500SEL",
+      "600SEL",
+      "C230",
+      "C280",
+      "C43 AMG",
+      "CL500",
+      "CL600",
+      "CLK320",
+      "CLK430",
+      "E300TD",
+      "E320",
+      "E430",
+      "E55 AMG",
+      "ML230",
+      "ML270CDI",
+      "ML320",
+      "ML430",
+      "S320",
+      "S420",
+      "S500",
+      "S600",
+      "SL500",
+      "SL600",
+      "SLK230"
+    ],
+    "2000": [
+      "300D",
+      "C230",
+      "C280",
+      "C43 AMG",
+      "CL500",
+      "CLK320",
+      "CLK430",
+      "E320",
+      "E430",
+      "E55 AMG",
+      "ML230",
+      "ML270CDI",
+      "ML320",
+      "ML430",
+      "ML55 AMG",
+      "S430",
+      "S500",
+      "SL500",
+      "SL600",
+      "SLK230"
+    ],
+    "2001": [
+      "300D",
+      "C240",
+      "C320",
+      "CL500",
+      "CL55 AMG",
+      "CL600",
+      "CLK320",
+      "CLK430",
+      "CLK55 AMG",
+      "E320",
+      "E430",
+      "E55 AMG",
+      "ML270CDI",
+      "ML320",
+      "ML430",
+      "ML55 AMG",
+      "S430",
+      "S500",
+      "S55 AMG",
+      "SL500",
+      "SL600",
+      "SLK230",
+      "SLK320"
+    ],
+    "2002": [
+      "300D",
+      "C230",
+      "C240",
+      "C32",
+      "C320",
+      "CL500",
+      "CL55 AMG",
+      "CL600",
+      "CLK320",
+      "CLK430",
+      "CLK55 AMG",
+      "E320",
+      "E430",
+      "E500",
+      "E55 AMG",
+      "G500",
+      "ML320",
+      "ML500",
+      "ML55 AMG",
+      "S430",
+      "S500",
+      "S55 AMG",
+      "SL500",
+      "SL600",
+      "SLK230",
+      "SLK32 AMG",
+      "SLK320"
+    ],
+    "2003": [
+      "300D",
+      "C230",
+      "C240",
+      "C32 AMG",
+      "C320",
+      "CL500",
+      "CL55 AMG",
+      "CL600",
+      "CLK320",
+      "CLK430",
+      "CLK500",
+      "CLK55 AMG",
+      "E320",
+      "E500",
+      "E55 AMG",
+      "G500",
+      "G55",
+      "ML320",
+      "ML350",
+      "ML500",
+      "ML55 AMG",
+      "S430",
+      "S500",
+      "S55 AMG",
+      "S600",
+      "SL55",
+      "SLK230",
+      "SLK32 AMG",
+      "SLK320"
+    ],
+    "2004": [
+      "C230",
+      "C240",
+      "C32 AMG",
+      "C320",
+      "CL500",
+      "CL55 AMG",
+      "CL600",
+      "CLK320",
+      "CLK500",
+      "CLK55 AMG",
+      "E320",
+      "E500",
+      "E55 AMG",
+      "G500",
+      "G55",
+      "ML350",
+      "ML500",
+      "S430",
+      "S500",
+      "S55 AMG",
+      "S600",
+      "SL500",
+      "SL55",
+      "SL600",
+      "SLK230",
+      "SLK32 AMG",
+      "SLK320"
+    ],
+    "2005": [
+      "C230",
+      "C240",
+      "C320",
+      "C55",
+      "CL500",
+      "CL55 AMG",
+      "CL600",
+      "CL65 AMG",
+      "CLK320",
+      "CLK500",
+      "CLK55 AMG",
+      "E320",
+      "E320 CDI",
+      "E500",
+      "E55 AMG",
+      "G500",
+      "G55",
+      "ML350",
+      "ML500",
+      "S430",
+      "S500",
+      "S55 AMG",
+      "S600",
+      "SL500",
+      "SL55",
+      "SL600",
+      "SL65",
+      "SLK350",
+      "SLK55"
+    ],
+    "2006": [
+      "C230",
+      "C280",
+      "C350",
+      "C55",
+      "CL500",
+      "CL55 AMG",
+      "CL600",
+      "CL65 AMG",
+      "CLK350",
+      "CLK500",
+      "CLK55 AMG",
+      "CLS500",
+      "CLS55 AMG",
+      "E320 CDI",
+      "E350",
+      "E500",
+      "E55 AMG",
+      "G500",
+      "G55",
+      "ML350",
+      "ML500",
+      "R350",
+      "R500",
+      "S350",
+      "S430",
+      "S500",
+      "S55 AMG",
+      "S600",
+      "S65",
+      "SL500",
+      "SL55",
+      "SL600",
+      "SL65",
+      "SLK280",
+      "SLK350",
+      "SLK55"
+    ],
+    "2007": [
+      "C230",
+      "C280",
+      "C350",
+      "CL550",
+      "CL600",
+      "CLK350",
+      "CLK550",
+      "CLK63",
+      "CLS550",
+      "CLS63",
+      "E280",
+      "E320",
+      "E350",
+      "E500",
+      "E550",
+      "E63",
+      "G500",
+      "G55",
+      "GL320",
+      "GL450",
+      "ML320",
+      "ML350",
+      "ML500",
+      "ML63",
+      "R320",
+      "R350",
+      "R500",
+      "R63",
+      "S450",
+      "S550",
+      "S600",
+      "S65",
+      "SL55",
+      "SL550",
+      "SL600",
+      "SL65",
+      "SLK280",
+      "SLK350",
+      "SLK55"
+    ],
+    "2008": [
+      "C230",
+      "C300",
+      "C350",
+      "C63",
+      "CL550",
+      "CL600",
+      "CL65 AMG",
+      "CLK350",
+      "CLK550",
+      "CLK63",
+      "CLS550",
+      "CLS63",
+      "E300",
+      "E320",
+      "E350",
+      "E500",
+      "E550",
+      "E63",
+      "G500",
+      "G55",
+      "GL320",
+      "GL450",
+      "GL550",
+      "ML320",
+      "ML350",
+      "ML550",
+      "ML63",
+      "R320",
+      "R350",
+      "R550",
+      "S450",
+      "S550",
+      "S600",
+      "S63",
+      "S65",
+      "SL55",
+      "SL550",
+      "SL600",
+      "SL65",
+      "SLK280",
+      "SLK350",
+      "SLK55"
+    ],
+    "2009": [
+      "C230",
+      "C300",
+      "C350",
+      "C63",
+      "CL550",
+      "CL600",
+      "CL65 AMG",
+      "CLK350",
+      "CLK550",
+      "CLK63",
+      "CLS550",
+      "CLS63",
+      "E300",
+      "E320",
+      "E350",
+      "E500",
+      "E550",
+      "E63",
+      "G55",
+      "G550",
+      "GL320",
+      "GL450",
+      "GL550",
+      "ML320",
+      "ML350",
+      "ML550",
+      "ML63",
+      "R320",
+      "R350",
+      "S450",
+      "S550",
+      "S600",
+      "S63",
+      "S65",
+      "SL550",
+      "SL600",
+      "SL65",
+      "SLK55"
+    ],
+    "2010": [
+      "C250",
+      "C300",
+      "C350",
+      "C63",
+      "CL550",
+      "CL600",
+      "CL65 AMG",
+      "CLS550",
+      "CLS63",
+      "E350",
+      "E550",
+      "E63",
+      "G55",
+      "G550",
+      "GL350",
+      "GL450",
+      "GL550",
+      "GLK350",
+      "ML350",
+      "ML450",
+      "ML550",
+      "ML63",
+      "R350",
+      "S400",
+      "S450",
+      "S550",
+      "S600",
+      "S63",
+      "S65",
+      "SL550",
+      "SLK55",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2011": [
+      "C250",
+      "C300",
+      "C350",
+      "C63",
+      "CL550",
+      "CL600",
+      "CL65 AMG",
+      "CLS550",
+      "CLS63",
+      "E350",
+      "E550",
+      "E63",
+      "G55",
+      "G550",
+      "GL350",
+      "GL450",
+      "GL550",
+      "GLK350",
+      "ML350",
+      "ML450",
+      "ML550",
+      "ML63",
+      "R350",
+      "S400",
+      "S450",
+      "S550",
+      "S600",
+      "S63",
+      "S65",
+      "SL550",
+      "SL65",
+      "SLK55",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2012": [
+      "C250",
+      "C300",
+      "C350",
+      "C63",
+      "CL550",
+      "CL600",
+      "CL65 AMG",
+      "CLS550",
+      "E350",
+      "E550",
+      "G550",
+      "GL350",
+      "GL450",
+      "GL550",
+      "GLK350",
+      "ML350",
+      "ML450",
+      "ML550",
+      "ML63",
+      "R350",
+      "S350",
+      "S400",
+      "S550",
+      "S600",
+      "S63",
+      "S65",
+      "SL550",
+      "SLK250",
+      "SLK350",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2013": [
+      "C250",
+      "C300",
+      "C350",
+      "C63",
+      "CL550",
+      "CL600",
+      "CL65 AMG",
+      "CLS550",
+      "E300",
+      "E350",
+      "E550",
+      "G550",
+      "G63",
+      "GL350",
+      "GL450",
+      "GL550",
+      "GL63",
+      "GLK250",
+      "GLK350",
+      "ML350",
+      "ML550",
+      "ML63",
+      "R350",
+      "S350",
+      "S400",
+      "S550",
+      "S600",
+      "S63",
+      "S65",
+      "SLK250",
+      "SLK350",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2014": [
+      "C250",
+      "C300",
+      "C350",
+      "C63",
+      "CL550",
+      "CL600",
+      "CL65 AMG",
+      "CLA250",
+      "CLS550",
+      "CLS63",
+      "E250",
+      "E300",
+      "E350",
+      "E550",
+      "E63",
+      "G550",
+      "G63",
+      "GL350",
+      "GL450",
+      "GL550",
+      "GL63",
+      "GLK250",
+      "GLK350",
+      "ML350",
+      "ML550",
+      "ML63",
+      "S550",
+      "S63",
+      "SLK250",
+      "SLK350",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2015": [
+      "B250",
+      "C250",
+      "C300",
+      "C350",
+      "C400",
+      "C63",
+      "CLA250",
+      "CLA45 AMG",
+      "CLS400",
+      "CLS550",
+      "CLS63S",
+      "E250",
+      "E300",
+      "E350",
+      "E400",
+      "E550",
+      "E63",
+      "E63S",
+      "G550",
+      "G63",
+      "GL350",
+      "GL450",
+      "GL550",
+      "GL63",
+      "GLA250",
+      "GLA45 AMG",
+      "GLK250",
+      "GLK350",
+      "ML250",
+      "ML350",
+      "ML400",
+      "ML63",
+      "S400",
+      "S550",
+      "S63",
+      "S65",
+      "SLK250",
+      "SLK350",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2016": [
+      "B250",
+      "C300",
+      "C450",
+      "CLA250",
+      "CLA45 AMG",
+      "CLS400",
+      "CLS550",
+      "CLS63S",
+      "E250",
+      "E350",
+      "E400",
+      "E550",
+      "E63S",
+      "G550",
+      "G63",
+      "G65",
+      "GL350",
+      "GL450",
+      "GL550",
+      "GL63",
+      "GLA250",
+      "GLA45 AMG",
+      "GLC300",
+      "GLE300D",
+      "GLE350",
+      "GLE400",
+      "GLE450",
+      "GLE63",
+      "GLE63s",
+      "Metris",
+      "S400",
+      "S550",
+      "S600 Maybach",
+      "S63",
+      "S65",
+      "SLK350",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2017": [
+      "B250",
+      "C300",
+      "C43",
+      "C43 AMG",
+      "CLA250",
+      "CLA45 AMG",
+      "CLS400",
+      "CLS550",
+      "CLS63S",
+      "E300",
+      "E400",
+      "E43 AMG",
+      "E550",
+      "G550",
+      "G63",
+      "G65",
+      "GLA250",
+      "GLA45 AMG",
+      "GLC300",
+      "GLC43 AMG",
+      "GLE350",
+      "GLE400",
+      "GLE43",
+      "GLE63",
+      "GLE63s",
+      "GLS450",
+      "GLS63",
+      "Maybach S550",
+      "Metris",
+      "S550",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2018": [
+      "B250",
+      "C300",
+      "C43",
+      "C43 AMG",
+      "CLA250",
+      "CLA45 AMG",
+      "CLS550",
+      "E300",
+      "E400",
+      "E43 AMG",
+      "E63",
+      "E63 AMG S",
+      "G550",
+      "G63",
+      "G65",
+      "GLA250",
+      "GLA45 AMG",
+      "GLC300",
+      "GLC43 AMG",
+      "GLC63 AMG",
+      "GLC63 AMG S",
+      "GLE400",
+      "GLE43",
+      "GLE63",
+      "GLE63s",
+      "GLS450",
+      "GLS63",
+      "Metris",
+      "S450",
+      "S560",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500"
+    ],
+    "2019": [
+      "B250",
+      "C300",
+      "C43",
+      "C43 AMG",
+      "CLA250",
+      "CLA45 AMG",
+      "E300",
+      "E43 AMG",
+      "E450",
+      "E63",
+      "E63 AMG S",
+      "GLA250",
+      "GLA45 AMG",
+      "GLC300",
+      "GLC43 AMG",
+      "GLC63 AMG",
+      "GLC63 AMG S",
+      "GLE400",
+      "GLE43",
+      "GLE63",
+      "GLE63s",
+      "GLS450",
+      "GLS63",
+      "Metris",
+      "S450",
+      "S560",
+      "Sprinter Van 1500",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500",
+      "Sprinter Van 3500XD"
+    ],
+    "2020": [
+      "C300",
+      "C43",
+      "C43 AMG",
+      "E350",
+      "E43 AMG",
+      "E450",
+      "E63",
+      "E63 AMG",
+      "E63 AMG S",
+      "GLA250",
+      "GLC300",
+      "GLC43 AMG",
+      "GLC63 AMG",
+      "GLC63 AMG S",
+      "GLE350",
+      "GLE53",
+      "GLS450",
+      "Metris",
+      "S450",
+      "S560",
+      "Sprinter Van 1500",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500",
+      "Sprinter Van 3500XD"
+    ],
+    "2021": [
+      "C43",
+      "C43 AMG",
+      "E63",
+      "GLC300",
+      "GLC43 AMG",
+      "GLC63 AMG",
+      "GLC63 AMG S",
+      "GLE350",
+      "GLE53",
+      "Sprinter Van 2500",
+      "Sprinter Van 3500",
+      "Sprinter Van 3500XD"
+    ],
+    "2022": [
+      "C43",
+      "GLC43 AMG",
+      "GLE350",
+      "GLE53"
+    ],
+    "2023": [
+      "GLE350",
+      "GLE53"
+    ]
+  },
+  "Nissan": {
+    "1970": [
+      "240Z"
+    ],
+    "1971": [
+      "240Z"
+    ],
+    "1972": [
+      "240Z"
+    ],
+    "1973": [
+      "240Z"
+    ],
+    "1974": [
+      "260Z",
+      "B210"
+    ],
+    "1975": [
+      "280Z",
+      "B210"
+    ],
+    "1976": [
+      "280Z",
+      "B210"
+    ],
+    "1977": [
+      "200SX",
+      "280Z",
+      "810",
+      "B210"
+    ],
+    "1978": [
+      "200SX",
+      "280Z",
+      "810",
+      "B210"
+    ],
+    "1979": [
+      "200SX",
+      "280ZX",
+      "510",
+      "810",
+      "B210"
+    ],
+    "1980": [
+      "200SX",
+      "280ZX",
+      "510",
+      "810",
+      "B210",
+      "Pickup"
+    ],
+    "1981": [
+      "200SX",
+      "280ZX",
+      "510",
+      "B210",
+      "Maxima",
+      "Pickup"
+    ],
+    "1982": [
+      "200SX",
+      "280ZX",
+      "B210",
+      "Maxima",
+      "Pickup"
+    ],
+    "1983": [
+      "200SX",
+      "280ZX",
+      "720",
+      "Maxima",
+      "Pickup"
+    ],
+    "1984": [
+      "200SX",
+      "300ZX",
+      "720",
+      "Maxima",
+      "Pickup"
+    ],
+    "1985": [
+      "200SX",
+      "300ZX",
+      "720",
+      "Pickup"
+    ],
+    "1986": [
+      "200SX",
+      "300ZX",
+      "720",
+      "Pickup",
+      "Stanza Van"
+    ],
+    "1987": [
+      "200SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup",
+      "Stanza Van",
+      "Van Wagon"
+    ],
+    "1988": [
+      "200SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup",
+      "Stanza Van",
+      "Van Wagon"
+    ],
+    "1989": [
+      "240SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup",
+      "Stanza Van",
+      "Van Wagon"
+    ],
+    "1990": [
+      "240SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup"
+    ],
+    "1991": [
+      "240SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup"
+    ],
+    "1992": [
+      "240SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup"
+    ],
+    "1993": [
+      "240SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup"
+    ],
+    "1994": [
+      "240SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup"
+    ],
+    "1995": [
+      "240SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup"
+    ],
+    "1996": [
+      "240SX",
+      "300ZX",
+      "Pathfinder",
+      "Pickup"
+    ],
+    "1997": [
+      "240SX",
+      "Pathfinder",
+      "Pickup"
+    ],
+    "1998": [
+      "240SX",
+      "Frontier",
+      "Pathfinder"
+    ],
+    "1999": [
+      "Frontier",
+      "Pathfinder"
+    ],
+    "2000": [
+      "Frontier",
+      "Pathfinder",
+      "Xterra"
+    ],
+    "2001": [
+      "Frontier",
+      "Pathfinder",
+      "Xterra"
+    ],
+    "2002": [
+      "Frontier",
+      "Pathfinder",
+      "Xterra"
+    ],
+    "2003": [
+      "350Z",
+      "Frontier",
+      "Murano",
+      "Pathfinder",
+      "Xterra"
+    ],
+    "2004": [
+      "350Z",
+      "Armada",
+      "Frontier",
+      "Murano",
+      "Pathfinder",
+      "Titan",
+      "Xterra"
+    ],
+    "2005": [
+      "350Z",
+      "Armada",
+      "Frontier",
+      "Murano",
+      "Pathfinder",
+      "Titan",
+      "Xterra"
+    ],
+    "2006": [
+      "350Z",
+      "Armada",
+      "Frontier",
+      "Murano",
+      "Pathfinder",
+      "Titan",
+      "Xterra"
+    ],
+    "2007": [
+      "350Z",
+      "Armada",
+      "Frontier",
+      "Murano",
+      "Pathfinder",
+      "Titan",
+      "Xterra"
+    ],
+    "2008": [
+      "350Z",
+      "Armada",
+      "Frontier",
+      "Pathfinder",
+      "Rogue",
+      "Titan",
+      "Xterra"
+    ],
+    "2009": [
+      "350Z",
+      "370Z",
+      "Armada",
+      "Frontier",
+      "Murano",
+      "Pathfinder",
+      "Rogue",
+      "Titan",
+      "Xterra"
+    ],
+    "2010": [
+      "370Z",
+      "Armada",
+      "Frontier",
+      "Murano",
+      "Pathfinder",
+      "Rogue",
+      "Titan",
+      "Xterra"
+    ],
+    "2011": [
+      "370Z",
+      "Armada",
+      "Frontier",
+      "Juke",
+      "Murano",
+      "Pathfinder",
+      "Rogue",
+      "Titan",
+      "Xterra"
+    ],
+    "2012": [
+      "370Z",
+      "Armada",
+      "Frontier",
+      "Juke",
+      "Murano",
+      "NV 1500",
+      "NV 2500",
+      "NV 3500",
+      "Pathfinder",
+      "Rogue",
+      "Titan",
+      "Xterra"
+    ],
+    "2013": [
+      "370Z",
+      "Armada",
+      "Frontier",
+      "Juke",
+      "Murano",
+      "NV 1500",
+      "NV 2500",
+      "NV 3500",
+      "Pathfinder",
+      "Rogue",
+      "Titan",
+      "Xterra"
+    ],
+    "2014": [
+      "370Z",
+      "Armada",
+      "Frontier",
+      "Juke",
+      "Murano",
+      "NV 1500",
+      "NV 2500",
+      "NV 3500",
+      "Pathfinder",
+      "Rogue",
+      "Titan",
+      "Xterra"
+    ],
+    "2015": [
+      "370Z",
+      "Armada",
+      "Frontier",
+      "Juke",
+      "Murano",
+      "NV 1500",
+      "NV 2500",
+      "NV 3500",
+      "Pathfinder",
+      "Rogue",
+      "Titan",
+      "Xterra"
+    ],
+    "2016": [
+      "370Z",
+      "Frontier",
+      "Juke",
+      "Murano",
+      "NV 1500",
+      "NV 2500",
+      "NV 3500",
+      "Pathfinder",
+      "Rogue",
+      "Titan XD"
+    ],
+    "2017": [
+      "370Z",
+      "Armada",
+      "Frontier",
+      "Juke",
+      "Murano",
+      "NV 1500",
+      "NV 2500",
+      "NV 3500",
+      "Pathfinder",
+      "Qashqai",
+      "Rogue",
+      "Rouge Sport",
+      "Titan",
+      "Titan XD"
+    ],
+    "2018": [
+      "370Z",
+      "Armada",
+      "Frontier",
+      "NV 1500",
+      "NV 2500",
+      "NV 3500",
+      "Pathfinder",
+      "Qashqai",
+      "Rogue",
+      "Rouge Sport",
+      "Titan",
+      "Titan XD"
+    ],
+    "2019": [
+      "370Z",
+      "Altima",
+      "Armada",
+      "Frontier",
+      "Pathfinder",
+      "Qashqai",
+      "Rogue",
+      "Rouge Sport",
+      "Titan",
+      "Titan XD"
+    ],
+    "2020": [
+      "370Z",
+      "Altima",
+      "Armada",
+      "Pathfinder",
+      "Rogue",
+      "Titan",
+      "Titan XD"
+    ],
+    "2021": [
+      "370Z",
+      "Altima",
+      "Pathfinder",
+      "Titan",
+      "Titan XD"
+    ],
+    "2022": [
+      "Altima",
+      "Titan"
+    ],
+    "2023": [
+      "Z"
+    ]
+  },
+  "Pontiac": {
+    "1978": [
+      "Grand Prix",
+      "LeMans"
+    ],
+    "1979": [
+      "Grand Prix",
+      "LeMans"
+    ],
+    "1980": [
+      "Grand Prix",
+      "LeMans"
+    ],
+    "1981": [
+      "Grand Prix",
+      "LeMans"
+    ],
+    "1982": [
+      "Bonneville",
+      "Firebird",
+      "Grand Prix",
+      "Parisienne"
+    ],
+    "1983": [
+      "Bonneville",
+      "Firebird",
+      "Grand Prix",
+      "Parisienne"
+    ],
+    "1984": [
+      "Bonneville",
+      "Grand Prix",
+      "Parisienne"
+    ],
+    "1985": [
+      "Bonneville",
+      "Firebird",
+      "Grand Prix",
+      "Parisienne"
+    ],
+    "1986": [
+      "Bonneville",
+      "Firebird",
+      "Grand Prix",
+      "Parisienne"
+    ],
+    "1987": [
+      "Bonneville",
+      "Firebird",
+      "Grand Prix"
+    ],
+    "1988": [
+      "Firebird"
+    ],
+    "1989": [
+      "Firebird"
+    ],
+    "1990": [
+      "Firebird"
+    ],
+    "1991": [
+      "Firebird"
+    ],
+    "1992": [
+      "Firebird",
+      "Sunrunner"
+    ],
+    "1993": [
+      "Firebird",
+      "Sunrunner"
+    ],
+    "1994": [
+      "Firebird",
+      "Sunrunner"
+    ],
+    "1995": [
+      "Firebird",
+      "Sunrunner"
+    ],
+    "1996": [
+      "Firebird",
+      "Sunrunner"
+    ],
+    "1997": [
+      "Firebird",
+      "Sunrunner"
+    ],
+    "1998": [
+      "Firebird",
+      "Sunrunner"
+    ],
+    "1999": [
+      "Firebird",
+      "Sunrunner"
+    ],
+    "2000": [
+      "Firebird"
+    ],
+    "2001": [
+      "Aztek",
+      "Firebird"
+    ],
+    "2002": [
+      "Aztek",
+      "Firebird",
+      "Montana"
+    ],
+    "2003": [
+      "Aztek",
+      "Firebird",
+      "Montana",
+      "Vibe"
+    ],
+    "2004": [
+      "Aztek",
+      "GTO",
+      "Montana",
+      "Vibe"
+    ],
+    "2005": [
+      "Aztek",
+      "GTO",
+      "Montana",
+      "Vibe"
+    ],
+    "2006": [
+      "GTO",
+      "Montana",
+      "Solstice",
+      "Torrent",
+      "Vibe"
+    ],
+    "2007": [
+      "Solstice",
+      "Torrent"
+    ],
+    "2008": [
+      "G8",
+      "Solstice",
+      "Torrent"
+    ],
+    "2009": [
+      "G8",
+      "Solstice",
+      "Torrent",
+      "Vibe"
+    ],
+    "2010": [
+      "Vibe"
+    ]
+  },
+  "Porsche": {
+    "2003": [
+      "Cayenne"
+    ],
+    "2004": [
+      "Cayenne"
+    ],
+    "2005": [
+      "Cayenne"
+    ],
+    "2006": [
+      "Cayenne"
+    ],
+    "2007": [
+      "Cayenne"
+    ],
+    "2008": [
+      "Cayenne"
+    ],
+    "2009": [
+      "Cayenne"
+    ],
+    "2010": [
+      "Cayenne"
+    ],
+    "2011": [
+      "Cayenne"
+    ],
+    "2012": [
+      "Cayenne"
+    ],
+    "2013": [
+      "Cayenne"
+    ],
+    "2014": [
+      "Cayenne"
+    ],
+    "2015": [
+      "Cayenne",
+      "Macan"
+    ],
+    "2016": [
+      "Cayenne",
+      "Macan"
+    ],
+    "2017": [
+      "Cayenne",
+      "Macan"
+    ],
+    "2018": [
+      "Cayenne",
+      "Macan"
+    ]
+  },
+  "Suzuki": {
+    "1961": [
+      "Custom CV"
+    ],
+    "1962": [
+      "Custom CV"
+    ],
+    "1963": [
+      "Custom CV"
+    ],
+    "1964": [
+      "Custom CV"
+    ],
+    "1965": [
+      "Custom CV"
+    ],
+    "1966": [
+      "Custom CV"
+    ],
+    "1967": [
+      "Custom CV"
+    ],
+    "1968": [
+      "Custom CV"
+    ],
+    "1969": [
+      "Custom CV"
+    ],
+    "1970": [
+      "Custom CV"
+    ],
+    "1971": [
+      "Custom CV"
+    ],
+    "1972": [
+      "Custom CV"
+    ],
+    "1973": [
+      "Custom CV"
+    ],
+    "1974": [
+      "Custom CV"
+    ],
+    "1975": [
+      "Custom CV"
+    ],
+    "1976": [
+      "Custom CV"
+    ],
+    "1977": [
+      "Custom CV"
+    ],
+    "1978": [
+      "Custom CV"
+    ],
+    "1979": [
+      "Custom CV"
+    ],
+    "1980": [
+      "Custom CV"
+    ],
+    "1981": [
+      "Custom CV"
+    ],
+    "1982": [
+      "Custom CV"
+    ],
+    "1983": [
+      "Custom CV"
+    ],
+    "1984": [
+      "Custom CV"
+    ],
+    "1985": [
+      "Custom CV"
+    ],
+    "1986": [
+      "Custom CV",
+      "Samurai"
+    ],
+    "1987": [
+      "Custom CV",
+      "Samurai"
+    ],
+    "1988": [
+      "Custom CV",
+      "Samurai"
+    ],
+    "1989": [
+      "Custom CV"
+    ],
+    "1990": [
+      "Custom CV"
+    ],
+    "1991": [
+      "Custom CV"
+    ],
+    "1992": [
+      "Custom CV",
+      "Sidekick"
+    ],
+    "1993": [
+      "Custom CV",
+      "Sidekick"
+    ],
+    "1994": [
+      "Custom CV",
+      "Sidekick"
+    ],
+    "1995": [
+      "Custom CV",
+      "Sidekick"
+    ],
+    "1996": [
+      "Custom CV",
+      "Sidekick",
+      "X90"
+    ],
+    "1997": [
+      "Custom CV",
+      "Sidekick",
+      "X90"
+    ],
+    "1998": [
+      "Custom CV",
+      "Sidekick",
+      "X90"
+    ],
+    "1999": [
+      "Custom CV",
+      "Vitara"
+    ],
+    "2000": [
+      "Custom CV",
+      "Vitara"
+    ],
+    "2001": [
+      "Custom CV",
+      "Vitara"
+    ],
+    "2002": [
+      "Custom CV",
+      "Vitara"
+    ],
+    "2003": [
+      "Custom CV",
+      "Vitara"
+    ],
+    "2004": [
+      "Custom CV",
+      "Vitara"
+    ],
+    "2005": [
+      "Custom CV",
+      "Vitara"
+    ],
+    "2006": [
+      "Custom CV",
+      "Grand Vitara",
+      "Vitara"
+    ],
+    "2007": [
+      "Custom CV",
+      "Grand Vitara",
+      "Vitara"
+    ],
+    "2008": [
+      "Custom CV",
+      "Grand Vitara",
+      "Vitara"
+    ],
+    "2009": [
+      "Custom CV",
+      "Equator",
+      "Vitara"
+    ],
+    "2010": [
+      "Custom CV",
+      "Equator"
+    ],
+    "2011": [
+      "Custom CV",
+      "Equator"
+    ],
+    "2012": [
+      "Custom CV",
+      "Equator"
+    ],
+    "2013": [
+      "Custom CV",
+      "Equator"
+    ],
+    "2014": [
+      "Custom CV"
+    ],
+    "2015": [
+      "Custom CV"
+    ],
+    "2016": [
+      "Custom CV"
+    ],
+    "2017": [
+      "Custom CV"
+    ],
+    "2018": [
+      "Custom CV"
+    ],
+    "2019": [
+      "Custom CV"
+    ],
+    "2020": [
+      "Custom CV"
+    ],
+    "2021": [
+      "Custom CV"
+    ],
+    "2022": [
+      "Custom CV"
+    ]
+  },
+  "Toyota": {
+    "1972": [
+      "Celica"
+    ],
+    "1973": [
+      "Celica"
+    ],
+    "1974": [
+      "Celica"
+    ],
+    "1975": [
+      "Celica"
+    ],
+    "1976": [
+      "Celica"
+    ],
+    "1977": [
+      "Celica"
+    ],
+    "1978": [
+      "Celica",
+      "Cressida"
+    ],
+    "1979": [
+      "Celica",
+      "Corona",
+      "Cressida",
+      "Pickup",
+      "Supra"
+    ],
+    "1980": [
+      "Celica",
+      "Corolla",
+      "Corona",
+      "Cressida",
+      "Pickup",
+      "Supra"
+    ],
+    "1981": [
+      "Celica",
+      "Corolla",
+      "Corona",
+      "Cressida",
+      "Pickup",
+      "Supra"
+    ],
+    "1982": [
+      "Celica",
+      "Corolla",
+      "Corona",
+      "Cressida",
+      "Pickup",
+      "Supra"
+    ],
+    "1983": [
+      "Celica",
+      "Corolla",
+      "Cressida",
+      "Pickup",
+      "Supra",
+      "Tercel"
+    ],
+    "1984": [
+      "4 Runner",
+      "Celica",
+      "Corolla",
+      "Cressida",
+      "Pickup",
+      "Supra",
+      "Tercel",
+      "Van"
+    ],
+    "1985": [
+      "4 Runner",
+      "Celica",
+      "Corolla",
+      "Cressida",
+      "Pickup",
+      "Supra",
+      "Tercel",
+      "Van"
+    ],
+    "1986": [
+      "4 Runner",
+      "Corolla",
+      "Cressida",
+      "Pickup",
+      "Supra",
+      "Tercel",
+      "Van"
+    ],
+    "1987": [
+      "4 Runner",
+      "Corolla",
+      "Cressida",
+      "Pickup",
+      "Supra",
+      "Tercel",
+      "Van"
+    ],
+    "1988": [
+      "4 Runner",
+      "Celica",
+      "Corolla",
+      "Cressida",
+      "Pickup",
+      "Supra",
+      "Tercel",
+      "Van"
+    ],
+    "1989": [
+      "4 Runner",
+      "Celica",
+      "Corolla",
+      "Cressida",
+      "Pickup",
+      "Supra",
+      "Van"
+    ],
+    "1990": [
+      "4 Runner",
+      "Celica",
+      "Corolla",
+      "Cressida",
+      "Pickup",
+      "Supra",
+      "Van"
+    ],
+    "1991": [
+      "4 Runner",
+      "Celica",
+      "Corolla",
+      "Cressida",
+      "Land Cruiser",
+      "Pickup",
+      "Previa",
+      "Supra"
+    ],
+    "1992": [
+      "4 Runner",
+      "Celica",
+      "Corolla",
+      "Cressida",
+      "Land Cruiser",
+      "Pickup",
+      "Previa",
+      "Supra"
+    ],
+    "1993": [
+      "4 Runner",
+      "Celica",
+      "Land Cruiser",
+      "Pickup",
+      "Previa",
+      "Supra",
+      "T-100"
+    ],
+    "1994": [
+      "4 Runner",
+      "Land Cruiser",
+      "Pickup",
+      "Previa",
+      "Supra",
+      "T-100"
+    ],
+    "1995": [
+      "4 Runner",
+      "Land Cruiser",
+      "Pickup",
+      "Previa",
+      "Supra",
+      "T-100",
+      "Tacoma"
+    ],
+    "1996": [
+      "4 Runner",
+      "Land Cruiser",
+      "Previa",
+      "RAV4",
+      "Supra",
+      "T-100",
+      "Tacoma"
+    ],
+    "1997": [
+      "4 Runner",
+      "Land Cruiser",
+      "Previa",
+      "RAV4",
+      "Supra",
+      "T-100",
+      "Tacoma"
+    ],
+    "1998": [
+      "4 Runner",
+      "Land Cruiser",
+      "RAV4",
+      "Supra",
+      "T-100",
+      "Tacoma"
+    ],
+    "1999": [
+      "4 Runner",
+      "Land Cruiser",
+      "RAV4",
+      "Tacoma"
+    ],
+    "2000": [
+      "4 Runner",
+      "Land Cruiser",
+      "RAV4",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2001": [
+      "4 Runner",
+      "Highlander",
+      "Land Cruiser",
+      "RAV4",
+      "Sequoia",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2002": [
+      "4 Runner",
+      "Highlander",
+      "Land Cruiser",
+      "RAV4",
+      "Sequoia",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2003": [
+      "4 Runner",
+      "Highlander",
+      "Land Cruiser",
+      "Matrix",
+      "RAV4",
+      "Sequoia",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2004": [
+      "4 Runner",
+      "Highlander",
+      "Land Cruiser",
+      "Matrix",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2005": [
+      "4 Runner",
+      "Highlander",
+      "Land Cruiser",
+      "Matrix",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2006": [
+      "4 Runner",
+      "Highlander",
+      "Land Cruiser",
+      "Matrix",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2007": [
+      "4 Runner",
+      "FJ Cruiser",
+      "Highlander",
+      "Land Cruiser",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2008": [
+      "4 Runner",
+      "FJ Cruiser",
+      "Highlander",
+      "Land Cruiser",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2009": [
+      "4 Runner",
+      "FJ Cruiser",
+      "Highlander",
+      "Land Cruiser",
+      "Matrix",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra",
+      "Venza"
+    ],
+    "2010": [
+      "4 Runner",
+      "FJ Cruiser",
+      "Highlander",
+      "Land Cruiser",
+      "Matrix",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra",
+      "Venza"
+    ],
+    "2011": [
+      "4 Runner",
+      "FJ Cruiser",
+      "Highlander",
+      "Land Cruiser",
+      "Matrix",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra",
+      "Venza"
+    ],
+    "2012": [
+      "4 Runner",
+      "FJ Cruiser",
+      "Highlander",
+      "Land Cruiser",
+      "Matrix",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra",
+      "Venza"
+    ],
+    "2013": [
+      "4 Runner",
+      "FJ Cruiser",
+      "Highlander",
+      "Land Cruiser",
+      "Matrix",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra",
+      "Venza"
+    ],
+    "2014": [
+      "4 Runner",
+      "FJ Cruiser",
+      "Highlander",
+      "Land Cruiser",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra",
+      "Venza"
+    ],
+    "2015": [
+      "4 Runner",
+      "Highlander",
+      "Land Cruiser",
+      "RAV4",
+      "Sequoia",
+      "Sienna",
+      "Tacoma",
+      "Tundra",
+      "Venza"
+    ],
+    "2016": [
+      "4 Runner",
+      "Highlander",
+      "Land Cruiser",
+      "RAV4",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2017": [
+      "86",
+      "Highlander",
+      "Land Cruiser",
+      "RAV4",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2018": [
+      "Highlander",
+      "Land Cruiser",
+      "RAV4",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2019": [
+      "Highlander",
+      "Land Cruiser",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2020": [
+      "GR Supra",
+      "Land Cruiser",
+      "Supra",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2021": [
+      "GR Supra",
+      "Land Cruiser",
+      "Supra",
+      "Tacoma",
+      "Tundra"
+    ],
+    "2022": [
+      "GR Supra",
+      "Supra",
+      "Tacoma"
+    ]
+  },
+  "Volkswagen": {
+    "1986": [
+      "Quantum Syncro",
+      "Vanagon Syncro"
+    ],
+    "1987": [
+      "Quantum Syncro",
+      "Vanagon Syncro"
+    ],
+    "1988": [
+      "Quantum Syncro",
+      "Vanagon Syncro"
+    ],
+    "1989": [
+      "Vanagon Syncro"
+    ],
+    "1990": [
+      "Vanagon Syncro"
+    ],
+    "1991": [
+      "Vanagon Syncro"
+    ],
+    "2000": [
+      "Passat"
+    ],
+    "2001": [
+      "Passat"
+    ],
+    "2002": [
+      "Passat"
+    ],
+    "2003": [
+      "Passat",
+      "Touareg"
+    ],
+    "2004": [
+      "Passat",
+      "Touareg"
+    ],
+    "2005": [
+      "Passat",
+      "Touareg"
+    ],
+    "2006": [
+      "Passat",
+      "Touareg"
+    ],
+    "2007": [
+      "Passat",
+      "Touareg"
+    ],
+    "2008": [
+      "Golf",
+      "Touareg"
+    ],
+    "2009": [
+      "Tiguan",
+      "Touareg"
+    ],
+    "2010": [
+      "Tiguan",
+      "Touareg"
+    ],
+    "2011": [
+      "Tiguan",
+      "Touareg"
+    ],
+    "2012": [
+      "Golf",
+      "Tiguan",
+      "Touareg"
+    ],
+    "2013": [
+      "Golf",
+      "Tiguan",
+      "Touareg"
+    ],
+    "2014": [
+      "Tiguan",
+      "Touareg"
+    ],
+    "2015": [
+      "Tiguan",
+      "Touareg"
+    ],
+    "2016": [
+      "Tiguan",
+      "Touareg"
+    ],
+    "2017": [
+      "Tiguan",
+      "Touareg"
+    ],
+    "2018": [
+      "Tiguan"
+    ],
+    "2019": [
+      "Tiguan"
+    ],
+    "2020": [
+      "Tiguan"
+    ]
+  },
+  "Volvo": {
+    "1979": [
+      "240"
+    ],
+    "1980": [
+      "240"
+    ],
+    "1981": [
+      "240"
+    ],
+    "1982": [
+      "240"
+    ],
+    "1985": [
+      "240",
+      "740"
+    ],
+    "1986": [
+      "240",
+      "740"
+    ],
+    "1987": [
+      "240",
+      "740"
+    ],
+    "1988": [
+      "240",
+      "740"
+    ],
+    "1989": [
+      "240",
+      "740"
+    ],
+    "1990": [
+      "240",
+      "740"
+    ],
+    "1991": [
+      "240",
+      "740",
+      "940"
+    ],
+    "1992": [
+      "240",
+      "740",
+      "940",
+      "960"
+    ],
+    "1993": [
+      "240",
+      "850",
+      "940",
+      "960"
+    ],
+    "1994": [
+      "850",
+      "940",
+      "960"
+    ],
+    "1995": [
+      "850",
+      "960"
+    ],
+    "1996": [
+      "850",
+      "960"
+    ],
+    "1997": [
+      "850",
+      "960"
+    ],
+    "1998": [
+      "S70",
+      "V70"
+    ],
+    "1999": [
+      "S70",
+      "V70"
+    ],
+    "2000": [
+      "S70",
+      "V70"
+    ],
+    "2001": [
+      "V70",
+      "XC70"
+    ],
+    "2002": [
+      "S60",
+      "V70",
+      "XC70"
+    ],
+    "2003": [
+      "S60",
+      "XC70",
+      "XC90"
+    ],
+    "2004": [
+      "S40",
+      "S60",
+      "S60R",
+      "S80",
+      "V70R",
+      "XC70",
+      "XC90"
+    ],
+    "2005": [
+      "S40",
+      "S60",
+      "S60R",
+      "S80",
+      "V50",
+      "V70R",
+      "XC70",
+      "XC90"
+    ],
+    "2006": [
+      "S40",
+      "S60",
+      "S60R",
+      "S80",
+      "V50",
+      "XC70",
+      "XC90"
+    ],
+    "2007": [
+      "S40",
+      "S60",
+      "S60R",
+      "S80",
+      "V50",
+      "XC70",
+      "XC90"
+    ],
+    "2008": [
+      "S40",
+      "S60",
+      "S80",
+      "V50",
+      "XC70",
+      "XC90"
+    ],
+    "2009": [
+      "S40",
+      "S60",
+      "S80",
+      "V50",
+      "XC60",
+      "XC70",
+      "XC90"
+    ],
+    "2010": [
+      "S40",
+      "S80",
+      "V50",
+      "XC60",
+      "XC70",
+      "XC90"
+    ],
+    "2011": [
+      "S60",
+      "S80",
+      "XC60",
+      "XC70",
+      "XC90"
+    ],
+    "2012": [
+      "S60",
+      "S80",
+      "XC60",
+      "XC70",
+      "XC90"
+    ],
+    "2013": [
+      "S60",
+      "XC60",
+      "XC70",
+      "XC90"
+    ],
+    "2014": [
+      "S60",
+      "XC60",
+      "XC70",
+      "XC90"
+    ],
+    "2015": [
+      "S60",
+      "XC60",
+      "XC70"
+    ],
+    "2016": [
+      "S60",
+      "V60",
+      "XC60",
+      "XC70",
+      "XC90"
+    ],
+    "2017": [
+      "S60",
+      "V60",
+      "XC60",
+      "XC90"
+    ],
+    "2018": [
+      "S60",
+      "V60",
+      "XC90"
+    ],
+    "2019": [
+      "XC90"
+    ],
+    "2020": [
+      "XC90"
+    ],
+    "2021": [
+      "XC90"
+    ]
+  }
+}

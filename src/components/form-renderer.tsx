@@ -15,7 +15,7 @@ import {
 import { PhotoInput } from "@/components/photo-input";
 import { SignatureField } from "@/components/signature-pad";
 import { AddressAutocomplete, type AddressParts } from "@/components/address-autocomplete";
-import { YEARS_FROM_2010, isServiceMake, makeHasModels, modelsFor } from "@/lib/vehicle-data";
+import { yearsFor, makeHasModels, modelsFor, allModelsFor } from "@/lib/vehicle-data";
 import { cn, formatPhone } from "@/lib/utils";
 import type { FormOptions } from "@/lib/form-options";
 import {
@@ -124,11 +124,17 @@ function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) 
 
   if (field.key === "vehicleYear" && field.type === "select") {
     const make = String(readValue(values, lookup.get("vehicleMake") || { key: "vehicleMake", core: true }) ?? "");
-    const yearOpts = isServiceMake(make) ? YEARS_FROM_2010 : choices;
+    const yearOpts = yearsFor(make);
     const setYear = (v: string) => {
       set(v);
+      // Model may have been picked first — only clear it if it no longer fits the new year.
       const mf = lookup.get("vehicleModel");
-      if (mf) setValue(mf, "");
+      if (mf) {
+        const model = String(readValue(values, mf) ?? "");
+        if (v && model && makeHasModels(make) && !modelsFor(make, v).includes(model)) {
+          setValue(mf, "");
+        }
+      }
     };
     return (
       <Field label={field.label} required={field.required} hint={field.help} error={error}>
@@ -143,7 +149,8 @@ function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) 
     const make = String(readValue(values, lookup.get("vehicleMake") || { key: "vehicleMake", core: true }) ?? "");
     const year = String(readValue(values, lookup.get("vehicleYear") || { key: "vehicleYear", core: true }) ?? "");
     if (makeHasModels(make)) {
-      const modelOpts = modelsFor(make, year);
+      // With a year chosen, narrow to that year; otherwise offer every model the make has.
+      const modelOpts = year ? modelsFor(make, year) : allModelsFor(make);
       return (
         <Field label={field.label} required={field.required} hint={field.help} error={error}>
           <Select value={str} onChange={(e) => set(e.target.value)} placeholder={modelOpts.length ? "Select model…" : "No models for this year"}>
