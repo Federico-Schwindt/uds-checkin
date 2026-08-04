@@ -29,6 +29,14 @@ import {
 
 export type WidgetMap = Record<string, React.ReactNode>;
 
+/** Diagram shown under each "Choose your Driveshaft Type" option. */
+const DRIVESHAFT_DIAGRAMS: Record<string, string> = {
+  "1 Piece Driveshaft Type 1": "/diagrams/one-piece-type-1.webp",
+  "1 Piece Driveshaft Type 2": "/diagrams/one-piece-type-2.webp",
+  "2 Piece Driveshaft Type 1": "/diagrams/two-piece-type-1.webp",
+  "2 Piece Driveshaft Type 2": "/diagrams/two-piece-type-2.webp",
+};
+
 type RendererProps = {
   fields: FormField[];
   values: ValueBag;
@@ -172,6 +180,50 @@ function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) 
           inputPlaceholder={field.placeholder || "Model"}
           customOptionLabel="✏️ Type a custom model…"
         />
+      </Field>
+    );
+  }
+
+  // Type of Driveshaft → pre-select a matching "Choose your Driveshaft Type" default.
+  if (field.key === "driveshaftPieces" && field.type === "radio") {
+    const setPieces = (v: string) => {
+      set(v);
+      const tc = lookup.get("driveshaftTypeChoice");
+      if (tc) {
+        if (v === "1 Piece") setValue(tc, "1 Piece Driveshaft Type 1");
+        else if (v === "2 Pieces") setValue(tc, "2 Piece Driveshaft Type 1");
+        else setValue(tc, ""); // 3/4 pieces → field is hidden, so clear any stale choice
+      }
+    };
+    return (
+      <Field label={field.label} required={field.required} hint={field.help} error={error}>
+        <ChoiceChips
+          options={choices}
+          value={str}
+          onChange={setPieces}
+          columns={choices.length > 4 ? 3 : Math.max(1, Math.min(choices.length, 4))}
+        />
+      </Field>
+    );
+  }
+
+  // Choose your Driveshaft Type → show the matching diagram under the options.
+  if (field.key === "driveshaftTypeChoice" && field.type === "radio") {
+    const diagram = DRIVESHAFT_DIAGRAMS[str];
+    return (
+      <Field label={field.label} required={field.required} hint={field.help} error={error}>
+        <ChoiceChips
+          options={choices}
+          value={str}
+          onChange={set}
+          columns={choices.length > 4 ? 3 : Math.max(1, Math.min(choices.length, 4))}
+        />
+        {diagram && (
+          <div className="mt-3 flex justify-center rounded-xl border border-ink-200 bg-ink-50 p-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={diagram} alt={`${str} diagram`} className="max-h-72 w-auto max-w-full object-contain" />
+          </div>
+        )}
       </Field>
     );
   }

@@ -287,7 +287,7 @@ export function CheckinWizard({
   return (
     <>
       <header className="sticky top-0 z-40 bg-white border-b border-ink-200 no-print">
-        <div className="mx-auto max-w-3xl px-3 sm:px-4 h-16 flex items-center justify-between gap-3">
+        <div className="mx-auto max-w-[1440px] px-3 sm:px-4 h-16 flex items-center justify-between gap-3">
           <button
             onClick={exit}
             className="inline-flex items-center gap-2 h-11 px-3.5 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 active:scale-95 font-semibold text-sm transition-all"
@@ -306,7 +306,7 @@ export function CheckinWizard({
         </div>
       </header>
 
-      <div ref={topRef} className="mx-auto w-full max-w-3xl px-4 pb-32 pt-4 scroll-mt-20">
+      <div ref={topRef} className="mx-auto w-full max-w-[1440px] px-4 pb-32 pt-4 scroll-mt-20">
         {turnaroundBanner && (
           <div className="mb-4 rounded-xl bg-brand-600 text-white text-center font-bold py-2.5 px-4 text-sm shadow-sm">
             {turnaroundBanner}
@@ -399,7 +399,7 @@ export function CheckinWizard({
 
         {/* Sticky nav */}
         <div className="fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur border-t border-ink-200 no-print">
-          <div className="mx-auto max-w-3xl px-4 py-3 flex items-center justify-between gap-3">
+          <div className="mx-auto max-w-[1440px] px-4 py-3 flex items-center justify-between gap-3">
             {step === 0 ? (
               <Button variant="outline" size="lg" onClick={exit} disabled={submitting}>
                 <Home className="w-5 h-5" /> Cancel

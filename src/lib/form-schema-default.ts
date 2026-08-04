@@ -220,6 +220,7 @@ const vehicleStep: FormStep = {
     core("driveshaftTypeChoice", "Choose your Driveshaft Type", "radio", {
       optionsSource: "driveshaftTypes",
       help: "Measurements requested depend on the type selected",
+      conditions: showWhenAnyOf("driveshaftPieces", ["1 Piece", "2 Pieces"]),
     }),
     row("measurements", [
       core("measurementA", "A measurement", "text", {
@@ -240,12 +241,6 @@ const vehicleStep: FormStep = {
   ],
 };
 
-const designerStep: FormStep = {
-  id: "designer",
-  title: "Designer",
-  enabled: true,
-  fields: [widget("designer", "Driveshaft Designer", "driveshaftDesigner")],
-};
 
 const termsStep: FormStep = {
   id: "terms",
@@ -314,7 +309,7 @@ const staffStep: FormStep = {
 
 export const DEFAULT_FORM_SCHEMA: FormSchema = {
   version: 1,
-  steps: [customerStep, estimateStep, vehicleStep, designerStep, termsStep, staffStep],
+  steps: [customerStep, estimateStep, vehicleStep, termsStep, staffStep],
 };
 
 /**
