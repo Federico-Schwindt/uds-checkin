@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -129,6 +129,80 @@ export function SelectOptions({ options }: { options: string[] }) {
         </option>
       ))}
     </>
+  );
+}
+
+/* ---------- Editable select (pick from list OR type a custom value) ---------- */
+
+const CUSTOM_SENTINEL = "__custom__";
+
+export function EditableSelect({
+  value,
+  onChange,
+  options,
+  placeholder,
+  customOptionLabel,
+  inputPlaceholder,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+  placeholder?: string;
+  customOptionLabel?: string;
+  inputPlaceholder?: string;
+}) {
+  const [manual, setManual] = useState(false);
+  const inList = value !== "" && options.includes(value);
+  // Custom mode: user asked to type, or the value simply isn't one of the suggestions.
+  const custom = manual || (value !== "" && !inList);
+
+  // No suggestions to offer → a plain free-text input.
+  if (options.length === 0) {
+    return (
+      <Input value={value} onChange={(e) => onChange(e.target.value)} placeholder={inputPlaceholder || placeholder} />
+    );
+  }
+
+  if (custom) {
+    return (
+      <div className="flex flex-col gap-1">
+        <Input
+          autoFocus={manual}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={inputPlaceholder || placeholder}
+        />
+        <button
+          type="button"
+          onClick={() => {
+            setManual(false);
+            onChange("");
+          }}
+          className="self-start text-xs font-medium text-brand-600 hover:underline"
+        >
+          ← Choose from list
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <Select
+      value={value}
+      placeholder={placeholder}
+      onChange={(e) => {
+        const v = e.target.value;
+        if (v === CUSTOM_SENTINEL) {
+          setManual(true);
+          onChange("");
+        } else {
+          onChange(v);
+        }
+      }}
+    >
+      <SelectOptions options={options} />
+      <option value={CUSTOM_SENTINEL}>{customOptionLabel || "✏️ Type a custom value…"}</option>
+    </Select>
   );
 }
 

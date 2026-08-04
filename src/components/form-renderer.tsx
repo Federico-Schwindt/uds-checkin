@@ -5,6 +5,7 @@ import {
   Button,
   CheckboxRow,
   ChoiceChips,
+  EditableSelect,
   Field,
   Input,
   SectionTitle,
@@ -107,10 +108,8 @@ function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) 
   if (field.key === "vehicleMake" && field.type === "select") {
     const setMake = (v: string) => {
       set(v);
-      // Reset dependent fields so stale year/model can't linger.
-      const yf = lookup.get("vehicleYear");
+      // Clear the model on make change (models are make-specific); keep the year.
       const mf = lookup.get("vehicleModel");
-      if (yf) setValue(yf, "");
       if (mf) setValue(mf, "");
     };
     return (
@@ -127,20 +126,32 @@ function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) 
     const yearOpts = yearsFor(make);
     const setYear = (v: string) => {
       set(v);
-      // Model may have been picked first — only clear it if it no longer fits the new year.
+      // If a catalog model was picked that no longer fits the chosen year, clear it.
+      // Custom-typed models (not in the catalog) are left untouched.
       const mf = lookup.get("vehicleModel");
       if (mf) {
         const model = String(readValue(values, mf) ?? "");
-        if (v && model && makeHasModels(make) && !modelsFor(make, v).includes(model)) {
+        if (
+          v &&
+          model &&
+          makeHasModels(make) &&
+          allModelsFor(make).includes(model) &&
+          !modelsFor(make, v).includes(model)
+        ) {
           setValue(mf, "");
         }
       }
     };
     return (
       <Field label={field.label} required={field.required} hint={field.help} error={error}>
-        <Select value={str} onChange={(e) => setYear(e.target.value)} placeholder="Select year…">
-          <SelectOptions options={yearOpts} />
-        </Select>
+        <EditableSelect
+          value={str}
+          onChange={setYear}
+          options={yearOpts}
+          placeholder="Select year…"
+          inputPlaceholder="Year"
+          customOptionLabel="✏️ Type a custom year…"
+        />
       </Field>
     );
   }
@@ -148,21 +159,19 @@ function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) 
   if (field.key === "vehicleModel") {
     const make = String(readValue(values, lookup.get("vehicleMake") || { key: "vehicleMake", core: true }) ?? "");
     const year = String(readValue(values, lookup.get("vehicleYear") || { key: "vehicleYear", core: true }) ?? "");
-    if (makeHasModels(make)) {
-      // With a year chosen, narrow to that year; otherwise offer every model the make has.
-      const modelOpts = year ? modelsFor(make, year) : allModelsFor(make);
-      return (
-        <Field label={field.label} required={field.required} hint={field.help} error={error}>
-          <Select value={str} onChange={(e) => set(e.target.value)} placeholder={modelOpts.length ? "Select model…" : "No models for this year"}>
-            <SelectOptions options={modelOpts} />
-          </Select>
-        </Field>
-      );
-    }
-    // Makes without catalog data keep a free-text model.
+    // With a year chosen, narrow to that year; otherwise offer every model the make has.
+    // No catalog data (or no make yet) → empty list, so EditableSelect shows a free-text input.
+    const modelOpts = makeHasModels(make) ? (year ? modelsFor(make, year) : allModelsFor(make)) : [];
     return (
       <Field label={field.label} required={field.required} hint={field.help} error={error}>
-        <Input value={str} onChange={(e) => set(e.target.value)} placeholder={field.placeholder || "Model"} />
+        <EditableSelect
+          value={str}
+          onChange={set}
+          options={modelOpts}
+          placeholder={modelOpts.length ? "Select model…" : field.placeholder || "Model"}
+          inputPlaceholder={field.placeholder || "Model"}
+          customOptionLabel="✏️ Type a custom model…"
+        />
       </Field>
     );
   }
