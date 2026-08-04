@@ -119,6 +119,11 @@ function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) 
       // Clear the model on make change (models are make-specific); keep the year.
       const mf = lookup.get("vehicleModel");
       if (mf) setValue(mf, "");
+      // "Mega Cab" is Dodge-only — drop it if the make is no longer Dodge.
+      const cf = lookup.get("cab");
+      if (cf && v.trim().toLowerCase() !== "dodge" && String(readValue(values, cf) ?? "") === "Mega Cab") {
+        setValue(cf, "");
+      }
     };
     return (
       <Field label={field.label} required={field.required} hint={field.help} error={error}>
@@ -180,6 +185,20 @@ function FieldRenderer({ field, ...ctx }: RendererProps & { field: FormField }) 
           inputPlaceholder={field.placeholder || "Model"}
           customOptionLabel="✏️ Type a custom model…"
         />
+      </Field>
+    );
+  }
+
+  // Cab → "Mega Cab" is only offered when the make is Dodge.
+  if (field.key === "cab" && field.type === "select") {
+    const make = String(readValue(values, lookup.get("vehicleMake") || { key: "vehicleMake", core: true }) ?? "");
+    const isDodge = make.trim().toLowerCase() === "dodge";
+    const cabOpts = isDodge ? choices : choices.filter((o) => o !== "Mega Cab");
+    return (
+      <Field label={field.label} required={field.required} hint={field.help} error={error}>
+        <Select value={str} onChange={(e) => set(e.target.value)} placeholder={field.placeholder || "Select…"}>
+          <SelectOptions options={cabOpts} />
+        </Select>
       </Field>
     );
   }

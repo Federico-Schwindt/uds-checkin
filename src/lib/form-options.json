@@ -115,11 +115,10 @@
     "Rear"
   ],
   "cabs": [
-    "Crew Cab ( 4 Doors)",
-    "Extended Cab ( 2 1/5 Doors)",
-    "Regular Cab( 2 Doors)",
-    "Regular Cab( 4 Doors)",
-    "Other"
+    "Regular Cab",
+    "Extended Cab",
+    "Crew Cab",
+    "Mega Cab"
   ],
   "transmissions": [
     "Automatic",
