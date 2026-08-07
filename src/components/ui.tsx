@@ -200,8 +200,8 @@ export function EditableSelect({
         }
       }}
     >
-      <SelectOptions options={options} />
       <option value={CUSTOM_SENTINEL}>{customOptionLabel || "✏️ Type a custom value…"}</option>
+      <SelectOptions options={options} />
     </Select>
   );
 }

@@ -41,6 +41,21 @@ export const SERVICE_MAKES = [
 
 const SERVICE_MAKE_SET = new Set(SERVICE_MAKES.map((m) => m.toLowerCase()));
 
+/**
+ * Display make → catalog key, for makes shown under a different name than the
+ * one PowerTrain scraped under (e.g. we list "Mercedes-Benz" but the catalog
+ * data is keyed "Mercedes").
+ */
+const MAKE_ALIASES: Record<string, string> = {
+  "mercedes-benz": "Mercedes",
+};
+
+/** Resolve a display make to the key used in the catalog data. */
+function catalogKey(make: string): string {
+  const trimmed = (make || "").trim();
+  return MAKE_ALIASES[trimmed.toLowerCase()] || trimmed;
+}
+
 /** Floor year for every make. Nothing older than this is offered. */
 export const MIN_YEAR = 1950;
 
@@ -57,7 +72,7 @@ export function isServiceMake(make: string): boolean {
 
 /** Does this make have a catalog-backed model list (→ Model shows as a dropdown)? */
 export function makeHasModels(make: string): boolean {
-  return !!VEHICLE_MODELS[(make || "").trim()];
+  return !!VEHICLE_MODELS[catalogKey(make)];
 }
 
 /**
@@ -66,7 +81,7 @@ export function makeHasModels(make: string): boolean {
  * falls back to the generic range.
  */
 export function yearsFor(make: string): string[] {
-  const byYear = VEHICLE_MODELS[(make || "").trim()];
+  const byYear = VEHICLE_MODELS[catalogKey(make)];
   if (!byYear) return DEFAULT_YEARS;
   return Object.keys(byYear)
     .map(Number)
@@ -77,14 +92,14 @@ export function yearsFor(make: string): string[] {
 
 /** Model options for a make+year, or [] when none. */
 export function modelsFor(make: string, year: string): string[] {
-  const byYear = VEHICLE_MODELS[(make || "").trim()];
+  const byYear = VEHICLE_MODELS[catalogKey(make)];
   if (!byYear) return [];
   return byYear[(year || "").trim()] || [];
 }
 
 /** Every model a make has across all years, de-duped and sorted. */
 export function allModelsFor(make: string): string[] {
-  const byYear = VEHICLE_MODELS[(make || "").trim()];
+  const byYear = VEHICLE_MODELS[catalogKey(make)];
   if (!byYear) return [];
   const seen = new Set<string>();
   for (const year of Object.keys(byYear)) {
