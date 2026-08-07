@@ -1,4 +1,119 @@
 {
+  "Acura": {
+    "1996": [
+      "SLX"
+    ],
+    "1997": [
+      "SLX"
+    ],
+    "1998": [
+      "SLX"
+    ],
+    "1999": [
+      "SLX"
+    ],
+    "2001": [
+      "MDX"
+    ],
+    "2002": [
+      "MDX"
+    ],
+    "2003": [
+      "MDX"
+    ],
+    "2004": [
+      "MDX"
+    ],
+    "2005": [
+      "MDX",
+      "RL"
+    ],
+    "2006": [
+      "MDX",
+      "RL"
+    ],
+    "2007": [
+      "MDX",
+      "RDX",
+      "RL"
+    ],
+    "2008": [
+      "MDX",
+      "RDX",
+      "RL"
+    ],
+    "2009": [
+      "MDX",
+      "RDX",
+      "RL",
+      "TL"
+    ],
+    "2010": [
+      "MDX",
+      "RDX",
+      "RL",
+      "TL",
+      "ZDX"
+    ],
+    "2011": [
+      "MDX",
+      "RDX",
+      "RL",
+      "TL",
+      "ZDX"
+    ],
+    "2012": [
+      "MDX",
+      "RDX",
+      "RL",
+      "TL",
+      "ZDX"
+    ],
+    "2013": [
+      "MDX",
+      "RDX",
+      "TL",
+      "ZDX"
+    ],
+    "2014": [
+      "MDX",
+      "RDX",
+      "TL"
+    ],
+    "2015": [
+      "MDX",
+      "RDX"
+    ],
+    "2016": [
+      "MDX",
+      "RDX"
+    ],
+    "2017": [
+      "MDX",
+      "RDX"
+    ],
+    "2018": [
+      "MDX"
+    ],
+    "2019": [
+      "MDX"
+    ],
+    "2020": [
+      "MDX"
+    ],
+    "2021": [
+      "MDX"
+    ],
+    "2022": [
+      "MDX"
+    ],
+    "2023": [
+      "MDX"
+    ],
+    "2024": [
+      "MDX"
+    ]
+  },
   "Audi": {
     "1982": [
       "Quattro"
@@ -3336,6 +3451,21 @@
       "Ram 1500"
     ]
   },
+  "Fiat": {
+    "2016": [
+      "500X"
+    ],
+    "2017": [
+      "500X",
+      "Spider"
+    ],
+    "2018": [
+      "Spider"
+    ],
+    "2019": [
+      "Spider"
+    ]
+  },
   "Ford": {
     "1955": [
       "F250"
@@ -4148,6 +4278,30 @@
     ],
     "2025": [
       "F150"
+    ]
+  },
+  "Genesis": {
+    "2017": [
+      "G80",
+      "G90"
+    ],
+    "2018": [
+      "G80",
+      "G90"
+    ],
+    "2019": [
+      "G70",
+      "G80",
+      "G90"
+    ],
+    "2020": [
+      "G70",
+      "G80",
+      "G90"
+    ],
+    "2021": [
+      "G70",
+      "G90"
     ]
   },
   "GMC": {
@@ -5184,6 +5338,103 @@
       "Pilot"
     ]
   },
+  "Hyundai": {
+    "2001": [
+      "Santa Fe"
+    ],
+    "2002": [
+      "Santa Fe"
+    ],
+    "2003": [
+      "Santa Fe"
+    ],
+    "2004": [
+      "Santa Fe"
+    ],
+    "2005": [
+      "Santa Fe",
+      "Tucson"
+    ],
+    "2006": [
+      "Santa Fe",
+      "Tucson"
+    ],
+    "2007": [
+      "Santa Fe",
+      "Tucson",
+      "Veracruz"
+    ],
+    "2008": [
+      "Santa Fe",
+      "Tucson",
+      "Veracruz"
+    ],
+    "2009": [
+      "Genesis",
+      "Santa Fe",
+      "Tucson",
+      "Veracruz"
+    ],
+    "2010": [
+      "Genesis",
+      "Santa Fe",
+      "Tucson",
+      "Veracruz"
+    ],
+    "2011": [
+      "Equus",
+      "Genesis",
+      "Santa Fe",
+      "Tucson",
+      "Veracruz"
+    ],
+    "2012": [
+      "Equus",
+      "Genesis",
+      "Santa Fe",
+      "Tucson",
+      "Veracruz"
+    ],
+    "2013": [
+      "Equus",
+      "Genesis",
+      "Santa Fe",
+      "Santa Fe Sport",
+      "Tucson"
+    ],
+    "2014": [
+      "Equus",
+      "Genesis",
+      "Santa Fe",
+      "Santa Fe Sport",
+      "Tucson"
+    ],
+    "2015": [
+      "Equus",
+      "Genesis",
+      "Santa Fe",
+      "Santa Fe Sport",
+      "Tucson"
+    ],
+    "2016": [
+      "Equus",
+      "Genesis",
+      "Santa Fe",
+      "Santa Fe Sport",
+      "Sportage"
+    ],
+    "2017": [
+      "Santa Fe Sport",
+      "Sportage"
+    ],
+    "2018": [
+      "Santa Fe Sport",
+      "Sportage"
+    ],
+    "2019": [
+      "Sportage"
+    ]
+  },
   "Infiniti": {
     "1990": [
       "J30",
@@ -5474,6 +5725,244 @@
     ],
     "2016": [
       "4300"
+    ]
+  },
+  "Isuzu": {
+    "1990": [
+      "Trooper"
+    ],
+    "1991": [
+      "Rodeo",
+      "Trooper"
+    ],
+    "1992": [
+      "Rodeo",
+      "Trooper"
+    ],
+    "1993": [
+      "Rodeo",
+      "Trooper"
+    ],
+    "1994": [
+      "Amigo",
+      "Rodeo",
+      "Trooper"
+    ],
+    "1995": [
+      "NPR",
+      "NPR-HD",
+      "Rodeo",
+      "Trooper"
+    ],
+    "1996": [
+      "Hombre",
+      "NPR",
+      "NPR-HD",
+      "Rodeo",
+      "Trooper"
+    ],
+    "1997": [
+      "Hombre",
+      "NPR",
+      "NPR-HD",
+      "Rodeo",
+      "Trooper"
+    ],
+    "1998": [
+      "Amigo",
+      "Hombre",
+      "NPR",
+      "NPR-HD",
+      "Rodeo",
+      "Trooper"
+    ],
+    "1999": [
+      "Amigo",
+      "Hombre",
+      "NPR",
+      "NPR-HD",
+      "Rodeo",
+      "Trooper",
+      "Vehicross"
+    ],
+    "2000": [
+      "Amigo",
+      "Hombre",
+      "NPR",
+      "NPR-HD",
+      "Rodeo",
+      "Trooper",
+      "Vehicross"
+    ],
+    "2001": [
+      "NPR",
+      "NPR-HD",
+      "Rodeo",
+      "Trooper",
+      "Vehicross"
+    ],
+    "2002": [
+      "Axiom",
+      "NPR",
+      "NPR-HD",
+      "Rodeo",
+      "Trooper"
+    ],
+    "2003": [
+      "Ascender",
+      "Axiom",
+      "NPR",
+      "NPR-HD",
+      "Rodeo"
+    ],
+    "2004": [
+      "Ascender",
+      "Axiom",
+      "NPR",
+      "NPR-HD",
+      "NQR",
+      "Rodeo"
+    ],
+    "2005": [
+      "Ascender",
+      "NPR",
+      "NPR-HD",
+      "NQR"
+    ],
+    "2006": [
+      "Ascender",
+      "I-280",
+      "I-350",
+      "NPR",
+      "NPR-HD",
+      "NQR"
+    ],
+    "2007": [
+      "Ascender",
+      "I-290",
+      "I-370",
+      "NPR",
+      "NPR-HD",
+      "NQR"
+    ],
+    "2008": [
+      "Ascender",
+      "I-290",
+      "I-370"
+    ]
+  },
+  "Jaguar": {
+    "1995": [
+      "XJ6",
+      "XJR"
+    ],
+    "1996": [
+      "XJ6",
+      "XJR"
+    ],
+    "1997": [
+      "XJ6",
+      "XJR"
+    ],
+    "1998": [
+      "XJR"
+    ],
+    "1999": [
+      "XJR"
+    ],
+    "2000": [
+      "S-Type",
+      "XJR"
+    ],
+    "2001": [
+      "S-Type",
+      "XJR"
+    ],
+    "2002": [
+      "S-Type",
+      "X-Type",
+      "XJR",
+      "XJR100"
+    ],
+    "2003": [
+      "S-Type",
+      "X-Type",
+      "XJR"
+    ],
+    "2004": [
+      "S-Type",
+      "X-Type",
+      "XJ8"
+    ],
+    "2005": [
+      "S-Type",
+      "Super V8",
+      "Vanden Plas",
+      "X-Type",
+      "XJ8",
+      "XJR"
+    ],
+    "2006": [
+      "S-Type",
+      "Super V8",
+      "Vanden Plas",
+      "X-Type",
+      "XJ8",
+      "XJR"
+    ],
+    "2007": [
+      "S-Type",
+      "Super V8",
+      "Vanden Plas",
+      "X-Type",
+      "XJ8",
+      "XJR"
+    ],
+    "2008": [
+      "S-Type",
+      "Super V8",
+      "Vanden Plas",
+      "X-Type",
+      "XJ",
+      "XJR"
+    ],
+    "2009": [
+      "Super V8",
+      "Vanden Plas",
+      "XF",
+      "XJ",
+      "XJR"
+    ],
+    "2013": [
+      "XF",
+      "XJ"
+    ],
+    "2014": [
+      "XF",
+      "XJ"
+    ],
+    "2015": [
+      "XF",
+      "XJ"
+    ],
+    "2016": [
+      "F-Type",
+      "XJ"
+    ],
+    "2017": [
+      "F-Type",
+      "XJ"
+    ],
+    "2018": [
+      "F-Type",
+      "XJ"
+    ],
+    "2019": [
+      "F-Type",
+      "XJ"
+    ],
+    "2020": [
+      "F-Type"
     ]
   },
   "Jeep": {
@@ -6259,6 +6748,216 @@
     "2025": [
       "IS300",
       "IS350"
+    ]
+  },
+  "Lincoln": {
+    "1984": [
+      "Continental"
+    ],
+    "1985": [
+      "Continental"
+    ],
+    "1986": [
+      "Continental",
+      "Mark VII"
+    ],
+    "1987": [
+      "Continental",
+      "Mark VII"
+    ],
+    "1988": [
+      "Mark VII"
+    ],
+    "1989": [
+      "Mark VII"
+    ],
+    "1990": [
+      "Mark VII"
+    ],
+    "1991": [
+      "Mark VII"
+    ],
+    "1992": [
+      "Mark VII",
+      "Town Car"
+    ],
+    "1993": [
+      "MARK VIII",
+      "Town Car"
+    ],
+    "1994": [
+      "MARK VIII",
+      "Town Car"
+    ],
+    "1995": [
+      "MARK VIII",
+      "Town Car"
+    ],
+    "1996": [
+      "MARK VIII",
+      "Town Car"
+    ],
+    "1997": [
+      "MARK VIII",
+      "Town Car"
+    ],
+    "1998": [
+      "MARK VIII",
+      "Navigator",
+      "Town Car"
+    ],
+    "1999": [
+      "Navigator",
+      "Town Car"
+    ],
+    "2000": [
+      "LS",
+      "Navigator",
+      "Town Car"
+    ],
+    "2001": [
+      "LS",
+      "Navigator",
+      "Town Car"
+    ],
+    "2002": [
+      "Blackwood",
+      "LS",
+      "Navigator",
+      "Town Car"
+    ],
+    "2003": [
+      "Aviator",
+      "Blackwood",
+      "LS",
+      "Navigator",
+      "Town Car"
+    ],
+    "2004": [
+      "Aviator",
+      "LS",
+      "Navigator",
+      "Town Car"
+    ],
+    "2005": [
+      "Aviator",
+      "LS",
+      "Mark LT",
+      "Navigator",
+      "Town Car"
+    ],
+    "2006": [
+      "LS",
+      "LT",
+      "Mark LT",
+      "Navigator",
+      "Town Car"
+    ],
+    "2007": [
+      "LT",
+      "MKX",
+      "MKZ",
+      "Mark LT",
+      "Navigator",
+      "Town Car"
+    ],
+    "2008": [
+      "LT",
+      "MKX",
+      "MKZ",
+      "Mark LT",
+      "Navigator",
+      "Town Car"
+    ],
+    "2009": [
+      "MKS",
+      "MKX",
+      "MKZ",
+      "Navigator",
+      "Town Car"
+    ],
+    "2010": [
+      "MKS",
+      "MKT",
+      "MKX",
+      "MKZ",
+      "Navigator",
+      "Town Car"
+    ],
+    "2011": [
+      "MKS",
+      "MKT",
+      "MKX",
+      "MKZ",
+      "Navigator",
+      "Town Car"
+    ],
+    "2012": [
+      "MKS",
+      "MKT",
+      "MKX",
+      "MKZ",
+      "Navigator"
+    ],
+    "2013": [
+      "MKS",
+      "MKT",
+      "MKX",
+      "MKZ",
+      "Navigator"
+    ],
+    "2014": [
+      "MKS",
+      "MKT",
+      "MKX",
+      "MKZ",
+      "Navigator"
+    ],
+    "2015": [
+      "MKC",
+      "MKS",
+      "MKT",
+      "MKX",
+      "MKZ",
+      "Navigator"
+    ],
+    "2016": [
+      "MKC",
+      "MKS",
+      "MKT",
+      "MKX",
+      "MKZ",
+      "Navigator"
+    ],
+    "2017": [
+      "Continental",
+      "MKC",
+      "MKT",
+      "MKX",
+      "MKZ",
+      "Navigator"
+    ],
+    "2018": [
+      "Continental",
+      "MKC",
+      "MKT",
+      "MKX",
+      "MKZ",
+      "Navigator"
+    ],
+    "2019": [
+      "Continental",
+      "MKC",
+      "MKT",
+      "MKZ",
+      "Nautilus"
+    ],
+    "2020": [
+      "Continental",
+      "Nautilus"
+    ],
+    "2021": [
+      "Nautilus"
     ]
   },
   "Mazda": {
@@ -7787,6 +8486,205 @@
       "GLE53"
     ]
   },
+  "Mitsubishi": {
+    "1983": [
+      "Montero"
+    ],
+    "1984": [
+      "Montero"
+    ],
+    "1985": [
+      "Montero"
+    ],
+    "1986": [
+      "Montero"
+    ],
+    "1987": [
+      "Montero",
+      "Raider"
+    ],
+    "1988": [
+      "Montero",
+      "Raider"
+    ],
+    "1989": [
+      "Montero",
+      "Raider"
+    ],
+    "1990": [
+      "Eclipse",
+      "Galant"
+    ],
+    "1991": [
+      "3000GT",
+      "Eclipse",
+      "Galant"
+    ],
+    "1992": [
+      "3000GT",
+      "Eclipse",
+      "Expo",
+      "Galant",
+      "Montero"
+    ],
+    "1993": [
+      "3000GT",
+      "Eclipse",
+      "Expo",
+      "Montero"
+    ],
+    "1994": [
+      "3000GT",
+      "Eclipse",
+      "Expo",
+      "Montero"
+    ],
+    "1995": [
+      "3000GT",
+      "Eclipse",
+      "Expo",
+      "Montero"
+    ],
+    "1996": [
+      "3000GT",
+      "Eclipse",
+      "Montero"
+    ],
+    "1997": [
+      "3000GT",
+      "Eclipse",
+      "Montero",
+      "Montero Sport"
+    ],
+    "1998": [
+      "3000GT",
+      "Eclipse",
+      "Montero Sport"
+    ],
+    "1999": [
+      "3000GT",
+      "Eclipse",
+      "Montero Sport"
+    ],
+    "2000": [
+      "Montero Sport"
+    ],
+    "2001": [
+      "Montero",
+      "Montero Sport"
+    ],
+    "2002": [
+      "Montero",
+      "Montero Sport"
+    ],
+    "2003": [
+      "Montero",
+      "Montero Sport",
+      "Outlander"
+    ],
+    "2004": [
+      "Endeavor",
+      "Montero",
+      "Montero Sport",
+      "Outlander"
+    ],
+    "2005": [
+      "Endeavor",
+      "Lancer  (Evolution)",
+      "Montero",
+      "Outlander"
+    ],
+    "2006": [
+      "Endeavor",
+      "Montero",
+      "Outlander",
+      "Raider"
+    ],
+    "2007": [
+      "Endeavor",
+      "Outlander",
+      "Raider"
+    ],
+    "2008": [
+      "Endeavor",
+      "Lancer  (Evolution)",
+      "Outlander",
+      "Raider"
+    ],
+    "2009": [
+      "Endeavor",
+      "Lancer",
+      "Lancer  (Evolution)",
+      "Outlander",
+      "Raider"
+    ],
+    "2010": [
+      "Endeavor",
+      "Lancer",
+      "Lancer  (Evolution)",
+      "Outlander"
+    ],
+    "2011": [
+      "Endeavor",
+      "Lancer",
+      "Lancer  (Evolution)",
+      "Outlander"
+    ],
+    "2012": [
+      "Lancer",
+      "Lancer  (Evolution)",
+      "Outlander",
+      "Outlander Sport",
+      "RVR"
+    ],
+    "2013": [
+      "Lancer",
+      "Lancer  (Evolution)",
+      "Outlander",
+      "Outlander Sport",
+      "RVR"
+    ],
+    "2014": [
+      "Lancer",
+      "Lancer  (Evolution)",
+      "Outlander",
+      "Outlander Sport",
+      "RVR"
+    ],
+    "2015": [
+      "Lancer",
+      "Lancer  (Evolution)",
+      "Outlander",
+      "Outlander Sport",
+      "RVR"
+    ],
+    "2016": [
+      "Lancer",
+      "Outlander",
+      "Outlander Sport",
+      "RVR"
+    ],
+    "2017": [
+      "Lancer",
+      "Outlander",
+      "Outlander Sport"
+    ],
+    "2018": [
+      "Outlander",
+      "Outlander Sport"
+    ],
+    "2019": [
+      "Outlander",
+      "Outlander Sport"
+    ],
+    "2020": [
+      "Outlander",
+      "Outlander Sport"
+    ],
+    "2021": [
+      "Outlander Sport"
+    ]
+  },
   "Nissan": {
     "1970": [
       "240Z"
@@ -8194,6 +9092,85 @@
       "Z"
     ]
   },
+  "Oldsmobile": {
+    "1978": [
+      "Cutlass"
+    ],
+    "1979": [
+      "Cutlass"
+    ],
+    "1980": [
+      "Cutlass"
+    ],
+    "1981": [
+      "Cutlass"
+    ],
+    "1982": [
+      "Cutlass"
+    ],
+    "1983": [
+      "Cutlass"
+    ],
+    "1984": [
+      "Cutlass"
+    ],
+    "1985": [
+      "Cutlass"
+    ],
+    "1986": [
+      "Cutlass"
+    ],
+    "1987": [
+      "Cutlass"
+    ],
+    "1988": [
+      "Cutlass"
+    ],
+    "1991": [
+      "Bravada",
+      "Custom Cruiser"
+    ],
+    "1992": [
+      "Bravada",
+      "Custom Cruiser"
+    ],
+    "1993": [
+      "Bravada"
+    ],
+    "1994": [
+      "Bravada"
+    ],
+    "1996": [
+      "Bravada"
+    ],
+    "1997": [
+      "Bravada"
+    ],
+    "1998": [
+      "Bravada"
+    ],
+    "1999": [
+      "Bravada"
+    ],
+    "2000": [
+      "Bravada"
+    ],
+    "2001": [
+      "Bravada"
+    ],
+    "2002": [
+      "Bravada",
+      "Silhouette"
+    ],
+    "2003": [
+      "Bravada",
+      "Silhouette"
+    ],
+    "2004": [
+      "Bravada",
+      "Silhouette"
+    ]
+  },
   "Pontiac": {
     "1978": [
       "Grand Prix",
@@ -8397,6 +9374,353 @@
     "2018": [
       "Cayenne",
       "Macan"
+    ]
+  },
+  "Saab": {
+    "2004": [
+      "9-7X"
+    ],
+    "2005": [
+      "9-2X",
+      "9-7X"
+    ],
+    "2006": [
+      "9-2X",
+      "9-7X"
+    ],
+    "2007": [
+      "9-7X"
+    ],
+    "2008": [
+      "9-7X"
+    ],
+    "2009": [
+      "9-7X"
+    ],
+    "2010": [
+      "9-5"
+    ],
+    "2011": [
+      "9-5"
+    ]
+  },
+  "Saturn": {
+    "2002": [
+      "Vue"
+    ],
+    "2003": [
+      "Vue"
+    ],
+    "2004": [
+      "Vue"
+    ],
+    "2005": [
+      "Relay",
+      "Vue"
+    ],
+    "2006": [
+      "Relay",
+      "Vue"
+    ],
+    "2007": [
+      "Outlook",
+      "Sky",
+      "Vue"
+    ],
+    "2008": [
+      "Outlook",
+      "Sky",
+      "Vue"
+    ],
+    "2009": [
+      "Outlook",
+      "Sky",
+      "Vue"
+    ],
+    "2010": [
+      "Outlook",
+      "Vue"
+    ]
+  },
+  "Scion": {
+    "2013": [
+      "FR-S"
+    ],
+    "2014": [
+      "FR-S"
+    ],
+    "2015": [
+      "FR-S"
+    ],
+    "2016": [
+      "FR-S"
+    ]
+  },
+  "Subaru": {
+    "1982": [
+      "Brat"
+    ],
+    "1983": [
+      "Brat"
+    ],
+    "1984": [
+      "Brat"
+    ],
+    "1985": [
+      "Brat",
+      "GL"
+    ],
+    "1986": [
+      "Brat",
+      "GL"
+    ],
+    "1987": [
+      "Brat",
+      "GL"
+    ],
+    "1988": [
+      "GL",
+      "Justy"
+    ],
+    "1989": [
+      "GL",
+      "Justy"
+    ],
+    "1990": [
+      "Justy",
+      "Legacy",
+      "Loyale"
+    ],
+    "1991": [
+      "Justy",
+      "Legacy",
+      "Loyale"
+    ],
+    "1992": [
+      "Impreza",
+      "Justy",
+      "Legacy",
+      "Loyale",
+      "SVX"
+    ],
+    "1993": [
+      "Impreza",
+      "Justy",
+      "Legacy",
+      "Loyale",
+      "SVX"
+    ],
+    "1994": [
+      "Impreza",
+      "Justy",
+      "Legacy",
+      "Loyale",
+      "SVX"
+    ],
+    "1995": [
+      "Impreza",
+      "Legacy",
+      "SVX"
+    ],
+    "1996": [
+      "Impreza",
+      "Legacy",
+      "SVX"
+    ],
+    "1997": [
+      "Impreza",
+      "Legacy",
+      "SVX"
+    ],
+    "1998": [
+      "Forester",
+      "Impreza",
+      "Legacy"
+    ],
+    "1999": [
+      "Forester",
+      "Impreza",
+      "Legacy"
+    ],
+    "2000": [
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback"
+    ],
+    "2001": [
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback"
+    ],
+    "2002": [
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "WRX"
+    ],
+    "2003": [
+      "Baja",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "WRX"
+    ],
+    "2004": [
+      "Baja",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "WRX"
+    ],
+    "2005": [
+      "Baja",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "WRX"
+    ],
+    "2006": [
+      "Baja",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "Tribeca",
+      "WRX"
+    ],
+    "2007": [
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "Tribeca",
+      "WRX"
+    ],
+    "2008": [
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "Tribeca"
+    ],
+    "2009": [
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "Tribeca"
+    ],
+    "2010": [
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "Tribeca"
+    ],
+    "2011": [
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "Tribeca"
+    ],
+    "2012": [
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "Tribeca"
+    ],
+    "2013": [
+      "BR-Z",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "XV Crosstrek"
+    ],
+    "2014": [
+      "BR-Z",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "XV Crosstrek"
+    ],
+    "2015": [
+      "BR-Z",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "WRX",
+      "XV Crosstrek"
+    ],
+    "2016": [
+      "BR-Z",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "WRX",
+      "XV Crosstrek"
+    ],
+    "2017": [
+      "BR-Z",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "WRX",
+      "XV Crosstrek"
+    ],
+    "2018": [
+      "BR-Z",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "WRX",
+      "XV Crosstrek"
+    ],
+    "2019": [
+      "BR-Z",
+      "Forester",
+      "Impreza",
+      "Legacy",
+      "Outback",
+      "WRX",
+      "XV Crosstrek"
+    ],
+    "2020": [
+      "Forester",
+      "Impreza",
+      "Outback",
+      "WRX",
+      "XV Crosstrek"
+    ],
+    "2021": [
+      "Forester",
+      "Impreza",
+      "Outback",
+      "WRX",
+      "XV Crosstrek"
+    ],
+    "2022": [
+      "Forester",
+      "Impreza",
+      "Outback",
+      "WRX",
+      "XV Crosstrek"
+    ],
+    "2023": [
+      "XV Crosstrek"
     ]
   },
   "Suzuki": {
