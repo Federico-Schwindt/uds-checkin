@@ -157,11 +157,11 @@ const vehicleStep: FormStep = {
   fields: [
     heading("vehicleInfo", "Vehicle Information"),
     row("ymm", [
-      core("vehicleMake", "Make", "select", { optionsSource: "makes", width: 4 }),
       core("vehicleYear", "Year", "select", {
         optionsSource: "years",
         width: 4,
       }),
+      core("vehicleMake", "Make", "select", { optionsSource: "makes", width: 4 }),
       core("vehicleModel", "Model", "text", {
         width: 4,
         placeholder: "Model",
