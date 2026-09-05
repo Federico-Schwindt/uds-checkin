@@ -64,6 +64,42 @@ export function shopTime(date: Date, timezone: string = DEFAULT_TIMEZONE): ShopT
   return { dateKey, weekday, minutes };
 }
 
+/** Minutes the zone is ahead of UTC at this instant (EST −300, EDT −240). */
+function zoneOffsetMinutes(date: Date, timezone: string): number {
+  let parts: Intl.DateTimeFormatPart[];
+  try {
+    parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: timezone,
+      hour12: false,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }).formatToParts(date);
+  } catch {
+    return zoneOffsetMinutes(date, DEFAULT_TIMEZONE);
+  }
+  const get = (type: string) => parseInt(parts.find((p) => p.type === type)?.value || "0", 10);
+  const wall = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour") % 24, get("minute"), get("second"));
+  return Math.round((wall - date.getTime()) / 60_000);
+}
+
+/**
+ * The UTC instant at which a shop-local day begins — what date filters need so
+ * that "today" means today in Odessa, not on whatever clock the server runs.
+ */
+export function shopDayStart(dateKey: string, timezone: string = DEFAULT_TIMEZONE): Date {
+  const naive = Date.parse(`${dateKey}T00:00:00Z`);
+  if (isNaN(naive)) return new Date(naive);
+  // Offset first from the naive guess, then again from the corrected instant so
+  // a DST switch near midnight lands on the right side of the boundary.
+  let ts = naive - zoneOffsetMinutes(new Date(naive), timezone) * 60_000;
+  ts = naive - zoneOffsetMinutes(new Date(ts), timezone) * 60_000;
+  return new Date(ts);
+}
+
 export function parseHhMm(value: string): number {
   const m = /^(\d{1,2}):(\d{2})$/.exec((value || "").trim());
   if (!m) return 0;

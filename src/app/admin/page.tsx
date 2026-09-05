@@ -8,7 +8,16 @@ import { formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
 import { getShopConfig } from "@/lib/settings";
 import { currentPeriod, getDayBoard, getTeamStats, todayKeyFor } from "@/lib/performance";
 import { arrivalLabel, latenessLabel } from "@/lib/attendance";
-import { formatClock, isShopOpen, parseHhMm, scheduleForDay, weekdayOf } from "@/lib/work-hours";
+import {
+  addDays,
+  formatClock,
+  formatDateKey,
+  isShopOpen,
+  parseHhMm,
+  scheduleForDay,
+  shopDayStart,
+  weekdayOf,
+} from "@/lib/work-hours";
 
 export const dynamic = "force-dynamic";
 
@@ -22,12 +31,14 @@ type Warning = {
 export default async function AdminDashboard() {
   const db = await getDb();
   const now = new Date();
-  const todayStart = new Date(now);
-  todayStart.setHours(0, 0, 0, 0);
-  const weekStart = new Date(todayStart);
-  weekStart.setDate(weekStart.getDate() - 6);
-  const monthStart = new Date(todayStart);
-  monthStart.setDate(monthStart.getDate() - 29);
+
+  // Every "day" on this page is a shop day in Odessa, not a day on the server's
+  // clock — otherwise "today" would roll over at 8pm local time on a UTC host.
+  const config = await getShopConfig();
+  const todayKey = todayKeyFor(config);
+  const todayStart = shopDayStart(todayKey, config.timezone);
+  const weekStart = shopDayStart(addDays(todayKey, -6), config.timezone);
+  const monthStart = shopDayStart(addDays(todayKey, -29), config.timezone);
 
   const live = isNull(entries.deletedAt);
   const [today] = await db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, todayStart)));
@@ -46,20 +57,20 @@ export default async function AdminDashboard() {
     .from(messageLog)
     .where(and(eq(messageLog.status, "failed"), gte(messageLog.createdAt, weekStart)));
 
-  // Last 14 days volume for the mini chart
+  // Last 14 days volume for the mini chart. Timestamps are stored in UTC, so the
+  // bucket key is converted into shop time before it is grouped.
+  const shopDay = sql<string>`to_char(${entries.createdAt} AT TIME ZONE 'UTC' AT TIME ZONE ${config.timezone}, 'YYYY-MM-DD')`;
   const daily = await db
-    .select({
-      day: sql<string>`to_char(${entries.createdAt}, 'YYYY-MM-DD')`,
-      n: count(),
-    })
+    .select({ day: shopDay, n: count() })
     .from(entries)
-    .where(and(live, gte(entries.createdAt, new Date(todayStart.getTime() - 13 * 86400_000))))
-    .groupBy(sql`to_char(${entries.createdAt}, 'YYYY-MM-DD')`);
+    .where(and(live, gte(entries.createdAt, shopDayStart(addDays(todayKey, -13), config.timezone))))
+    // Group by the output column: repeating the expression would re-bind the
+    // timezone as a second parameter, which Postgres will not match.
+    .groupBy(sql`1`);
   const dailyMap = Object.fromEntries(daily.map((d) => [d.day, d.n]));
   const days = Array.from({ length: 14 }, (_, i) => {
-    const d = new Date(todayStart.getTime() - (13 - i) * 86400_000);
-    const key = d.toISOString().slice(0, 10);
-    return { key, label: d.toLocaleDateString("en-US", { weekday: "short" }), n: dailyMap[key] || 0 };
+    const key = addDays(todayKey, -(13 - i));
+    return { key, label: formatDateKey(key, { weekday: "short" }), n: dailyMap[key] || 0 };
   });
   const maxDay = Math.max(1, ...days.map((d) => d.n));
 
@@ -83,10 +94,8 @@ export default async function AdminDashboard() {
     .limit(8);
 
   /* ---------- team, attendance and warnings ---------- */
-  const config = await getShopConfig();
   const period = currentPeriod(now, config);
   const team = await getTeamStats(config, period);
-  const todayKey = todayKeyFor(config);
   const board = await getDayBoard(todayKey);
   const todaySchedule = scheduleForDay(config.workHours, weekdayOf(todayKey));
   const shopOpen = isShopOpen(now, config.workHours, config.timezone);
@@ -369,7 +378,7 @@ export default async function AdminDashboard() {
             ))}
           </div>
           <div className="flex justify-between mt-2 text-[10px] text-ink-400">
-            <span>{days[0].key.slice(5)}</span>
+            <span>{formatDateKey(days[0].key)}</span>
             <span>Today</span>
           </div>
         </Card>

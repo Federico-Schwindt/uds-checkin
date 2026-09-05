@@ -1,9 +1,50 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { CalendarClock } from "lucide-react";
-import { Card, Field, Input, Toggle } from "@/components/ui";
-import { DAY_NAMES, normalizeWorkHours, type DaySchedule } from "@/lib/work-hours";
+import { Card, Field, Input, Select, Toggle } from "@/components/ui";
+import { DAY_NAMES, DEFAULT_TIMEZONE, normalizeWorkHours, type DaySchedule } from "@/lib/work-hours";
 import { cn } from "@/lib/utils";
+
+/** The shop runs on Eastern time; the rest are here for a second location. */
+const TIMEZONES: Array<{ value: string; label: string }> = [
+  { value: "America/New_York", label: "Eastern — Odessa, FL (America/New_York)" },
+  { value: "America/Chicago", label: "Central (America/Chicago)" },
+  { value: "America/Denver", label: "Mountain (America/Denver)" },
+  { value: "America/Phoenix", label: "Arizona, no DST (America/Phoenix)" },
+  { value: "America/Los_Angeles", label: "Pacific (America/Los_Angeles)" },
+  { value: "America/Anchorage", label: "Alaska (America/Anchorage)" },
+  { value: "Pacific/Honolulu", label: "Hawaii (Pacific/Honolulu)" },
+];
+
+/** Live clock in the selected zone, so the admin can confirm it is the shop's. */
+function ShopClock({ timezone }: { timezone: string }) {
+  const [label, setLabel] = useState("");
+
+  useEffect(() => {
+    const tick = () => {
+      try {
+        setLabel(
+          new Date().toLocaleString("en-US", {
+            timeZone: timezone || DEFAULT_TIMEZONE,
+            weekday: "short",
+            hour: "numeric",
+            minute: "2-digit",
+            timeZoneName: "short",
+          })
+        );
+      } catch {
+        setLabel("Unknown timezone");
+      }
+    };
+    tick();
+    const id = setInterval(tick, 30_000);
+    return () => clearInterval(id);
+  }, [timezone]);
+
+  if (!label) return null;
+  return <p className="text-xs text-ink-500 mt-1.5">Shop time right now: <strong className="text-ink-700">{label}</strong></p>;
+}
 
 /**
  * Opening hours double as the technician sign-in window: outside them the
@@ -91,8 +132,18 @@ export function ScheduleCard({
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5 pt-4 border-t border-ink-100">
-        <Field label="Timezone" hint="IANA name — the hours above are read in this zone">
-          <Input value={timezone} onChange={(e) => onTimezoneChange(e.target.value)} placeholder="America/New_York" />
+        <Field label="Shop timezone" hint="The hours above are read in this zone">
+          <Select value={timezone || DEFAULT_TIMEZONE} onChange={(e) => onTimezoneChange(e.target.value)}>
+            {!TIMEZONES.some((z) => z.value === timezone) && timezone && (
+              <option value={timezone}>{timezone}</option>
+            )}
+            {TIMEZONES.map((z) => (
+              <option key={z.value} value={z.value}>
+                {z.label}
+              </option>
+            ))}
+          </Select>
+          <ShopClock timezone={timezone || DEFAULT_TIMEZONE} />
         </Field>
         <Field label="Early sign-in (minutes)" hint="How long before the shift they may badge in">
           <Input
