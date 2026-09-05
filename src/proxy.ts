@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AUTH_COOKIE, verifySessionToken } from "@/lib/auth";
 
+/** Reachable without a session. */
 const PUBLIC_PREFIXES = ["/lock", "/api/auth/", "/manifest.webmanifest"];
+
+/** Admin-only areas — technicians are bounced to the station. */
+const ADMIN_PREFIXES = ["/admin", "/api/admin"];
 
 export default function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -10,18 +14,28 @@ export default function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = req.cookies.get(AUTH_COOKIE)?.value;
-  if (verifySessionToken(token)) {
-    return NextResponse.next();
+  const session = verifySessionToken(req.cookies.get(AUTH_COOKIE)?.value);
+  const isApi = pathname.startsWith("/api/");
+
+  if (!session) {
+    if (isApi) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const url = new URL("/lock", req.nextUrl);
+    if (pathname !== "/") url.searchParams.set("next", pathname);
+    return NextResponse.redirect(url);
   }
 
-  if (pathname.startsWith("/api/")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const wantsAdmin = ADMIN_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+  if (wantsAdmin && session.role !== "admin") {
+    if (isApi) return NextResponse.json({ error: "Admin access required" }, { status: 403 });
+    return NextResponse.redirect(new URL("/?denied=admin", req.nextUrl));
   }
 
-  const url = new URL("/lock", req.nextUrl);
-  if (pathname !== "/") url.searchParams.set("next", pathname);
-  return NextResponse.redirect(url);
+  // The technician panel is personal; admins get the full team view instead.
+  if ((pathname === "/tech" || pathname.startsWith("/tech/")) && session.role !== "tech") {
+    return NextResponse.redirect(new URL("/admin/team", req.nextUrl));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {

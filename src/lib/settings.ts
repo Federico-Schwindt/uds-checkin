@@ -1,6 +1,13 @@
 import { eq } from "drizzle-orm";
 import { getDb, settings } from "@/db";
 import type { FormSchema } from "@/lib/form-schema";
+import {
+  DEFAULT_TIMEZONE,
+  DEFAULT_WORK_HOURS,
+  normalizeWorkHours,
+  type DaySchedule,
+} from "@/lib/work-hours";
+import { DEFAULT_SCORING, normalizeScoring, type ScoringConfig } from "@/lib/performance-config";
 
 export type KioskColumn = { key: string; visible: boolean };
 
@@ -13,7 +20,6 @@ export type AppSettings = {
   formLayout: unknown;
   formSchema: FormSchema | null;
   fieldOptions: Record<string, string[]> | null;
-  pin: string;
   idleLockMinutes: number;
   sessionDays: number;
   businessName: string;
@@ -34,7 +40,43 @@ export type AppSettings = {
   smtpFromEmail: string;
   emailEnabled: boolean;
   adminNotifyEnabled: boolean;
+  /** IANA timezone the posted opening hours are expressed in. */
+  timezone: string;
+  workHours: DaySchedule[];
+  earlyLoginMinutes: number;
+  lateLoginMinutes: number;
+  shiftSessionGraceMinutes: number;
+  scoring: ScoringConfig;
 };
+
+/** Everything the schedule + scoring code needs, normalized and safe to use. */
+export type ShopConfig = {
+  timezone: string;
+  workHours: DaySchedule[];
+  earlyLoginMinutes: number;
+  lateLoginMinutes: number;
+  shiftSessionGraceMinutes: number;
+  scoring: ScoringConfig;
+};
+
+export function toShopConfig(s: Partial<AppSettings>): ShopConfig {
+  const int = (v: unknown, fallback: number) => {
+    const n = Number(v);
+    return isNaN(n) ? fallback : Math.max(0, Math.round(n));
+  };
+  return {
+    timezone: typeof s.timezone === "string" && s.timezone ? s.timezone : DEFAULT_TIMEZONE,
+    workHours: normalizeWorkHours(s.workHours ?? DEFAULT_WORK_HOURS),
+    earlyLoginMinutes: int(s.earlyLoginMinutes, 30),
+    lateLoginMinutes: int(s.lateLoginMinutes, 60),
+    shiftSessionGraceMinutes: int(s.shiftSessionGraceMinutes, 60),
+    scoring: normalizeScoring(s.scoring ?? DEFAULT_SCORING),
+  };
+}
+
+export async function getShopConfig(): Promise<ShopConfig> {
+  return toShopConfig(await getSettings());
+}
 
 export async function getSettings(): Promise<AppSettings> {
   const db = await getDb();

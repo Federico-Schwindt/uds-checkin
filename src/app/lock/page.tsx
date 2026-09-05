@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { Logo } from "@/components/logo";
-import { PinPad } from "./pin-pad";
+import { SignIn } from "./sign-in";
 
-export const metadata = { title: "Unlock | UDS Check-In" };
+export const metadata = { title: "Sign in | UDS Check-In" };
 
 export default function LockPage() {
   return (
@@ -13,13 +13,13 @@ export default function LockPage() {
 
       <div className="relative w-full max-w-sm animate-fade-up">
         <div className="bg-white rounded-3xl shadow-pop border border-ink-200/70 p-7 sm:p-8">
-          <div className="text-center mb-7">
+          <div className="text-center mb-6">
             <Logo className="h-10 sm:h-11 mx-auto mb-5" />
             <h1 className="text-lg font-bold tracking-tight text-ink-900">Check-In Station</h1>
-            <p className="text-ink-500 mt-1 text-sm">Enter your PIN to unlock</p>
+            <p className="text-ink-500 mt-1 text-sm">Choose your profile to sign in</p>
           </div>
           <Suspense>
-            <PinPad />
+            <SignIn />
           </Suspense>
         </div>
         <p className="text-center text-xs text-ink-400 mt-5">Universal Driveshafts · Staff access only</p>

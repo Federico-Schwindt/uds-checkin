@@ -4,8 +4,12 @@ import { getDb, entries, customers, parts, statusHistory, messageLog } from "@/d
 import { notifyStatusChange } from "@/lib/notify";
 import { normalizePhone } from "@/lib/utils";
 import { diffFields, logActivity } from "@/lib/audit";
+import { sessionFromRequest } from "@/lib/session";
+import { actorLabel } from "@/lib/auth";
+import { getEntryEvents } from "@/lib/performance";
 
-async function loadEntry(id: number) {
+/** `includeFlags` is admin-only — performance records are not shop-floor reading. */
+async function loadEntry(id: number, includeFlags = false) {
   const db = await getDb();
   const rows = await db
     .select()
@@ -24,12 +28,13 @@ async function loadEntry(id: number) {
     .from(messageLog)
     .where(eq(messageLog.entryId, id))
     .orderBy(asc(messageLog.createdAt));
-  return { entry: rows[0].entries, customer: rows[0].customers, parts: partRows, history, messages };
+  const flags = includeFlags ? await getEntryEvents(id) : [];
+  return { entry: rows[0].entries, customer: rows[0].customers, parts: partRows, history, messages, flags };
 }
 
-export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+export async function GET(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
-  const data = await loadEntry(parseInt(id));
+  const data = await loadEntry(parseInt(id), sessionFromRequest(req)?.role === "admin");
   if (!data) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(data);
 }
@@ -59,6 +64,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
   if (!body) return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
 
   const db = await getDb();
+  const session = sessionFromRequest(req);
   const existing = await db.select().from(entries).where(eq(entries.id, id));
   if (!existing.length) return NextResponse.json({ error: "Not found" }, { status: 404 });
   const current = existing[0];
@@ -85,6 +91,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
         entityId: id,
         summary: `Edited entry #${id} (${Object.keys(changed).join(", ")})`,
         details: changed,
+        actor: actorLabel(session),
         req,
       });
     }
@@ -127,6 +134,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
       fromStatus: current.jobStatus,
       toStatus: patch.jobStatus as string,
       note: body.note || "",
+      changedBy: session?.name || "",
     });
     const skipNotify = body.skipNotify === true;
     if (!skipNotify) {
@@ -141,12 +149,13 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
       entity: "entry",
       entityId: id,
       summary: `Entry #${id} status: ${current.jobStatus} → ${patch.jobStatus}`,
-      details: { from: current.jobStatus, to: patch.jobStatus, notified: !skipNotify },
+      details: { from: current.jobStatus, to: patch.jobStatus, notified: !skipNotify, by: session?.name || "" },
+      actor: actorLabel(session),
       req,
     });
   }
 
-  const data = await loadEntry(id);
+  const data = await loadEntry(id, session?.role === "admin");
   return NextResponse.json({ ...data, notified, statusChanged });
 }
 
@@ -154,6 +163,7 @@ export async function DELETE(req: NextRequest, ctx: { params: Promise<{ id: stri
   const { id: idStr } = await ctx.params;
   const id = parseInt(idStr);
   const db = await getDb();
+  const session = sessionFromRequest(req);
 
   const rows = await db
     .select()
@@ -174,6 +184,7 @@ export async function DELETE(req: NextRequest, ctx: { params: Promise<{ id: stri
     entityId: id,
     summary: `Deleted entry #${id}${name ? ` — ${name}` : ""}${entry.jobNumber ? ` (Job ${entry.jobNumber})` : ""}`,
     details: { entry, customer },
+    actor: actorLabel(session),
     req,
   });
 

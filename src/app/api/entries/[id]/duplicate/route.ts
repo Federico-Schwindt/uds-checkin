@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, entries, parts, statusHistory } from "@/db";
 import { logActivity } from "@/lib/audit";
+import { sessionFromRequest } from "@/lib/session";
+import { actorLabel } from "@/lib/auth";
 
 /**
  * Clones an entry (same customer, vehicle, job info and parts) as a fresh job:
@@ -11,6 +13,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   const { id: idStr } = await ctx.params;
   const id = parseInt(idStr);
   const db = await getDb();
+  const session = sessionFromRequest(req);
 
   const rows = await db.select().from(entries).where(eq(entries.id, id));
   if (!rows.length) return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -33,6 +36,8 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   clone.signingDate = "";
   clone.payment = "";
   clone.etaJob = "";
+  clone.createdByUserId = session?.uid ?? null;
+  clone.createdByName = session?.name || "";
 
   const [created] = await db
     .insert(entries)
@@ -51,6 +56,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     fromStatus: "",
     toStatus: "New",
     note: `Duplicated from entry #${id}`,
+    changedBy: session?.name || "",
   });
 
   await logActivity({
@@ -58,6 +64,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     entity: "entry",
     entityId: created.id,
     summary: `Duplicated entry #${id} → new entry #${created.id}`,
+    actor: actorLabel(session),
     details: { sourceId: id },
     req,
   });

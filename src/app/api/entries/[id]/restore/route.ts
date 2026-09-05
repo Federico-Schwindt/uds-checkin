@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, entries } from "@/db";
 import { logActivity } from "@/lib/audit";
+import { sessionFromRequest } from "@/lib/session";
+import { actorLabel } from "@/lib/auth";
 
 /** Undo a soft-delete: clears deletedAt so the entry reappears in the list. */
 export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
@@ -18,6 +20,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     entity: "entry",
     entityId: id,
     summary: `Restored entry #${id}`,
+    actor: actorLabel(sessionFromRequest(req)),
     req,
   });
   return NextResponse.json({ ok: true });

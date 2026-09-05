@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSettings, setSettings, maskSecrets, type AppSettings } from "@/lib/settings";
 import { logActivity } from "@/lib/audit";
+import { normalizeWorkHours } from "@/lib/work-hours";
+import { normalizeScoring } from "@/lib/performance-config";
+import { sessionFromRequest } from "@/lib/session";
+import { actorLabel } from "@/lib/auth";
 
 /** Human labels for what changed, keeping secret values out of the log. */
-const SECRET_KEYS = new Set(["pin", "twilioAuthToken", "smtpPass"]);
+const SECRET_KEYS = new Set(["twilioAuthToken", "smtpPass"]);
 
 export async function GET() {
   const s = await getSettings();
@@ -11,11 +15,12 @@ export async function GET() {
 }
 
 const ALLOWED_KEYS: Array<keyof AppSettings> = [
-  "pin", "idleLockMinutes", "sessionDays", "businessName", "adminEmail",
+  "idleLockMinutes", "sessionDays", "businessName", "adminEmail",
   "turnaroundBanner", "helpPhone",
   "twilioAccountSid", "twilioAuthToken", "twilioFrom", "twilioMessagingServiceSid", "smsEnabled",
   "smtpHost", "smtpPort", "smtpSecure", "smtpUser", "smtpPass", "smtpFromName", "smtpFromEmail", "emailEnabled",
   "adminNotifyEnabled", "kioskColumns", "logoUrl", "brandColor", "googleMapsKey", "formLayout", "formSchema", "fieldOptions",
+  "timezone", "workHours", "earlyLoginMinutes", "lateLoginMinutes", "shiftSessionGraceMinutes", "scoring",
 ];
 
 export async function PUT(req: NextRequest) {
@@ -31,10 +36,9 @@ export async function PUT(req: NextRequest) {
       (patch as Record<string, unknown>)[key] = v;
     }
   }
-  if (typeof patch.pin === "string" && patch.pin.length > 0 && !/^\d{4,10}$/.test(patch.pin)) {
-    return NextResponse.json({ error: "PIN must be 4-10 digits" }, { status: 400 });
-  }
-  if ("pin" in patch && !patch.pin) delete patch.pin;
+  // Normalize the schedule / scoring blobs so a bad payload can never lock anyone out.
+  if ("workHours" in patch) patch.workHours = normalizeWorkHours(patch.workHours);
+  if ("scoring" in patch) patch.scoring = normalizeScoring(patch.scoring);
 
   await setSettings(patch);
 
@@ -42,7 +46,9 @@ export async function PUT(req: NextRequest) {
   if (changedKeys.length) {
     // Special-case the big config objects so the log reads clearly.
     let summary: string;
-    if (changedKeys.includes("formSchema")) summary = "Updated the check-in form (Form Builder)";
+    if (changedKeys.includes("workHours")) summary = "Updated the working hours schedule";
+    else if (changedKeys.includes("scoring")) summary = "Updated the performance scoring rules";
+    else if (changedKeys.includes("formSchema")) summary = "Updated the check-in form (Form Builder)";
     else if (changedKeys.includes("fieldOptions")) summary = "Updated form dropdown options";
     else if (changedKeys.includes("kioskColumns")) summary = "Updated kiosk table columns";
     else summary = `Updated settings: ${changedKeys.join(", ")}`;
@@ -51,6 +57,7 @@ export async function PUT(req: NextRequest) {
       entity: "settings",
       summary,
       details: Object.fromEntries(changedKeys.map((k) => [k, SECRET_KEYS.has(k) ? "••••" : (patch as Record<string, unknown>)[k]])),
+      actor: actorLabel(sessionFromRequest(req)),
       req,
     });
   }

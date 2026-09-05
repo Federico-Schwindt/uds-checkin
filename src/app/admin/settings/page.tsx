@@ -1,10 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { KeyRound, Mail, MessageSquareText, Plus, Save, Send, Store, Trash2, Users } from "lucide-react";
 import { Badge, Button, Card, Field, Input, Spinner, Toggle } from "@/components/ui";
+import { ScheduleCard } from "./schedule-card";
+import { ScoringCard } from "./scoring-card";
+import type { DaySchedule } from "@/lib/work-hours";
+import type { ScoringConfig } from "@/lib/performance-config";
 
-type Settings = Record<string, string | number | boolean>;
+type Settings = Record<string, unknown>;
 type Employee = { id: number; name: string; active: boolean };
 type Location = { id: number; name: string; twilioFrom: string | null; active: boolean };
 
@@ -33,7 +38,7 @@ export default function SettingsPage() {
     });
   }, []);
 
-  const set = (key: string, value: string | number | boolean) => setS((prev) => ({ ...prev!, [key]: value }));
+  const set = (key: string, value: unknown) => setS((prev) => ({ ...prev!, [key]: value }));
 
   const save = async () => {
     if (!s) return;
@@ -187,17 +192,19 @@ export default function SettingsPage() {
 
       {/* Security */}
       <Card className="p-5">
-        <SectionHeader icon={<KeyRound className="w-4.5 h-4.5" />} title="Security" subtitle="PIN lock for the station and admin" />
-        <div className="grid sm:grid-cols-3 gap-4">
-          <Field label="Station PIN" hint="4-10 digits. Leave empty to keep the current PIN">
-            <Input
-              type="password"
-              placeholder="••••••"
-              value={str("pin") === "2472026" ? str("pin") : str("pin")}
-              onChange={(e) => set("pin", e.target.value.replace(/\D/g, ""))}
-              inputMode="numeric"
-            />
-          </Field>
+        <SectionHeader
+          icon={<KeyRound className="w-4.5 h-4.5" />}
+          title="Security"
+          subtitle="Session behavior for the station and the admin panel"
+        />
+        <p className="text-[13px] text-ink-600 mb-4">
+          Everyone signs in with their own account. Passwords are created and reset in{" "}
+          <Link href="/admin/team" className="font-semibold text-brand-700 hover:underline">
+            Team → Staff accounts
+          </Link>
+          .
+        </p>
+        <div className="grid sm:grid-cols-2 gap-4">
           <Field label="Auto-lock after inactivity (minutes)" hint="0 disables auto-lock">
             <Input
               value={String(num("idleLockMinutes"))}
@@ -214,6 +221,21 @@ export default function SettingsPage() {
           </Field>
         </div>
       </Card>
+
+      <ScheduleCard
+        hours={s.workHours}
+        onChange={(v: DaySchedule[]) => set("workHours", v)}
+        timezone={str("timezone")}
+        onTimezoneChange={(v) => set("timezone", v)}
+        early={num("earlyLoginMinutes")}
+        onEarlyChange={(v) => set("earlyLoginMinutes", v)}
+        late={num("lateLoginMinutes")}
+        onLateChange={(v) => set("lateLoginMinutes", v)}
+        grace={num("shiftSessionGraceMinutes")}
+        onGraceChange={(v) => set("shiftSessionGraceMinutes", v)}
+      />
+
+      <ScoringCard scoring={s.scoring} onChange={(v: ScoringConfig) => set("scoring", v)} />
 
       {/* Twilio */}
       <Card className="p-5">

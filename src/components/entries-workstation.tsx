@@ -40,6 +40,7 @@ type Row = {
   locationId: number | null;
   onHoldReason: string;
   assignedEmployee: string;
+  createdByName: string;
   customerId: number | null;
   firstName: string | null;
   lastName: string | null;
@@ -476,6 +477,7 @@ const COLUMN_LABELS: Record<string, string> = {
   payment: "Payment",
   total: "Total",
   eta: "ETA",
+  createdBy: "Taken by",
   date: "Date",
 };
 
@@ -747,6 +749,12 @@ export function EntriesWorkstation({
               onSave={(v) => patchRow(r, { entry: { etaJob: v } }, "ETA updated.")}
               placeholder="—"
             />
+          </td>
+        );
+      case "createdBy":
+        return (
+          <td key={key} className="px-3 py-2 text-ink-600 whitespace-nowrap">
+            {r.createdByName || <span className="text-ink-300">—</span>}
           </td>
         );
       case "date":

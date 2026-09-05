@@ -25,6 +25,80 @@ export const locations = pgTable("locations", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+/** Staff accounts. `admin` runs the shop panel; `tech` signs in on the floor. */
+export const users = pgTable(
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    username: text("username").notNull(),
+    name: text("name").notNull(),
+    role: text("role").notNull().default("tech"), // admin | tech
+    passwordHash: text("password_hash").notNull().default(""),
+    title: text("title").notNull().default(""),
+    phone: text("phone").notNull().default(""),
+    email: text("email").notNull().default(""),
+    active: boolean("active").notNull().default(true),
+    /** Lets a non-admin sign in outside the posted opening hours. */
+    bypassWorkHours: boolean("bypass_work_hours").notNull().default(false),
+    lastLoginAt: timestamp("last_login_at"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("users_username_idx").on(t.username), index("users_role_idx").on(t.role)]
+);
+
+/** One row per staff member per working day — the first sign-in is the arrival time. */
+export const attendance = pgTable(
+  "attendance",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** Shop-local calendar day, "YYYY-MM-DD". */
+    workDate: text("work_date").notNull(),
+    firstLoginAt: timestamp("first_login_at").notNull().defaultNow(),
+    lastSeenAt: timestamp("last_seen_at").notNull().defaultNow(),
+    /** Scheduled shift start that day, "HH:MM". */
+    scheduledStart: text("scheduled_start").notNull().default(""),
+    /** Arrival as minutes since shop-local midnight, so it is timezone-proof. */
+    arrivalMinutes: integer("arrival_minutes").notNull().default(0),
+    minutesLate: integer("minutes_late").notNull().default(0),
+    late: boolean("late").notNull().default(false),
+    logins: integer("logins").notNull().default(1),
+  },
+  (t) => [
+    uniqueIndex("attendance_user_date_idx").on(t.userId, t.workDate),
+    index("attendance_date_idx").on(t.workDate),
+  ]
+);
+
+/** Points ledger behind each technician's score. */
+export const performanceEvents = pgTable(
+  "performance_events",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** The job this is about, when the admin flagged it from an entry. */
+    entryId: integer("entry_id").references(() => entries.id, { onDelete: "set null" }),
+    type: text("type").notNull().default("mistake"), // mistake | praise | adjustment
+    severity: text("severity").notNull().default(""), // minor | major | critical
+    category: text("category").notNull().default(""),
+    note: text("note").notNull().default(""),
+    /** Negative for penalties, positive for recognition. */
+    points: integer("points").notNull().default(0),
+    createdBy: text("created_by").notNull().default(""),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("performance_user_idx").on(t.userId),
+    index("performance_created_idx").on(t.createdAt),
+    index("performance_entry_idx").on(t.entryId),
+  ]
+);
+
 export const employees = pgTable("employees", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -129,6 +203,9 @@ export const entries = pgTable(
     custom: jsonb("custom"),
 
     // meta
+    /** Who took the check-in. Kept as an id + a name snapshot that survives user deletion. */
+    createdByUserId: integer("created_by_user_id"),
+    createdByName: text("created_by_name").notNull().default(""),
     sourceEntryId: integer("source_entry_id"), // Gravity Forms entry id when imported
     /** Soft-delete marker. Deleted entries are hidden but recoverable from the log. */
     deletedAt: timestamp("deleted_at"),
@@ -190,6 +267,7 @@ export const statusHistory = pgTable(
     fromStatus: text("from_status").notNull().default(""),
     toStatus: text("to_status").notNull().default(""),
     note: text("note").notNull().default(""),
+    changedBy: text("changed_by").notNull().default(""),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => [index("status_history_entry_idx").on(t.entryId)]
