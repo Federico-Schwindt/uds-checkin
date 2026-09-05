@@ -135,7 +135,7 @@ export default async function AdminDashboard() {
       warnings.push({
         tone: "warn",
         title: `${t.name} is underperforming`,
-        detail: `Score ${t.score} (${t.attendance.late} late, ${t.attendance.missed} missed, ${t.events.major + t.events.minor} mistakes).`,
+        detail: `Score ${t.score}. This month: ${t.attendance.late} late arrival${t.attendance.late === 1 ? "" : "s"}, ${t.attendance.missed} missed shift${t.attendance.missed === 1 ? "" : "s"}, ${t.events.major + t.events.minor} mistake${t.events.major + t.events.minor === 1 ? "" : "s"} logged.`,
         href: `/admin/team/${t.userId}`,
       });
     }

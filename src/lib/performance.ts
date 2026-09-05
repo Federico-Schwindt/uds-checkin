@@ -25,6 +25,8 @@ export type EventTotals = {
   major: number;
   critical: number;
   praise: number;
+  /** Every admin entry in the period, adjustments included. */
+  count: number;
   /** Net points from the manual ledger. */
   points: number;
 };
@@ -39,8 +41,6 @@ export type TechStats = {
   attendance: AttendanceStats;
   jobs: { created: number; assigned: number; completed: number };
   events: EventTotals;
-  /** Points lost to lateness / missed shifts. */
-  attendancePoints: number;
   score: number;
   grade: ReturnType<typeof gradeFor>;
   bonus: { eligible: boolean; amount: number; blockers: string[] };
@@ -68,29 +68,22 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
-/** Turns raw rows into a score. Kept pure so the numbers are easy to reason about. */
-export function computeScore(
-  scoring: ScoringConfig,
-  att: AttendanceStats,
-  events: EventTotals
-): { score: number; attendancePoints: number } {
-  const attendancePoints =
-    att.late * -Math.abs(scoring.latePenalty) + att.missed * -Math.abs(scoring.absentPenalty);
-  const score = clamp(Math.round(scoring.baseScore + attendancePoints + events.points), 0, 100);
-  return { score, attendancePoints };
+/**
+ * The score is the starting value plus whatever the admin has logged — nothing
+ * else. Lateness and missed shifts are reported, never deducted automatically;
+ * the admin decides what each one is worth and enters it.
+ */
+export function computeScore(scoring: ScoringConfig, events: EventTotals): number {
+  return clamp(Math.round(scoring.baseScore + events.points), 0, 100);
 }
 
 function bonusCheck(
   scoring: ScoringConfig,
   score: number,
-  att: AttendanceStats,
   events: EventTotals
 ): { eligible: boolean; amount: number; blockers: string[] } {
   const blockers: string[] = [];
   if (score < scoring.bonusScore) blockers.push(`Score ${score} is below the ${scoring.bonusScore} threshold`);
-  if (att.punctuality < scoring.bonusPunctuality) {
-    blockers.push(`Punctuality ${att.punctuality}% is below ${scoring.bonusPunctuality}%`);
-  }
   if (scoring.bonusBlockOnCritical && events.critical > 0) {
     blockers.push(`${events.critical} critical mistake${events.critical > 1 ? "s" : ""} this period`);
   }
@@ -147,7 +140,7 @@ function attendanceStats(
 }
 
 function eventTotals(rows: Array<{ type: string; severity: string; points: number }>): EventTotals {
-  const totals: EventTotals = { minor: 0, major: 0, critical: 0, praise: 0, points: 0 };
+  const totals: EventTotals = { minor: 0, major: 0, critical: 0, praise: 0, count: rows.length, points: 0 };
   for (const r of rows) {
     totals.points += r.points;
     if (r.type === "praise") totals.praise++;
@@ -241,7 +234,7 @@ export async function getTeamStats(
       (u.createdAt instanceof Date ? u.createdAt : new Date(u.createdAt)).toISOString().slice(0, 10)
     );
     const events = eventTotals(eventRows.filter((r) => r.userId === u.id));
-    const { score, attendancePoints } = computeScore(config.scoring, att, events);
+    const score = computeScore(config.scoring, events);
     const mine = assignedRows.filter((r) => r.name && r.name === u.name);
     return {
       userId: u.id,
@@ -257,10 +250,9 @@ export async function getTeamStats(
         completed: mine.filter((r) => r.status === "Completed").reduce((sum, r) => sum + r.n, 0),
       },
       events,
-      attendancePoints,
       score,
       grade: gradeFor(score),
-      bonus: bonusCheck(config.scoring, score, att, events),
+      bonus: bonusCheck(config.scoring, score, events),
     };
   });
 }

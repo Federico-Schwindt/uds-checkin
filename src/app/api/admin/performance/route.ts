@@ -41,7 +41,13 @@ export async function POST(req: NextRequest) {
   const userId = Number(body.userId);
   if (!userId) return NextResponse.json({ error: "Select a technician" }, { status: 400 });
 
-  const type = ["mistake", "praise", "adjustment"].includes(body.type) ? body.type : "mistake";
+  // Typing a target score is always an adjustment — severity has no meaning there.
+  const settingScore = body.setScore !== undefined && body.setScore !== null && body.setScore !== "";
+  const type = settingScore
+    ? "adjustment"
+    : ["mistake", "praise", "adjustment"].includes(body.type)
+      ? body.type
+      : "mistake";
   const severity = type === "mistake" && SEVERITIES.includes(body.severity) ? body.severity : "";
   if (type === "mistake" && !severity) {
     return NextResponse.json({ error: "Choose a severity: minor, major or critical" }, { status: 400 });
@@ -52,11 +58,24 @@ export async function POST(req: NextRequest) {
   if (!tech) return NextResponse.json({ error: "Technician not found" }, { status: 404 });
 
   const config = await getShopConfig();
-  // The admin may override the default weight; otherwise the scoring rules decide.
-  const points =
-    body.points === undefined || body.points === null || body.points === ""
-      ? pointsFor(config.scoring, type, severity)
-      : Math.round(Number(body.points)) || 0;
+  const period = currentPeriod(new Date(), config);
+
+  // `setScore` lets the admin type the score they want; the delta is worked out
+  // here from the live score so two admins can't race each other into a wrong total.
+  let points: number;
+  if (settingScore) {
+    const target = Math.round(Number(body.setScore));
+    if (!isFinite(target) || target < 0 || target > 100) {
+      return NextResponse.json({ error: "A score must be between 0 and 100" }, { status: 400 });
+    }
+    const [before] = await getTeamStats(config, period, { userId });
+    points = target - (before?.score ?? config.scoring.baseScore);
+  } else if (body.points === undefined || body.points === null || body.points === "") {
+    // No amount given — fall back to the suggested weight for this severity.
+    points = pointsFor(config.scoring, type, severity);
+  } else {
+    points = Math.round(Number(body.points)) || 0;
+  }
   if (!isFinite(points) || Math.abs(points) > 100) {
     return NextResponse.json({ error: "Points must be between -100 and 100" }, { status: 400 });
   }
@@ -75,6 +94,8 @@ export async function POST(req: NextRequest) {
     })
     .returning();
 
+  const [after] = await getTeamStats(config, period, { userId });
+
   await logActivity({
     action: `performance.${type}`,
     entity: "user",
@@ -88,7 +109,7 @@ export async function POST(req: NextRequest) {
     req,
   });
 
-  return NextResponse.json({ event: row });
+  return NextResponse.json({ event: row, score: after?.score ?? null });
 }
 
 /** Retracts an event — mistakes do get logged against the wrong person. */
@@ -114,5 +135,8 @@ export async function DELETE(req: NextRequest) {
     actor: actorLabel(session),
     req,
   });
-  return NextResponse.json({ ok: true });
+
+  const config = await getShopConfig();
+  const [after] = await getTeamStats(config, currentPeriod(new Date(), config), { userId: row.userId });
+  return NextResponse.json({ ok: true, score: after?.score ?? null });
 }

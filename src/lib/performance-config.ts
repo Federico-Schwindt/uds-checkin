@@ -3,22 +3,22 @@
  * imports so both the DB bootstrap and the UI can read the defaults.
  */
 
+/**
+ * Nothing here changes a score on its own. The suggested amounts only pre-fill
+ * the admin's form — every point that moves is a point an admin decided to move.
+ */
 export type ScoringConfig = {
-  /** Everyone starts the month here; events move the score up or down. */
+  /** Everyone starts the month here; only admin entries move it. */
   baseScore: number;
+  /** Suggested deductions by severity, offered in the form and always editable. */
   minorMistake: number;
   majorMistake: number;
   criticalMistake: number;
   praise: number;
-  /** Applied per late arrival. */
-  latePenalty: number;
-  /** Applied per scheduled shift with no sign-in at all. */
-  absentPenalty: number;
-  /** Minutes after the shift start before an arrival counts as late. */
+  /** Minutes after the shift start before an arrival is shown as late. */
   lateGraceMinutes: number;
-  /** Bonus gates. */
+  /** Minimum score for the monthly bonus. */
   bonusScore: number;
-  bonusPunctuality: number;
   /** A single critical mistake disqualifies the month when true. */
   bonusBlockOnCritical: boolean;
   bonusAmount: number;
@@ -30,11 +30,8 @@ export const DEFAULT_SCORING: ScoringConfig = {
   majorMistake: -8,
   criticalMistake: -15,
   praise: 3,
-  latePenalty: -2,
-  absentPenalty: -5,
   lateGraceMinutes: 5,
   bonusScore: 90,
-  bonusPunctuality: 90,
   bonusBlockOnCritical: true,
   bonusAmount: 200,
 };
@@ -82,18 +79,15 @@ export function normalizeScoring(stored: unknown): ScoringConfig {
     majorMistake: num("majorMistake"),
     criticalMistake: num("criticalMistake"),
     praise: num("praise"),
-    latePenalty: num("latePenalty"),
-    absentPenalty: num("absentPenalty"),
     lateGraceMinutes: num("lateGraceMinutes"),
     bonusScore: num("bonusScore"),
-    bonusPunctuality: num("bonusPunctuality"),
     bonusBlockOnCritical:
       typeof raw.bonusBlockOnCritical === "boolean" ? raw.bonusBlockOnCritical : DEFAULT_SCORING.bonusBlockOnCritical,
     bonusAmount: num("bonusAmount"),
   };
 }
 
-/** Default point value for a manual event, before any admin override. */
+/** Suggested point value for the form — the admin can change it before saving. */
 export function pointsFor(config: ScoringConfig, type: string, severity: string): number {
   if (type === "praise") return Math.abs(config.praise);
   if (type === "mistake") {

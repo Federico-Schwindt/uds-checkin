@@ -63,15 +63,12 @@ export default async function TechnicianDetail({
           <div className="min-w-0">
             <GradeChip score={stats.score} />
             <p className="text-[13px] text-ink-600 mt-2">
-              {config.scoring.baseScore} base
-              <span className={stats.attendancePoints < 0 ? "text-rose-600" : ""}>
-                {" "}
-                {stats.attendancePoints < 0 ? stats.attendancePoints : `+${stats.attendancePoints}`} attendance
-              </span>
+              {config.scoring.baseScore} to start
               <span className={stats.events.points < 0 ? "text-rose-600" : "text-emerald-600"}>
                 {" "}
-                {stats.events.points < 0 ? stats.events.points : `+${stats.events.points}`} record
-              </span>
+                {stats.events.points < 0 ? stats.events.points : `+${stats.events.points}`}
+              </span>{" "}
+              {`from ${stats.events.count} manual ${stats.events.count === 1 ? "entry" : "entries"}`}
             </p>
             {prevStats && (
               <p className="text-[13px] text-ink-500 mt-1.5">
@@ -106,7 +103,7 @@ export default async function TechnicianDetail({
                   : "Does not qualify for the monthly bonus"}
               </h2>
               <p className="text-[13px] text-ink-600 mt-1">
-                Gate: score ≥ {config.scoring.bonusScore}, punctuality ≥ {config.scoring.bonusPunctuality}%
+                Gate: score ≥ {config.scoring.bonusScore}
                 {config.scoring.bonusBlockOnCritical ? ", no critical mistakes" : ""}.
               </p>
               {stats.bonus.blockers.length > 0 && (
@@ -129,7 +126,7 @@ export default async function TechnicianDetail({
           label="Punctuality"
           value={`${stats.attendance.punctuality}%`}
           hint={`${stats.attendance.onTime}/${stats.attendance.present} on time`}
-          tone={stats.attendance.punctuality >= config.scoring.bonusPunctuality ? "good" : "warn"}
+          tone={stats.attendance.punctuality >= 90 ? "good" : "warn"}
         />
         <StatTile
           label="Average arrival"
@@ -152,8 +149,9 @@ export default async function TechnicianDetail({
       <PerformancePanel
         userId={userId}
         userName={user.name}
+        currentScore={stats.score}
         events={events.map((e) => ({ ...e, createdAt: String(e.createdAt) }))}
-        defaults={{
+        suggested={{
           minor: config.scoring.minorMistake,
           major: config.scoring.majorMistake,
           critical: config.scoring.criticalMistake,

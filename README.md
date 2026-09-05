@@ -6,7 +6,7 @@ Customer check-in application for Universal Driveshafts (replaces the WordPress 
 
 - **Per-person sign-in with roles** — every member of staff has their own profile and password. `admin` accounts get the admin panel; `tech` accounts get the check-in station plus their own performance panel. The sign-in screen is a profile picker; sessions are HMAC-signed cookies and idle auto-lock still applies to counter tablets.
 - **Working-hours gate + attendance** — technicians can only sign in during the shop's posted hours (Mon–Fri 8–5, Sat 9–2, Sun closed — editable in Admin → Settings). The first sign-in of each day is recorded as their arrival time, with lateness measured against that day's shift.
-- **Performance scoring & monthly bonus** — everyone starts each month at 100. Late arrivals, missed shifts and job mistakes (minor / major / critical) take points off; recognition adds them back. Admins flag a mistake straight from the job it happened on, and each technician sees their own score, record and bonus status at `/tech`.
+- **Manual performance scoring & monthly bonus** — everyone starts each month at 100 and the score only moves when an admin moves it. The editor shows the score now, the change being made and the score that will result; severity (minor / major / critical) only *suggests* an amount, and the admin can deduct, add, or type a target score outright. Lateness and missed shifts are reported next to the score but never deducted automatically. Admins can score a job straight from the entry it happened on, and each technician sees their own score, the reason behind every change, and their bonus status at `/tech`.
 - **Work-order authorship** — every check-in records who took it, and every status change records who made it.
 - **6-step check-in wizard** — replicates every field of the Gravity Forms "ODESSA CHECK-IN" form, including conditional logic, existing-customer search with autofill, signature pads, VIN/product photo capture, and structured parts lines. Drafts autosave locally so a refresh never loses a half-completed check-in.
 - **SMS + Email notifications** — job status changes (Confirmed / Ongoing / On hold / Completed) trigger Twilio SMS (consent-gated) and Hostinger SMTP emails, with per-status editable templates and variables like `{first_name}`, `{status}`, `{on_hold_reason}`.
@@ -45,7 +45,7 @@ Passwords are stored as scrypt hashes — the plaintext is never in the repo or 
 ## Architecture notes
 
 - `src/proxy.ts` — session gate (Next 16 proxy, formerly middleware). The cookie is an HMAC-signed session (`uid`, `role`, `name`, `exp`); the proxy also keeps technicians out of `/admin` and `/api/admin`.
-- `src/lib/work-hours.ts` — the weekly schedule, shop-timezone conversion and the sign-in window; `src/lib/attendance.ts` records arrivals; `src/lib/performance.ts` turns attendance + the points ledger into scores and bonus eligibility.
+- `src/lib/work-hours.ts` — the weekly schedule, shop-timezone conversion and the sign-in window; `src/lib/attendance.ts` records arrivals; `src/lib/performance.ts` derives the score from the admin's points ledger (attendance is reported alongside it, never scored automatically).
 - `src/db/` — Drizzle schema + idempotent bootstrap (DDL + seeds) that runs once per process; works on both PGlite (dev) and Postgres (prod).
 - `src/lib/notify.ts` — template rendering and Twilio/SMTP senders; every attempt is recorded in `message_log`.
 - `src/lib/form-options.json` / `legal-texts.json` — dropdown options and legal texts extracted verbatim from the Gravity Forms export.

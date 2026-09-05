@@ -48,7 +48,7 @@ export default async function TeamPage({ searchParams }: { searchParams: Promise
         <StatTile
           label="Average punctuality"
           value={`${avgPunctuality}%`}
-          tone={avgPunctuality >= config.scoring.bonusPunctuality ? "good" : "warn"}
+          tone={avgPunctuality >= 90 ? "good" : "warn"}
         />
         <StatTile
           label="Bonus eligible"

@@ -122,8 +122,8 @@ export default async function TechPanel() {
             <div className="min-w-0">
               <GradeChip score={stats.score} />
               <p className="text-sm text-ink-600 mt-2 leading-relaxed">
-                Everyone starts the month at {scoring.baseScore}. Late arrivals, missed shifts and job mistakes take
-                points off; recognition adds them back.
+                Everyone starts the month at {scoring.baseScore}. Your manager adjusts it — every change is listed
+                below with the reason, so you always know what it was for.
               </p>
               {prevStats && (
                 <p className="text-[13px] font-semibold mt-2 flex items-center gap-1.5">
@@ -163,7 +163,7 @@ export default async function TechPanel() {
                     : "Monthly bonus — not qualified yet"}
                 </h2>
                 <p className="text-[13px] text-ink-600 mt-1">
-                  Requires a score of {scoring.bonusScore}+, {scoring.bonusPunctuality}%+ punctuality
+                  Requires a score of {scoring.bonusScore}+
                   {scoring.bonusBlockOnCritical ? " and no critical mistakes" : ""} for the month.
                 </p>
                 {stats.bonus.blockers.length > 0 && (
@@ -192,7 +192,7 @@ export default async function TechPanel() {
             label="Punctuality"
             value={`${stats.attendance.punctuality}%`}
             hint={`${stats.attendance.onTime} of ${stats.attendance.present} days on time`}
-            tone={stats.attendance.punctuality >= scoring.bonusPunctuality ? "good" : "warn"}
+            tone={stats.attendance.punctuality >= 90 ? "good" : "warn"}
           />
           <StatTile
             label="Late arrivals"
@@ -228,7 +228,9 @@ export default async function TechPanel() {
             <h2 className="font-bold mb-1 flex items-center gap-2">
               <ClipboardList className="w-4.5 h-4.5 text-ink-400" /> Performance record
             </h2>
-            <p className="text-[13px] text-ink-500 mb-4">Everything your manager logged, newest first.</p>
+            <p className="text-[13px] text-ink-500 mb-4">
+              Every change to your score, newest first — nothing is added by the system.
+            </p>
             <div className="divide-y divide-ink-100 -mx-5">
               {events.map((e) => (
                 <div key={e.id} className="px-5 py-3 flex items-start gap-3">
