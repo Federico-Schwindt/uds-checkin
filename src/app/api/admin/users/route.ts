@@ -14,11 +14,19 @@ const PUBLIC_COLUMNS = {
   title: users.title,
   phone: users.phone,
   email: users.email,
+  birthday: users.birthday,
+  hiredOn: users.hiredOn,
   active: users.active,
   bypassWorkHours: users.bypassWorkHours,
   lastLoginAt: users.lastLoginAt,
   createdAt: users.createdAt,
 };
+
+/** Keeps a bad date out of the profile rather than storing something unparseable. */
+function dateOrEmpty(value: unknown): string {
+  const v = String(value || "").trim();
+  return /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : "";
+}
 
 function requireAdmin(req: NextRequest) {
   const session = sessionFromRequest(req);
@@ -88,6 +96,8 @@ export async function POST(req: NextRequest) {
       title: String(body.title || "").trim(),
       phone: String(body.phone || "").trim(),
       email: String(body.email || "").trim(),
+      birthday: dateOrEmpty(body.birthday),
+      hiredOn: dateOrEmpty(body.hiredOn),
       passwordHash: hashPassword(password),
       bypassWorkHours: role === "admin" ? true : !!body.bypassWorkHours,
     })
@@ -127,6 +137,8 @@ export async function PUT(req: NextRequest) {
   if (typeof body.title === "string") patch.title = body.title.trim();
   if (typeof body.phone === "string") patch.phone = body.phone.trim();
   if (typeof body.email === "string") patch.email = body.email.trim();
+  if (typeof body.birthday === "string") patch.birthday = dateOrEmpty(body.birthday);
+  if (typeof body.hiredOn === "string") patch.hiredOn = dateOrEmpty(body.hiredOn);
   if (typeof body.bypassWorkHours === "boolean") patch.bypassWorkHours = body.bypassWorkHours;
   if (body.role === "admin" || body.role === "tech") patch.role = body.role;
   if (typeof body.active === "boolean") patch.active = body.active;

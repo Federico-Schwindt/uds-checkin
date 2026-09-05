@@ -7,7 +7,7 @@ import { sessionFromRequest } from "@/lib/session";
 import { actorLabel } from "@/lib/auth";
 
 /** Human labels for what changed, keeping secret values out of the log. */
-const SECRET_KEYS = new Set(["twilioAuthToken", "smtpPass"]);
+const SECRET_KEYS = new Set(["twilioAuthToken", "smtpPass", "imapPass"]);
 
 export async function GET() {
   const s = await getSettings();
@@ -21,6 +21,8 @@ const ALLOWED_KEYS: Array<keyof AppSettings> = [
   "smtpHost", "smtpPort", "smtpSecure", "smtpUser", "smtpPass", "smtpFromName", "smtpFromEmail", "emailEnabled",
   "adminNotifyEnabled", "kioskColumns", "logoUrl", "brandColor", "googleMapsKey", "formLayout", "formSchema", "fieldOptions",
   "timezone", "workHours", "earlyLoginMinutes", "lateLoginMinutes", "shiftSessionGraceMinutes", "scoring",
+  "requestsEmail", "requestsEmailEnabled", "imapHost", "imapPort", "imapUser", "imapPass", "imapEnabled",
+  "celebrationLeadDays",
 ];
 
 export async function PUT(req: NextRequest) {
@@ -32,7 +34,7 @@ export async function PUT(req: NextRequest) {
     if (key in body) {
       const v = body[key];
       // Masked secrets come back unchanged from the UI — don't overwrite with the mask.
-      if ((key === "twilioAuthToken" || key === "smtpPass") && typeof v === "string" && v.includes("••")) continue;
+      if (SECRET_KEYS.has(key) && typeof v === "string" && v.includes("••")) continue;
       (patch as Record<string, unknown>)[key] = v;
     }
   }

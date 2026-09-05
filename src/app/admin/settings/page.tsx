@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { KeyRound, Mail, MessageSquareText, Plus, Save, Send, Store, Trash2, Users } from "lucide-react";
+import { Inbox, KeyRound, Mail, MessageSquareText, Plus, Save, Send, Store, Trash2, Users } from "lucide-react";
 import { Badge, Button, Card, Field, Input, Spinner, Toggle } from "@/components/ui";
 import { ScheduleCard } from "./schedule-card";
 import { ScoringCard } from "./scoring-card";
@@ -236,6 +236,69 @@ export default function SettingsPage() {
       />
 
       <ScoringCard scoring={s.scoring} onChange={(v: ScoringConfig) => set("scoring", v)} />
+
+      {/* Staff requests */}
+      <Card className="p-5">
+        <SectionHeader
+          icon={<Inbox className="w-4.5 h-4.5" />}
+          title="Staff requests"
+          subtitle="Where time-off and other staff requests are emailed, and how replies come back"
+          right={
+            <Toggle
+              checked={bool("requestsEmailEnabled")}
+              onChange={(v) => set("requestsEmailEnabled", v)}
+              label={bool("requestsEmailEnabled") ? "Emailing" : "App only"}
+            />
+          }
+        />
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Field label="Send requests to" hint="Every new request and reply is emailed here">
+            <Input value={str("requestsEmail")} onChange={(e) => set("requestsEmail", e.target.value)} inputMode="email" />
+          </Field>
+          <Field label="Celebration reminder (days ahead)" hint="How early birthdays and anniversaries appear">
+            <Input
+              value={String(num("celebrationLeadDays") || 7)}
+              onChange={(e) => set("celebrationLeadDays", parseInt(e.target.value) || 0)}
+              inputMode="numeric"
+            />
+          </Field>
+        </div>
+
+        <div className="mt-5 pt-4 border-t border-ink-100">
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <div>
+              <h3 className="font-bold text-[15px]">Pull replies back in</h3>
+              <p className="text-[13px] text-ink-500">
+                Reads the mailbox that sends the emails, and files any reply carrying a request code onto the right
+                thread. Leave it off to reply only from this panel.
+              </p>
+            </div>
+            <Toggle
+              checked={bool("imapEnabled")}
+              onChange={(v) => set("imapEnabled", v)}
+              label={bool("imapEnabled") ? "On" : "Off"}
+            />
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Field label="IMAP host">
+              <Input value={str("imapHost")} onChange={(e) => set("imapHost", e.target.value)} placeholder="imap.hostinger.com" />
+            </Field>
+            <Field label="Port">
+              <Input
+                value={String(num("imapPort") || 993)}
+                onChange={(e) => set("imapPort", parseInt(e.target.value) || 993)}
+                inputMode="numeric"
+              />
+            </Field>
+            <Field label="Mailbox" hint="Defaults to the SMTP user">
+              <Input value={str("imapUser")} onChange={(e) => set("imapUser", e.target.value)} inputMode="email" />
+            </Field>
+            <Field label="Password" hint="Defaults to the SMTP password">
+              <Input type="password" value={str("imapPass")} onChange={(e) => set("imapPass", e.target.value)} />
+            </Field>
+          </div>
+        </div>
+      </Card>
 
       {/* Twilio */}
       <Card className="p-5">

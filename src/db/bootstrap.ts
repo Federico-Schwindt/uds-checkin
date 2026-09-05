@@ -49,6 +49,54 @@ CREATE TABLE IF NOT EXISTS attendance (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS attendance_user_date_idx ON attendance (user_id, work_date);
 CREATE INDEX IF NOT EXISTS attendance_date_idx ON attendance (work_date);
+CREATE TABLE IF NOT EXISTS announcements (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL DEFAULT '',
+  body TEXT NOT NULL DEFAULT '',
+  kind TEXT NOT NULL DEFAULT 'info',
+  expires_at TIMESTAMP,
+  pinned BOOLEAN NOT NULL DEFAULT false,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS announcements_created_idx ON announcements (created_at);
+CREATE TABLE IF NOT EXISTS announcement_reads (
+  id SERIAL PRIMARY KEY,
+  announcement_id INTEGER NOT NULL REFERENCES announcements(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  read_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS announcement_reads_idx ON announcement_reads (announcement_id, user_id);
+CREATE TABLE IF NOT EXISTS requests (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  type TEXT NOT NULL DEFAULT 'other',
+  subject TEXT NOT NULL DEFAULT '',
+  requested_date TEXT NOT NULL DEFAULT '',
+  requested_end_date TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'open',
+  token TEXT NOT NULL DEFAULT '',
+  last_message_at TIMESTAMP NOT NULL DEFAULT now(),
+  unread_for_admin BOOLEAN NOT NULL DEFAULT true,
+  unread_for_user BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS requests_token_idx ON requests (token);
+CREATE INDEX IF NOT EXISTS requests_user_idx ON requests (user_id);
+CREATE INDEX IF NOT EXISTS requests_status_idx ON requests (status);
+CREATE TABLE IF NOT EXISTS request_messages (
+  id SERIAL PRIMARY KEY,
+  request_id INTEGER NOT NULL REFERENCES requests(id) ON DELETE CASCADE,
+  author_role TEXT NOT NULL DEFAULT 'tech',
+  author_name TEXT NOT NULL DEFAULT '',
+  body TEXT NOT NULL DEFAULT '',
+  via_email BOOLEAN NOT NULL DEFAULT false,
+  external_id TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS request_messages_request_idx ON request_messages (request_id);
+CREATE INDEX IF NOT EXISTS request_messages_ext_idx ON request_messages (external_id);
 CREATE TABLE IF NOT EXISTS employees (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
@@ -138,6 +186,26 @@ CREATE INDEX IF NOT EXISTS entries_status_idx ON entries (job_status);
 CREATE INDEX IF NOT EXISTS entries_customer_idx ON entries (customer_id);
 CREATE INDEX IF NOT EXISTS entries_created_idx ON entries (created_at);
 CREATE UNIQUE INDEX IF NOT EXISTS entries_source_idx ON entries (source_entry_id);
+CREATE TABLE IF NOT EXISTS assignments (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  work_date TEXT NOT NULL,
+  start_time TEXT NOT NULL DEFAULT '',
+  end_time TEXT NOT NULL DEFAULT '',
+  type TEXT NOT NULL DEFAULT 'task',
+  title TEXT NOT NULL DEFAULT '',
+  customer_name TEXT NOT NULL DEFAULT '',
+  details TEXT NOT NULL DEFAULT '',
+  entry_id INTEGER REFERENCES entries(id) ON DELETE SET NULL,
+  status TEXT NOT NULL DEFAULT 'scheduled',
+  seen_at TIMESTAMP,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS assignments_user_date_idx ON assignments (user_id, work_date);
+CREATE INDEX IF NOT EXISTS assignments_date_idx ON assignments (work_date);
+CREATE INDEX IF NOT EXISTS assignments_entry_idx ON assignments (entry_id);
 CREATE TABLE IF NOT EXISTS performance_events (
   id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -270,6 +338,17 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
   shiftSessionGraceMinutes: 60,
   // performance / bonus rules
   scoring: DEFAULT_SCORING,
+  // staff requests (time off, extra hours, concerns)
+  requestsEmail: "moehamis@udshafts.com",
+  requestsEmailEnabled: true,
+  /** Mailbox polled for replies to request emails — usually the sending mailbox. */
+  imapHost: "imap.hostinger.com",
+  imapPort: 993,
+  imapUser: "",
+  imapPass: "",
+  imapEnabled: false,
+  /** Days ahead the panel starts celebrating a birthday / work anniversary. */
+  celebrationLeadDays: 7,
 };
 
 /**
@@ -471,6 +550,10 @@ export async function bootstrap(db: Db) {
   await db.execute(
     sql.raw("ALTER TABLE status_history ADD COLUMN IF NOT EXISTS changed_by TEXT NOT NULL DEFAULT ''")
   );
+
+  // Micro-migration: birthdays and hire dates on staff profiles.
+  await db.execute(sql.raw("ALTER TABLE users ADD COLUMN IF NOT EXISTS birthday TEXT NOT NULL DEFAULT ''"));
+  await db.execute(sql.raw("ALTER TABLE users ADD COLUMN IF NOT EXISTS hired_on TEXT NOT NULL DEFAULT ''"));
 
   // Seed staff accounts. Existing rows are never overwritten, so password
   // changes and renames made in the admin panel survive a redeploy.

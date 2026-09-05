@@ -1,26 +1,30 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { and, eq } from "drizzle-orm";
+import { and, asc, desc, eq, gte, isNull, lte, or } from "drizzle-orm";
 import {
   AlertTriangle,
   ArrowLeft,
   BadgeCheck,
   CalendarClock,
   ClipboardList,
+  CalendarRange,
   Clock,
   LogOut,
+  PartyPopper,
   TrendingUp,
 } from "lucide-react";
-import { attendance, getDb } from "@/db";
+import { announcementReads, announcements, assignments, attendance, getDb, requests } from "@/db";
 import { Card } from "@/components/ui";
 import { Logo } from "@/components/logo";
 import { EventChip, GradeChip, PointsChip, ScoreRing, StatTile } from "@/components/performance-ui";
 import { SignOutButton } from "@/components/sign-out-button";
+import { MyCalendar, MyRequests, NoticeBoard } from "@/components/tech-panel-sections";
 import { getSession } from "@/lib/session";
 import { getShopConfig } from "@/lib/settings";
 import { currentPeriod, getAttendance, getEvents, getTeamStats } from "@/lib/performance";
 import { arrivalLabel, latenessLabel } from "@/lib/attendance";
-import { describeWorkHours, formatDateKey, previousMonthRange, shopTime } from "@/lib/work-hours";
+import { addDays, describeWorkHours, formatDateKey, previousMonthRange, shopTime } from "@/lib/work-hours";
+import { myCelebration } from "@/lib/celebrations";
 import { formatMoney } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -42,13 +46,50 @@ export default async function TechPanel() {
 
   const events = await getEvents(session.uid, 25);
   const days = await getAttendance(session.uid, period);
+  const todayKey = shopTime(now, config.timezone).dateKey;
 
   const db = await getDb();
-  const todayKey = shopTime(now, config.timezone).dateKey;
   const [today] = await db
     .select()
     .from(attendance)
     .where(and(eq(attendance.userId, session.uid), eq(attendance.workDate, todayKey)));
+
+  // Notices this technician has not acknowledged, newest first.
+  const seen = await db
+    .select({ id: announcementReads.announcementId })
+    .from(announcementReads)
+    .where(eq(announcementReads.userId, session.uid));
+  const seenIds = new Set(seen.map((r) => r.id));
+  const liveNotices = await db
+    .select()
+    .from(announcements)
+    .where(or(isNull(announcements.expiresAt), gte(announcements.expiresAt, now)))
+    .orderBy(desc(announcements.pinned), desc(announcements.createdAt))
+    .limit(20);
+  const notices = liveNotices.filter((n) => !seenIds.has(n.id));
+
+  // The calendar looks a little back and a month ahead.
+  const myAssignments = await db
+    .select()
+    .from(assignments)
+    .where(
+      and(
+        eq(assignments.userId, session.uid),
+        gte(assignments.workDate, addDays(todayKey, -1)),
+        lte(assignments.workDate, addDays(todayKey, 45))
+      )
+    )
+    .orderBy(asc(assignments.workDate), asc(assignments.startTime));
+  const unseenAssignments = myAssignments.filter((a) => !a.seenAt && a.status !== "cancelled");
+
+  const myRequests = await db
+    .select()
+    .from(requests)
+    .where(eq(requests.userId, session.uid))
+    .orderBy(desc(requests.lastMessageAt))
+    .limit(25);
+
+  const celebrations = await myCelebration(session.uid, todayKey, Number(config.celebrationLeadDays) || 7);
 
   const schedule = describeWorkHours(config.workHours);
   const { scoring } = config;
@@ -82,6 +123,45 @@ export default async function TechPanel() {
             Your scorecard for {period.label} · {stats.title || "Technician"}
           </p>
         </div>
+
+        {unseenAssignments.length > 0 && (
+          <div className="rounded-2xl border border-brand-300 bg-white px-4 py-3.5 flex items-center gap-3 shadow-card">
+            <CalendarRange className="w-5 h-5 text-brand-600 shrink-0" />
+            <p className="text-sm font-semibold text-ink-900">
+              {unseenAssignments.length} new job{unseenAssignments.length === 1 ? "" : "s"} added to your schedule
+              {unseenAssignments.some((a) => a.workDate === todayKey) ? " — one of them is today." : "."}
+            </p>
+          </div>
+        )}
+
+        <NoticeBoard
+          notices={notices.map((n) => ({
+            id: n.id,
+            title: n.title,
+            body: n.body,
+            kind: n.kind,
+            createdBy: n.createdBy,
+            createdAt: String(n.createdAt),
+          }))}
+        />
+
+        {celebrations.map((c) => (
+          <div
+            key={`${c.kind}-${c.date}`}
+            className="rounded-2xl border border-brand-200 bg-brand-50 px-4 py-3.5 flex items-center gap-3"
+          >
+            <PartyPopper className="w-5 h-5 text-brand-600 shrink-0" />
+            <p className="text-sm font-semibold text-brand-900">
+              {c.kind === "birthday"
+                ? c.inDays === 0
+                  ? "Happy birthday! The whole shop is wishing you a good one."
+                  : `Your birthday is coming up ${c.inDays === 1 ? "tomorrow" : `in ${c.inDays} days`}.`
+                : c.inDays === 0
+                  ? `Congratulations on ${c.years} year${c.years === 1 ? "" : "s"} at Universal Driveshafts!`
+                  : `You reach ${c.years} year${c.years === 1 ? "" : "s"} at Universal Driveshafts ${c.inDays === 1 ? "tomorrow" : `in ${c.inDays} days`}.`}
+            </p>
+          </div>
+        ))}
 
         {/* Today */}
         <Card className="p-5">
@@ -221,6 +301,34 @@ export default async function TechPanel() {
             tone={stats.events.critical + stats.events.major > 0 ? "bad" : "good"}
           />
         </div>
+
+        <MyCalendar
+          todayKey={todayKey}
+          items={myAssignments.map((a) => ({
+            id: a.id,
+            workDate: a.workDate,
+            startTime: a.startTime,
+            type: a.type,
+            title: a.title,
+            customerName: a.customerName,
+            details: a.details,
+            entryId: a.entryId,
+            status: a.status,
+            isNew: !a.seenAt && a.status !== "cancelled",
+          }))}
+        />
+
+        <MyRequests
+          requests={myRequests.map((r) => ({
+            id: r.id,
+            type: r.type,
+            subject: r.subject,
+            status: r.status,
+            requestedDate: r.requestedDate,
+            lastMessageAt: String(r.lastMessageAt),
+            unreadForUser: r.unreadForUser,
+          }))}
+        />
 
         <div className="grid lg:grid-cols-2 gap-5">
           {/* Ledger */}

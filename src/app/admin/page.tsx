@@ -1,13 +1,24 @@
 import Link from "next/link";
-import { and, count, desc, eq, gte, isNull, sql } from "drizzle-orm";
-import { AlertTriangle, ArrowUpRight, BadgeCheck, CheckCircle2, Clock, Users } from "lucide-react";
-import { getDb, entries, customers, messageLog } from "@/db";
+import { and, asc, count, desc, eq, gte, isNull, sql } from "drizzle-orm";
+import {
+  AlertTriangle,
+  ArrowUpRight,
+  BadgeCheck,
+  CalendarRange,
+  CheckCircle2,
+  Clock,
+  Inbox,
+  PartyPopper,
+  Users,
+} from "lucide-react";
+import { getDb, entries, customers, messageLog, requests, assignments, users } from "@/db";
 import { StatusBadge, Card } from "@/components/ui";
 import { GradeChip } from "@/components/performance-ui";
 import { formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
 import { getShopConfig } from "@/lib/settings";
 import { currentPeriod, getDayBoard, getTeamStats, todayKeyFor } from "@/lib/performance";
 import { arrivalLabel, latenessLabel } from "@/lib/attendance";
+import { celebrationText, upcomingCelebrations } from "@/lib/celebrations";
 import {
   addDays,
   formatClock,
@@ -157,6 +168,36 @@ export default async function AdminDashboard() {
     });
   }
 
+  // Open staff requests and anything scheduled for today.
+  const pendingRequests = await db
+    .select({ request: requests, userName: users.name })
+    .from(requests)
+    .leftJoin(users, eq(requests.userId, users.id))
+    .where(eq(requests.status, "open"))
+    .orderBy(desc(requests.lastMessageAt))
+    .limit(6);
+  const newForAdmin = pendingRequests.filter((r) => r.request.unreadForAdmin).length;
+  if (pendingRequests.length) {
+    warnings.push({
+      tone: newForAdmin > 0 ? "warn" : "info",
+      title: `${pendingRequests.length} open staff request${pendingRequests.length === 1 ? "" : "s"}`,
+      detail: pendingRequests
+        .slice(0, 3)
+        .map((r) => `${r.userName}: ${r.request.subject}`)
+        .join(" · "),
+      href: "/admin/requests",
+    });
+  }
+
+  const todaysCalendar = await db
+    .select({ assignment: assignments, userName: users.name })
+    .from(assignments)
+    .leftJoin(users, eq(assignments.userId, users.id))
+    .where(eq(assignments.workDate, todayKey))
+    .orderBy(asc(assignments.startTime));
+
+  const celebrations = await upcomingCelebrations(todayKey, config.celebrationLeadDays);
+
   const presentToday = board.filter((b) => b.record).length;
   const lateToday = board.filter((b) => b.record?.late).length;
   const bonusReady = team.filter((t) => t.bonus.eligible).length;
@@ -214,21 +255,32 @@ export default async function AdminDashboard() {
                   "flex items-start gap-3 rounded-xl border px-4 py-3 transition-colors " +
                   (w.tone === "bad"
                     ? "border-rose-200 bg-rose-50 hover:bg-rose-100/70"
-                    : "border-amber-200 bg-amber-50 hover:bg-amber-100/70")
+                    : w.tone === "warn"
+                      ? "border-amber-200 bg-amber-50 hover:bg-amber-100/70"
+                      : "border-ink-200 bg-ink-50 hover:bg-ink-100/70")
                 }
               >
                 <AlertTriangle
-                  className={"w-4.5 h-4.5 shrink-0 mt-0.5 " + (w.tone === "bad" ? "text-rose-600" : "text-amber-600")}
+                  className={
+                    "w-4.5 h-4.5 shrink-0 mt-0.5 " +
+                    (w.tone === "bad" ? "text-rose-600" : w.tone === "warn" ? "text-amber-600" : "text-ink-500")
+                  }
                 />
                 <span className="min-w-0">
                   <span
                     className={
-                      "block text-sm font-bold " + (w.tone === "bad" ? "text-rose-900" : "text-amber-900")
+                      "block text-sm font-bold " +
+                      (w.tone === "bad" ? "text-rose-900" : w.tone === "warn" ? "text-amber-900" : "text-ink-900")
                     }
                   >
                     {w.title}
                   </span>
-                  <span className={"block text-[13px] " + (w.tone === "bad" ? "text-rose-800" : "text-amber-800")}>
+                  <span
+                    className={
+                      "block text-[13px] " +
+                      (w.tone === "bad" ? "text-rose-800" : w.tone === "warn" ? "text-amber-800" : "text-ink-600")
+                    }
+                  >
                     {w.detail}
                   </span>
                 </span>
@@ -237,6 +289,94 @@ export default async function AdminDashboard() {
           </div>
         )}
       </Card>
+
+      {celebrations.length > 0 && (
+        <Card className="p-5 border-brand-200">
+          <h2 className="font-bold mb-3 flex items-center gap-2">
+            <PartyPopper className="w-4.5 h-4.5 text-brand-600" /> Coming up
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {celebrations.map((c) => (
+              <Link
+                key={`${c.kind}-${c.userId}-${c.date}`}
+                href={`/admin/team/${c.userId}`}
+                className={
+                  "inline-flex items-center gap-2 rounded-xl border px-3.5 py-2 text-[13px] font-semibold transition-colors " +
+                  (c.kind === "birthday"
+                    ? "border-brand-200 bg-brand-50 text-brand-800 hover:bg-brand-100"
+                    : "border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100")
+                }
+              >
+                {c.kind === "birthday" ? "🎂" : "🎉"} {celebrationText(c)}
+              </Link>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Today's schedule + open requests */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        <Card className="p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bold flex items-center gap-2">
+              <CalendarRange className="w-4.5 h-4.5 text-ink-400" /> On the calendar today
+            </h2>
+            <Link href="/admin/schedule" className="text-sm font-semibold text-brand-700 hover:text-brand-800">
+              Schedule
+            </Link>
+          </div>
+          <div className="divide-y divide-ink-100 -mx-5">
+            {todaysCalendar.map(({ assignment: a, userName }) => (
+              <div key={a.id} className="px-5 py-2.5 flex items-center gap-3">
+                <span className="text-[13px] font-semibold text-ink-500 w-16 shrink-0 tabular-nums">
+                  {a.startTime || "All day"}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-semibold text-ink-900 truncate">{a.title}</span>
+                  <span className="block text-[12px] text-ink-500 truncate">
+                    {userName}
+                    {a.customerName ? ` · ${a.customerName}` : ""}
+                  </span>
+                </span>
+              </div>
+            ))}
+            {todaysCalendar.length === 0 && (
+              <p className="px-5 py-8 text-center text-sm text-ink-400">Nothing scheduled today.</p>
+            )}
+          </div>
+        </Card>
+
+        <Card className="p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bold flex items-center gap-2">
+              <Inbox className="w-4.5 h-4.5 text-ink-400" /> Open staff requests
+              {newForAdmin > 0 && <span className="text-brand-600">({newForAdmin} new)</span>}
+            </h2>
+            <Link href="/admin/requests" className="text-sm font-semibold text-brand-700 hover:text-brand-800">
+              Inbox
+            </Link>
+          </div>
+          <div className="divide-y divide-ink-100 -mx-5">
+            {pendingRequests.map(({ request: r, userName }) => (
+              <Link
+                key={r.id}
+                href="/admin/requests"
+                className="flex items-center gap-3 px-5 py-2.5 hover:bg-ink-50 transition-colors"
+              >
+                <span className={"w-2 h-2 rounded-full shrink-0 " + (r.unreadForAdmin ? "bg-brand-600" : "bg-ink-200")} />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-semibold text-ink-900 truncate">{r.subject}</span>
+                  <span className="block text-[12px] text-ink-500 truncate">{userName}</span>
+                </span>
+                <span className="text-[12px] text-ink-400 whitespace-nowrap">{formatDateTime(r.lastMessageAt)}</span>
+              </Link>
+            ))}
+            {pendingRequests.length === 0 && (
+              <p className="px-5 py-8 text-center text-sm text-ink-400">No open requests.</p>
+            )}
+          </div>
+        </Card>
+      </div>
 
       {/* Team */}
       <div className="grid lg:grid-cols-5 gap-6">

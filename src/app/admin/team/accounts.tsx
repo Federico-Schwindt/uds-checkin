@@ -13,6 +13,8 @@ type StaffUser = {
   title: string;
   phone: string;
   email: string;
+  birthday: string;
+  hiredOn: string;
   active: boolean;
   bypassWorkHours: boolean;
   lastLoginAt: string | null;
@@ -27,7 +29,7 @@ export function TeamAccounts() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [adding, setAdding] = useState(false);
-  const [draft, setDraft] = useState({ name: "", role: "tech", title: "Driveshaft Technician" });
+  const [draft, setDraft] = useState({ name: "", role: "tech", title: "Driveshaft Technician", birthday: "", hiredOn: "" });
 
   const load = () =>
     fetch("/api/admin/users")
@@ -73,7 +75,7 @@ export function TeamAccounts() {
       }
       setUsers((list) => [...(list || []), j.user]);
       setCredential({ name: j.user.name, username: j.user.username, password: j.password });
-      setDraft({ name: "", role: "tech", title: "Driveshaft Technician" });
+      setDraft({ name: "", role: "tech", title: "Driveshaft Technician", birthday: "", hiredOn: "" });
       setAdding(false);
     } finally {
       setBusy(false);
@@ -184,6 +186,22 @@ export function TeamAccounts() {
                 className="h-10"
               />
             </Field>
+            <Field label="Birthday" hint="So the shop can celebrate it">
+              <Input
+                type="date"
+                value={draft.birthday}
+                onChange={(e) => setDraft((d) => ({ ...d, birthday: e.target.value }))}
+                className="h-10"
+              />
+            </Field>
+            <Field label="Started at Universal Driveshafts" hint="Drives the work anniversary">
+              <Input
+                type="date"
+                value={draft.hiredOn}
+                onChange={(e) => setDraft((d) => ({ ...d, hiredOn: e.target.value }))}
+                className="h-10"
+              />
+            </Field>
           </div>
           <div className="mt-4 flex items-center gap-3">
             <Button size="sm" onClick={create} disabled={busy || !draft.name.trim()}>
@@ -201,6 +219,8 @@ export function TeamAccounts() {
               <th className="px-5 py-2">Person</th>
               <th className="px-3 py-2">Username</th>
               <th className="px-3 py-2">Role</th>
+              <th className="px-3 py-2">Birthday</th>
+              <th className="px-3 py-2">Started</th>
               <th className="px-3 py-2">Last sign-in</th>
               <th className="px-3 py-2">Any hours</th>
               <th className="px-3 py-2">Active</th>
@@ -231,6 +251,24 @@ export function TeamAccounts() {
                   <Badge tone={u.role === "admin" ? "neutral" : "success"}>
                     {u.role === "admin" ? "Admin" : "Technician"}
                   </Badge>
+                </td>
+                <td className="px-3 py-3">
+                  <DateCell
+                    value={u.birthday}
+                    onSave={(v) => {
+                      setUsers((list) => list!.map((x) => (x.id === u.id ? { ...x, birthday: v } : x)));
+                      patch(u.id, { birthday: v });
+                    }}
+                  />
+                </td>
+                <td className="px-3 py-3">
+                  <DateCell
+                    value={u.hiredOn}
+                    onSave={(v) => {
+                      setUsers((list) => list!.map((x) => (x.id === u.id ? { ...x, hiredOn: v } : x)));
+                      patch(u.id, { hiredOn: v });
+                    }}
+                  />
                 </td>
                 <td className="px-3 py-3 text-[13px] text-ink-500 whitespace-nowrap">
                   {u.lastLoginAt ? formatDateTime(u.lastLoginAt) : "Never"}
@@ -269,5 +307,17 @@ export function TeamAccounts() {
         “Any hours” lets someone sign in outside the posted working hours. Administrators always can.
       </p>
     </Card>
+  );
+}
+
+/** Inline date cell — click the date to change it, saves on blur. */
+function DateCell({ value, onSave }: { value: string; onSave: (v: string) => void }) {
+  return (
+    <input
+      type="date"
+      value={value || ""}
+      onChange={(e) => onSave(e.target.value)}
+      className="h-9 px-2 rounded-lg border border-transparent bg-transparent text-[13px] text-ink-700 hover:border-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 w-36"
+    />
   );
 }

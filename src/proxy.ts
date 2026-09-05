@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AUTH_COOKIE, verifySessionToken } from "@/lib/auth";
 
-/** Reachable without a session. */
-const PUBLIC_PREFIXES = ["/lock", "/api/auth/", "/manifest.webmanifest"];
+/**
+ * Reachable without a session. The inbound-mail routes are public because they
+ * are called by a mail provider or a scheduler; each checks its own shared secret.
+ */
+const PUBLIC_PREFIXES = ["/lock", "/api/auth/", "/api/inbound/", "/manifest.webmanifest"];
 
 /** Admin-only areas — technicians are bounced to the station. */
 const ADMIN_PREFIXES = ["/admin", "/api/admin"];

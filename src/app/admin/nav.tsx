@@ -13,6 +13,9 @@ import {
   Upload,
   LogOut,
   CalendarClock,
+  CalendarRange,
+  Inbox,
+  Megaphone,
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,7 +24,10 @@ const ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/entries", label: "Entries", icon: ClipboardList },
   { href: "/admin/team", label: "Team", icon: Users },
+  { href: "/admin/schedule", label: "Schedule", icon: CalendarRange },
   { href: "/admin/attendance", label: "Attendance", icon: CalendarClock },
+  { href: "/admin/requests", label: "Requests", icon: Inbox },
+  { href: "/admin/announcements", label: "Notices", icon: Megaphone },
   { href: "/admin/form", label: "Form Builder", icon: ListChecks },
   { href: "/admin/templates", label: "Notifications", icon: MessageSquareText },
   { href: "/admin/messages", label: "Message Log", icon: MailCheck },

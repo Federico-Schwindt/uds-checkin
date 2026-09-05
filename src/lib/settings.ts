@@ -47,6 +47,15 @@ export type AppSettings = {
   lateLoginMinutes: number;
   shiftSessionGraceMinutes: number;
   scoring: ScoringConfig;
+  /** Where staff requests are emailed. */
+  requestsEmail: string;
+  requestsEmailEnabled: boolean;
+  imapHost: string;
+  imapPort: number;
+  imapUser: string;
+  imapPass: string;
+  imapEnabled: boolean;
+  celebrationLeadDays: number;
 };
 
 /** Everything the schedule + scoring code needs, normalized and safe to use. */
@@ -57,6 +66,8 @@ export type ShopConfig = {
   lateLoginMinutes: number;
   shiftSessionGraceMinutes: number;
   scoring: ScoringConfig;
+  /** Days ahead a birthday or work anniversary starts showing. */
+  celebrationLeadDays: number;
 };
 
 export function toShopConfig(s: Partial<AppSettings>): ShopConfig {
@@ -71,6 +82,7 @@ export function toShopConfig(s: Partial<AppSettings>): ShopConfig {
     lateLoginMinutes: int(s.lateLoginMinutes, 60),
     shiftSessionGraceMinutes: int(s.shiftSessionGraceMinutes, 60),
     scoring: normalizeScoring(s.scoring ?? DEFAULT_SCORING),
+    celebrationLeadDays: int(s.celebrationLeadDays, 7),
   };
 }
 
@@ -109,5 +121,6 @@ export function maskSecrets(s: AppSettings): AppSettings {
     ...s,
     twilioAuthToken: s.twilioAuthToken ? "••••••••" : "",
     smtpPass: s.smtpPass ? "••••••••" : "",
+    imapPass: s.imapPass ? "••••••••" : "",
   };
 }
