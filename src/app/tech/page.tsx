@@ -19,6 +19,7 @@ import { Logo } from "@/components/logo";
 import { EventChip, GradeChip, PointsChip, ScoreRing, StatTile } from "@/components/performance-ui";
 import { SignOutButton } from "@/components/sign-out-button";
 import { MyCalendar, MyRequests, NoticeBoard } from "@/components/tech-panel-sections";
+import { NewCheckinButton } from "@/components/new-checkin-button";
 import { getSession } from "@/lib/session";
 import { getShopConfig } from "@/lib/settings";
 import { currentPeriod, getAttendance, getEvents, getTeamStats } from "@/lib/performance";
@@ -122,13 +123,7 @@ export default async function TechPanel() {
             <span className="hidden sm:block text-sm text-ink-400 border-l border-ink-200 pl-3">My Performance</span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <Link
-              href="/checkin"
-              className="inline-flex items-center gap-2 h-10 px-3 sm:px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-sm active:scale-[0.98] transition-all"
-            >
-              <ClipboardList className="w-4 h-4" /> <span className="max-sm:hidden">New check-in</span>
-              <span className="sm:hidden">New</span>
-            </Link>
+            <NewCheckinButton className="h-10 px-4 text-sm" />
             <Link
               href="/"
               className="inline-flex items-center gap-2 h-10 px-3 sm:px-4 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold transition-colors"
@@ -349,12 +344,7 @@ export default async function TechPanel() {
             <h2 className="font-bold flex items-center gap-2">
               <ClipboardList className="w-4.5 h-4.5 text-ink-400" /> My check-ins
             </h2>
-            <Link
-              href="/checkin"
-              className="text-sm font-semibold text-brand-700 hover:text-brand-800 whitespace-nowrap"
-            >
-              Start a new one
-            </Link>
+            <NewCheckinButton className="h-9 px-3.5 text-[13px]" />
           </div>
           <p className="text-[13px] text-ink-500 mb-4">
             Work orders you took at the counter — {stats.jobs.created} this month.
@@ -381,11 +371,7 @@ export default async function TechPanel() {
             ))}
             {myCheckins.length === 0 && (
               <p className="px-5 py-8 text-center text-sm text-ink-400">
-                You have not taken a check-in yet.{" "}
-                <Link href="/checkin" className="font-semibold text-brand-700">
-                  Start one
-                </Link>
-                .
+                You have not taken a check-in yet.
               </p>
             )}
           </div>

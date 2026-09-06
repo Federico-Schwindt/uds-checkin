@@ -2,7 +2,6 @@ import Link from "next/link";
 import { and, asc, count, desc, eq, gte, isNull, sql } from "drizzle-orm";
 import {
   AlertTriangle,
-  ArrowUpRight,
   BadgeCheck,
   CalendarRange,
   CheckCircle2,
@@ -14,6 +13,7 @@ import {
 import { getDb, entries, customers, messageLog, requests, assignments, users } from "@/db";
 import { StatusBadge, Card } from "@/components/ui";
 import { GradeChip } from "@/components/performance-ui";
+import { NewCheckinButton } from "@/components/new-checkin-button";
 import { formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
 import { getShopConfig } from "@/lib/settings";
 import { currentPeriod, getDayBoard, getTeamStats, todayKeyFor } from "@/lib/performance";
@@ -209,12 +209,7 @@ export default async function AdminDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-        <Link
-          href="/checkin"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800"
-        >
-          New check-in <ArrowUpRight className="w-4 h-4" />
-        </Link>
+        <NewCheckinButton className="h-10 px-4 text-sm" />
       </div>
 
       {/* KPI cards */}

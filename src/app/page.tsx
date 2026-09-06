@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ClipboardList, Gauge, LogOut, Settings } from "lucide-react";
+import { Gauge, LogOut, Settings } from "lucide-react";
 import { asc, eq } from "drizzle-orm";
 import { getDb, locations } from "@/db";
 import { getSettings } from "@/lib/settings";
@@ -9,6 +9,7 @@ import { IdleLock } from "@/components/idle-lock";
 import { Logo } from "@/components/logo";
 import { EntriesWorkstation } from "@/components/entries-workstation";
 import { SignOutButton } from "@/components/sign-out-button";
+import { NewCheckinButton } from "@/components/new-checkin-button";
 
 export const dynamic = "force-dynamic";
 
@@ -40,13 +41,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
                 {isAdmin ? "Administrator" : "Technician"}
               </span>
             </span>
-            <Link
-              href="/checkin"
-              className="inline-flex items-center gap-2 h-11 px-4 sm:px-5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-sm active:scale-[0.98] transition-all"
-            >
-              <ClipboardList className="w-4.5 h-4.5" /> <span className="max-sm:hidden">New Check-In</span>
-              <span className="sm:hidden">New</span>
-            </Link>
+            <NewCheckinButton />
             {isAdmin ? (
               <Link
                 href="/admin"
@@ -80,6 +75,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           initialColumns={s.kioskColumns}
         />
       </section>
+
+      {/* Always within thumb reach on a counter tablet. */}
+      <NewCheckinButton variant="fab" />
     </main>
   );
 }
