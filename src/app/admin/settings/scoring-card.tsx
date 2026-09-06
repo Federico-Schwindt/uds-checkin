@@ -34,7 +34,7 @@ export function ScoringCard({
         <div>
           <h2 className="font-bold leading-tight">Performance &amp; bonus</h2>
           <p className="text-[13px] text-ink-500">
-            Suggested amounts for the score form, and what a technician needs for the monthly bonus
+            Suggested amounts for the score form, and what a technician needs to apply for bonuses
           </p>
         </div>
       </div>
@@ -58,10 +58,11 @@ export function ScoringCard({
         {numField("lateGraceMinutes", "Late grace (minutes)", "Arriving within this is shown as on time")}
       </div>
 
-      <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-400 mt-6 mb-3">Monthly bonus</p>
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-400 mt-6 mb-3">
+        Applying for bonuses
+      </p>
       <div className="grid sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {numField("bonusScore", "Minimum score")}
-        {numField("bonusAmount", "Bonus amount ($)")}
+        {numField("bonusScore", "Minimum score", "What a technician needs to be able to apply")}
         <div className="flex items-end pb-3">
           <Toggle
             checked={s.bonusBlockOnCritical}

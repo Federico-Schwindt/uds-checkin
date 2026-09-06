@@ -17,11 +17,10 @@ export type ScoringConfig = {
   praise: number;
   /** Minutes after the shift start before an arrival is shown as late. */
   lateGraceMinutes: number;
-  /** Minimum score for the monthly bonus. */
+  /** Minimum score to be able to apply for bonuses. */
   bonusScore: number;
   /** A single critical mistake disqualifies the month when true. */
   bonusBlockOnCritical: boolean;
-  bonusAmount: number;
 };
 
 export const DEFAULT_SCORING: ScoringConfig = {
@@ -33,7 +32,6 @@ export const DEFAULT_SCORING: ScoringConfig = {
   lateGraceMinutes: 5,
   bonusScore: 90,
   bonusBlockOnCritical: true,
-  bonusAmount: 200,
 };
 
 export const SEVERITIES = ["minor", "major", "critical"] as const;
@@ -83,7 +81,6 @@ export function normalizeScoring(stored: unknown): ScoringConfig {
     bonusScore: num("bonusScore"),
     bonusBlockOnCritical:
       typeof raw.bonusBlockOnCritical === "boolean" ? raw.bonusBlockOnCritical : DEFAULT_SCORING.bonusBlockOnCritical,
-    bonusAmount: num("bonusAmount"),
   };
 }
 

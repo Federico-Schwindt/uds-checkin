@@ -43,7 +43,8 @@ export type TechStats = {
   events: EventTotals;
   score: number;
   grade: ReturnType<typeof gradeFor>;
-  bonus: { eligible: boolean; amount: number; blockers: string[] };
+  /** Whether they may apply for bonuses this period, and what is standing in the way. */
+  bonus: { eligible: boolean; blockers: string[] };
 };
 
 export type PerformanceEventRow = {
@@ -81,13 +82,13 @@ function bonusCheck(
   scoring: ScoringConfig,
   score: number,
   events: EventTotals
-): { eligible: boolean; amount: number; blockers: string[] } {
+): { eligible: boolean; blockers: string[] } {
   const blockers: string[] = [];
   if (score < scoring.bonusScore) blockers.push(`Score ${score} is below the ${scoring.bonusScore} threshold`);
   if (scoring.bonusBlockOnCritical && events.critical > 0) {
     blockers.push(`${events.critical} critical mistake${events.critical > 1 ? "s" : ""} this period`);
   }
-  return { eligible: blockers.length === 0, amount: scoring.bonusAmount, blockers };
+  return { eligible: blockers.length === 0, blockers };
 }
 
 type AttendanceRow = {

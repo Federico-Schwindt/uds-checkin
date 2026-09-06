@@ -14,7 +14,7 @@ import { getDb, entries, customers, messageLog, requests, assignments, users } f
 import { StatusBadge, Card } from "@/components/ui";
 import { GradeChip } from "@/components/performance-ui";
 import { NewCheckinButton } from "@/components/new-checkin-button";
-import { formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
+import {formatDateTime, formatPhone} from "@/lib/utils";
 import { getShopConfig } from "@/lib/settings";
 import { currentPeriod, getDayBoard, getTeamStats, todayKeyFor } from "@/lib/performance";
 import { arrivalLabel, latenessLabel } from "@/lib/attendance";
@@ -139,7 +139,7 @@ export default async function AdminDashboard() {
       warnings.push({
         tone: "bad",
         title: `${t.name} has ${t.events.critical} critical mistake${t.events.critical > 1 ? "s" : ""}`,
-        detail: `Score ${t.score} this month. The monthly bonus is blocked while a critical mistake stands.`,
+        detail: `Score ${t.score} this month. They cannot apply for bonuses while a critical mistake stands.`,
         href: `/admin/team/${t.userId}`,
       });
     } else if (t.score < 70) {
@@ -413,7 +413,7 @@ export default async function AdminDashboard() {
                   </span>
                 </span>
                 {t.bonus.eligible && (
-                  <BadgeCheck className="w-4.5 h-4.5 text-emerald-600 shrink-0" aria-label="Bonus eligible" />
+                  <BadgeCheck className="w-4.5 h-4.5 text-emerald-600 shrink-0" aria-label="Can apply for bonuses" />
                 )}
                 <GradeChip score={t.score} />
               </Link>
@@ -430,8 +430,7 @@ export default async function AdminDashboard() {
           </div>
           {leaderboard.length > 0 && (
             <p className="text-[13px] text-ink-500 mt-4 pt-3 border-t border-ink-100">
-              {bonusReady} of {leaderboard.length} on track for the {formatMoney(config.scoring.bonusAmount)} monthly
-              bonus.
+              {bonusReady} of {leaderboard.length} can apply for bonuses this month.
             </p>
           )}
         </Card>

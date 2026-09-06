@@ -7,7 +7,6 @@ import { getShopConfig } from "@/lib/settings";
 import { currentPeriod, getTeamStats } from "@/lib/performance";
 import { arrivalLabel } from "@/lib/attendance";
 import { monthRange } from "@/lib/work-hours";
-import { formatMoney } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Team | UDS Admin" };
@@ -51,9 +50,9 @@ export default async function TeamPage({ searchParams }: { searchParams: Promise
           tone={avgPunctuality >= 90 ? "good" : "warn"}
         />
         <StatTile
-          label="Bonus eligible"
+          label="Can apply for bonuses"
           value={`${bonusReady}/${active.length}`}
-          hint={formatMoney(config.scoring.bonusAmount) + " each"}
+          hint={`Score ${config.scoring.bonusScore}+ this month`}
           tone={bonusReady > 0 ? "good" : "warn"}
         />
         <StatTile label="Mistakes flagged" value={flagged} tone={flagged === 0 ? "good" : "bad"} />
@@ -127,7 +126,7 @@ export default async function TeamPage({ searchParams }: { searchParams: Promise
             >
               {t.bonus.eligible ? (
                 <>
-                  <BadgeCheck className="w-4 h-4 shrink-0" /> Bonus eligible — {formatMoney(t.bonus.amount)}
+                  <BadgeCheck className="w-4 h-4 shrink-0" /> Applies for bonuses
                 </>
               ) : (
                 <>

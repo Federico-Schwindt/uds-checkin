@@ -26,7 +26,7 @@ import { currentPeriod, getAttendance, getEvents, getTeamStats } from "@/lib/per
 import { arrivalLabel, latenessLabel } from "@/lib/attendance";
 import { addDays, describeWorkHours, formatDateKey, previousMonthRange, shopTime } from "@/lib/work-hours";
 import { myCelebration } from "@/lib/celebrations";
-import { formatDateTime, formatMoney } from "@/lib/utils";
+import {formatDateTime} from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "My Performance | UDS" };
@@ -259,9 +259,7 @@ export default async function TechPanel() {
               </span>
               <div className="min-w-0 flex-1">
                 <h2 className="font-bold">
-                  {stats.bonus.eligible
-                    ? `On track for the ${formatMoney(stats.bonus.amount)} monthly bonus`
-                    : "Monthly bonus — not qualified yet"}
+                  {stats.bonus.eligible ? "You apply for bonuses" : "Bonuses — not qualified yet"}
                 </h2>
                 <p className="text-[13px] text-ink-600 mt-1">
                   Requires a score of {scoring.bonusScore}+
@@ -279,7 +277,7 @@ export default async function TechPanel() {
                 )}
                 {stats.bonus.eligible && (
                   <p className="mt-3 text-[13px] font-semibold text-emerald-700">
-                    Keep it up — the bonus is confirmed at the end of {period.label}.
+                    Keep it up through the end of {period.label}.
                   </p>
                 )}
               </div>

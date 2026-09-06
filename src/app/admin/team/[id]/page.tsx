@@ -10,7 +10,7 @@ import { getShopConfig } from "@/lib/settings";
 import { currentPeriod, getAttendance, getEvents, getTeamStats } from "@/lib/performance";
 import { arrivalLabel, latenessLabel } from "@/lib/attendance";
 import { formatDateKey, monthRange, previousMonthRange } from "@/lib/work-hours";
-import { formatDateTime, formatMoney } from "@/lib/utils";
+import {formatDateTime} from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -98,9 +98,7 @@ export default async function TechnicianDetail({
             </span>
             <div className="min-w-0">
               <h2 className="font-bold">
-                {stats.bonus.eligible
-                  ? `Qualifies for the ${formatMoney(stats.bonus.amount)} bonus`
-                  : "Does not qualify for the monthly bonus"}
+                {stats.bonus.eligible ? "Applies for bonuses" : "Cannot apply for bonuses yet"}
               </h2>
               <p className="text-[13px] text-ink-600 mt-1">
                 Gate: score ≥ {config.scoring.bonusScore}
