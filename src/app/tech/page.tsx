@@ -6,15 +6,15 @@ import {
   ArrowLeft,
   BadgeCheck,
   CalendarClock,
-  ClipboardList,
   CalendarRange,
+  ClipboardList,
   Clock,
   LogOut,
   PartyPopper,
   TrendingUp,
 } from "lucide-react";
-import { announcementReads, announcements, assignments, attendance, getDb, requests } from "@/db";
-import { Card } from "@/components/ui";
+import { announcementReads, announcements, assignments, attendance, customers, entries, getDb, requests } from "@/db";
+import { Card, StatusBadge } from "@/components/ui";
 import { Logo } from "@/components/logo";
 import { EventChip, GradeChip, PointsChip, ScoreRing, StatTile } from "@/components/performance-ui";
 import { SignOutButton } from "@/components/sign-out-button";
@@ -25,7 +25,7 @@ import { currentPeriod, getAttendance, getEvents, getTeamStats } from "@/lib/per
 import { arrivalLabel, latenessLabel } from "@/lib/attendance";
 import { addDays, describeWorkHours, formatDateKey, previousMonthRange, shopTime } from "@/lib/work-hours";
 import { myCelebration } from "@/lib/celebrations";
-import { formatMoney } from "@/lib/utils";
+import { formatDateTime, formatMoney } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "My Performance | UDS" };
@@ -89,6 +89,25 @@ export default async function TechPanel() {
     .orderBy(desc(requests.lastMessageAt))
     .limit(25);
 
+  // The check-ins this technician took, newest first.
+  const myCheckins = await db
+    .select({
+      id: entries.id,
+      jobNumber: entries.jobNumber,
+      jobStatus: entries.jobStatus,
+      vehicleYear: entries.vehicleYear,
+      vehicleMake: entries.vehicleMake,
+      vehicleModel: entries.vehicleModel,
+      createdAt: entries.createdAt,
+      firstName: customers.firstName,
+      lastName: customers.lastName,
+    })
+    .from(entries)
+    .leftJoin(customers, eq(entries.customerId, customers.id))
+    .where(and(eq(entries.createdByUserId, session.uid), isNull(entries.deletedAt)))
+    .orderBy(desc(entries.createdAt))
+    .limit(8);
+
   const celebrations = await myCelebration(session.uid, todayKey, Number(config.celebrationLeadDays) || 7);
 
   const schedule = describeWorkHours(config.workHours);
@@ -103,6 +122,13 @@ export default async function TechPanel() {
             <span className="hidden sm:block text-sm text-ink-400 border-l border-ink-200 pl-3">My Performance</span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/checkin"
+              className="inline-flex items-center gap-2 h-10 px-3 sm:px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-sm active:scale-[0.98] transition-all"
+            >
+              <ClipboardList className="w-4 h-4" /> <span className="max-sm:hidden">New check-in</span>
+              <span className="sm:hidden">New</span>
+            </Link>
             <Link
               href="/"
               className="inline-flex items-center gap-2 h-10 px-3 sm:px-4 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold transition-colors"
@@ -317,6 +343,53 @@ export default async function TechPanel() {
             isNew: !a.seenAt && a.status !== "cancelled",
           }))}
         />
+
+        <Card className="p-5">
+          <div className="flex items-start justify-between gap-3 mb-1">
+            <h2 className="font-bold flex items-center gap-2">
+              <ClipboardList className="w-4.5 h-4.5 text-ink-400" /> My check-ins
+            </h2>
+            <Link
+              href="/checkin"
+              className="text-sm font-semibold text-brand-700 hover:text-brand-800 whitespace-nowrap"
+            >
+              Start a new one
+            </Link>
+          </div>
+          <p className="text-[13px] text-ink-500 mb-4">
+            Work orders you took at the counter — {stats.jobs.created} this month.
+          </p>
+          <div className="divide-y divide-ink-100 -mx-5">
+            {myCheckins.map((c) => (
+              <Link
+                key={c.id}
+                href={`/entry/${c.id}`}
+                className="flex items-center gap-3 px-5 py-3 hover:bg-ink-50 transition-colors"
+              >
+                <span className="min-w-0 flex-1">
+                  <span className="block font-semibold text-ink-900 truncate">
+                    {c.firstName} {c.lastName}
+                    {c.jobNumber ? <span className="text-ink-400 font-normal"> · Job {c.jobNumber}</span> : null}
+                  </span>
+                  <span className="block text-[13px] text-ink-500 truncate">
+                    {[c.vehicleYear, c.vehicleMake, c.vehicleModel].filter(Boolean).join(" ") || "No vehicle"} ·{" "}
+                    {formatDateTime(c.createdAt)}
+                  </span>
+                </span>
+                <StatusBadge status={c.jobStatus} />
+              </Link>
+            ))}
+            {myCheckins.length === 0 && (
+              <p className="px-5 py-8 text-center text-sm text-ink-400">
+                You have not taken a check-in yet.{" "}
+                <Link href="/checkin" className="font-semibold text-brand-700">
+                  Start one
+                </Link>
+                .
+              </p>
+            )}
+          </div>
+        </Card>
 
         <MyRequests
           requests={myRequests.map((r) => ({
