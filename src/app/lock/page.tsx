@@ -3,6 +3,9 @@ import { Logo } from "@/components/logo";
 import { SignIn } from "./sign-in";
 
 export const metadata = { title: "Sign in | UDS Check-In" };
+// Never prerendered or cached: a stale copy of this page after a deploy is
+// exactly what leaves someone staring at a sign-in screen that does nothing.
+export const dynamic = "force-dynamic";
 
 export default function LockPage() {
   return (

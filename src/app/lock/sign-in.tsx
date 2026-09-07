@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft, Delete, LogIn, ShieldCheck, Wrench } from "lucide-react";
+import { ArrowLeft, Delete, LogIn, RotateCcw, ShieldCheck, Wrench } from "lucide-react";
 import { Spinner } from "@/components/ui";
 import { PIN_MAX } from "@/lib/password-rules";
 import { cn } from "@/lib/utils";
@@ -35,6 +35,7 @@ export function SignIn() {
   const router = useRouter();
   const params = useSearchParams();
   const [profiles, setProfiles] = useState<Profile[] | null>(null);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [shop, setShop] = useState<Shop | null>(null);
   const [selected, setSelected] = useState<Profile | null>(null);
   const [manual, setManual] = useState(false);
@@ -45,22 +46,25 @@ export function SignIn() {
   const [shake, setShake] = useState(false);
   const usernameRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/auth/profiles")
-      .then((r) => r.json())
-      .then((j) => {
-        if (cancelled) return;
-        setProfiles(j.profiles || []);
-        setShop(j.shop || null);
-      })
-      .catch(() => {
-        if (!cancelled) setProfiles([]);
-      });
-    return () => {
-      cancelled = true;
-    };
+  const loadProfiles = useCallback(async () => {
+    setLoadFailed(false);
+    try {
+      const res = await fetch("/api/auth/profiles", { cache: "no-store" });
+      if (!res.ok) throw new Error(String(res.status));
+      const j = await res.json();
+      setProfiles(j.profiles || []);
+      setShop(j.shop || null);
+    } catch {
+      // Say so rather than showing an empty picker that looks broken.
+      setProfiles([]);
+      setLoadFailed(true);
+    }
   }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- state updates happen after the fetch resolves
+    loadProfiles();
+  }, [loadProfiles]);
 
   const pick = (p: Profile) => {
     setSelected(p);
@@ -165,15 +169,18 @@ export function SignIn() {
               autoFocus
               value={username}
               onChange={(e) => setUsername(e.target.value.toLowerCase())}
+              placeholder="e.g. dani.ortega"
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck={false}
-              className="mt-1.5 w-full h-12 px-3.5 rounded-xl border border-ink-300 bg-white text-[15px] focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/25"
+              className="mt-1.5 w-full h-12 px-3.5 rounded-xl border border-ink-300 bg-white text-[15px] placeholder:text-ink-400 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/25"
             />
           </label>
         )}
 
-        <p className="text-center text-[13px] font-semibold text-ink-600 mb-3">Enter your PIN</p>
+        <p className="text-center text-[13px] font-semibold text-ink-600 mb-3">
+          {manual && !username ? "Type your username first" : "Enter your PIN"}
+        </p>
 
         {/* One dot per digit entered */}
         <div className={cn("flex justify-center items-center gap-3 h-6 mb-2", shake && "animate-shake")}>
@@ -190,7 +197,7 @@ export function SignIn() {
           {error || "."}
         </p>
 
-        {locked && shop ? (
+        {manual && !username ? null : locked && shop ? (
           <p className="rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[13px] px-3.5 py-2.5">
             {shop.reason || "Sign-in is closed outside working hours."}
           </p>
@@ -267,11 +274,25 @@ export function SignIn() {
             )}
           </button>
         ))}
-        {profiles.length === 0 && (
-          <p className="text-center text-sm text-ink-500 py-6">
-            No staff profiles found. Sign in with the admin account below.
-          </p>
-        )}
+        {profiles.length === 0 &&
+          (loadFailed ? (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3.5 text-center">
+              <p className="text-[13px] font-semibold text-amber-900">Could not reach the station.</p>
+              <p className="text-[13px] text-amber-800 mt-0.5">
+                Check the connection, then try again — or sign in with a username below.
+              </p>
+              <button
+                onClick={loadProfiles}
+                className="mt-2.5 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg bg-white border border-amber-300 text-[13px] font-semibold text-amber-900 hover:bg-amber-100"
+              >
+                <RotateCcw className="w-3.5 h-3.5" /> Try again
+              </button>
+            </div>
+          ) : (
+            <p className="text-center text-sm text-ink-500 py-6">
+              No staff profiles found. Sign in with a username below.
+            </p>
+          ))}
       </div>
 
       <button
