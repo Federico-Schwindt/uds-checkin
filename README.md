@@ -57,6 +57,18 @@ Replies come back in one of two ways:
 
 Either way, only mail from the requests address, the admin email, the sending mailbox, or an admin account's own email is accepted — a stranger who learns a code cannot post into a staff thread. Quoted history is stripped, and re-importing the same message never duplicates it.
 
+## Clearing test data
+
+After trying the system out, `scripts/clean-test-data.mjs` removes what the trial generated — staff requests, calendar assignments, attendance (arrivals and lateness), score adjustments and team notices — from a date onwards. **Work orders are never touched**, nor are customers, parts, job status history, staff accounts or settings.
+
+```bash
+export DATABASE_URL="<your Neon URL>"
+node scripts/clean-test-data.mjs --since=2026-09-06            # dry run: counts only
+node scripts/clean-test-data.mjs --since=2026-09-06 --yes      # actually delete
+```
+
+It refuses to delete without `--yes`, runs in one transaction, and prints the work-order count afterwards so you can see it was left alone. Add `--include-activity` to also clear the activity log of staff entries (work-order history is kept either way). Omit `--since` and it defaults to yesterday.
+
 ## Architecture notes
 
 - `src/proxy.ts` — session gate (Next 16 proxy, formerly middleware). The cookie is an HMAC-signed session (`uid`, `role`, `name`, `exp`); the proxy also keeps technicians out of `/admin` and `/api/admin`.
