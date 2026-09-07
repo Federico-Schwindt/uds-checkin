@@ -4,7 +4,7 @@ Customer check-in application for Universal Driveshafts (replaces the WordPress 
 
 ## Features
 
-- **Per-person sign-in with roles** — every member of staff has their own profile and password. `admin` accounts get the admin panel; `tech` accounts get the check-in station plus their own performance panel. The sign-in screen is a profile picker; sessions are HMAC-signed cookies and idle auto-lock still applies to counter tablets.
+- **Per-person sign-in with roles** — every member of staff has their own profile and numeric PIN, entered on a keypad. `admin` accounts get the admin panel; `tech` accounts get the check-in station plus their own performance panel. The sign-in screen is a profile picker; sessions are HMAC-signed cookies and idle auto-lock still applies to counter tablets.
 - **Working-hours gate + attendance** — technicians can only sign in during the shop's posted hours (Mon–Fri 8–5, Sat 9–2, Sun closed — editable in Admin → Settings). The first sign-in of each day is recorded as their arrival time, with lateness measured against that day's shift.
 - **Manual performance scoring** — everyone starts each month at 100 and the score only moves when an admin moves it. The editor shows the score now, the change being made and the score that will result; severity (minor / major / critical) only *suggests* an amount, and the admin can deduct, add, or type a target score outright. Lateness and missed shifts are reported next to the score but never deducted automatically. Admins can score a job straight from the entry it happened on, and each technician sees their own score, the reason behind every change, and whether they can apply for bonuses at `/tech`.
 - **Work-order authorship** — every check-in records who took it, and every status change records who made it.
@@ -44,7 +44,7 @@ The database seeds three accounts on first run (existing rows are never overwrit
 | `dani.ortega` | Technician | Station + `/tech`, working hours only |
 | `will.rose` | Technician | Station + `/tech`, working hours only |
 
-Passwords are stored as scrypt hashes — the plaintext is never in the repo or the database. Add people, reset passwords and change roles in **Admin → Team → Staff accounts**; a generated password is shown once, right after it is created.
+Everyone signs in with a 4-10 digit PIN on the keypad. PINs are stored as scrypt hashes — the plaintext is never in the repo or the database. Add people, set PINs and change roles in **Admin → Team → Staff accounts**: type the PIN you want, or let one be generated. Either way it is shown once, right after it is set.
 
 ## Staff request emails
 

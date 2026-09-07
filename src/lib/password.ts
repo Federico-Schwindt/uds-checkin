@@ -6,9 +6,6 @@ const R = 8;
 const P = 1;
 const KEY_LEN = 64;
 
-/** Ambiguous characters (0/O, 1/l/I) are left out so staff can read passwords off paper. */
-const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
-
 /** Stored format: `scrypt$N$r$p$salt$key`, both parts base64url. */
 export function hashPassword(password: string): string {
   const salt = randomBytes(16);
@@ -35,17 +32,20 @@ export function verifyPassword(password: string, stored: string): boolean {
   }
 }
 
-/** Random password in `Abcd-2345-Efgh` form — 12 characters, ~70 bits of entropy. */
-export function generatePassword(): string {
-  // Rejection sampling keeps every character equally likely (256 % 57 !== 0).
-  const limit = Math.floor(256 / ALPHABET.length) * ALPHABET.length;
-  const chars: string[] = [];
-  while (chars.length < 12) {
+/** Digits only, so everyone signs in on the keypad. */
+export { PIN_MIN, PIN_MAX, isValidPin } from "@/lib/password-rules";
+
+/** A random 6-digit PIN for a new account or a reset. */
+export function generatePin(length = 6): string {
+  const size = Math.min(10, Math.max(4, length));
+  // Rejection sampling keeps every digit equally likely (256 % 10 !== 0).
+  let out = "";
+  while (out.length < size) {
     for (const b of randomBytes(16)) {
-      if (b >= limit) continue;
-      chars.push(ALPHABET[b % ALPHABET.length]);
-      if (chars.length === 12) break;
+      if (b >= 250) continue;
+      out += String(b % 10);
+      if (out.length === size) break;
     }
   }
-  return [chars.slice(0, 4), chars.slice(4, 8), chars.slice(8, 12)].map((g) => g.join("")).join("-");
+  return out;
 }
