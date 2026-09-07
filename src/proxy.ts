@@ -14,7 +14,11 @@ export default function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p))) {
-    return NextResponse.next();
+    const res = NextResponse.next();
+    // Browsers and proxies must not hold on to the sign-in screen; an old copy
+    // would keep showing a form that no longer matches the app.
+    if (pathname === "/lock") res.headers.set("Cache-Control", "no-store, must-revalidate");
+    return res;
   }
 
   const session = verifySessionToken(req.cookies.get(AUTH_COOKIE)?.value);
