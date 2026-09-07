@@ -1,18 +1,27 @@
 import Link from "next/link";
-import { ClipboardList, Settings } from "lucide-react";
+import { redirect } from "next/navigation";
+import { Gauge, LogOut, Settings } from "lucide-react";
 import { asc, eq } from "drizzle-orm";
 import { getDb, locations } from "@/db";
 import { getSettings } from "@/lib/settings";
+import { getSession } from "@/lib/session";
 import { IdleLock } from "@/components/idle-lock";
 import { Logo } from "@/components/logo";
 import { EntriesWorkstation } from "@/components/entries-workstation";
+import { SignOutButton } from "@/components/sign-out-button";
+import { NewCheckinButton } from "@/components/new-checkin-button";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+export default async function HomePage({ searchParams }: { searchParams: Promise<{ denied?: string }> }) {
+  const session = await getSession();
+  if (!session) redirect("/lock");
+
   const db = await getDb();
   const s = await getSettings();
+  const { denied } = await searchParams;
   const locs = await db.select().from(locations).where(eq(locations.active, true)).orderBy(asc(locations.id));
+  const isAdmin = session.role === "admin";
 
   return (
     <main className="min-h-dvh flex flex-col bg-ink-100">
@@ -26,29 +35,49 @@ export default async function HomePage() {
             </span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <Link
-              href="/checkin"
-              className="inline-flex items-center gap-2 h-11 px-4 sm:px-5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-sm active:scale-[0.98] transition-all"
-            >
-              <ClipboardList className="w-4.5 h-4.5" /> <span className="max-sm:hidden">New Check-In</span>
-              <span className="sm:hidden">New</span>
-            </Link>
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-2 h-11 px-3 sm:px-4 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold transition-colors"
-            >
-              <Settings className="w-4 h-4" /> <span className="max-sm:hidden">Admin</span>
-            </Link>
+            <span className="hidden lg:flex flex-col items-end leading-tight mr-1">
+              <span className="text-[13px] font-bold text-ink-800">{session.name}</span>
+              <span className="text-[11px] uppercase tracking-wide text-ink-400">
+                {isAdmin ? "Administrator" : "Technician"}
+              </span>
+            </span>
+            <NewCheckinButton />
+            {isAdmin ? (
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-2 h-11 px-3 sm:px-4 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold transition-colors"
+              >
+                <Settings className="w-4 h-4" /> <span className="max-sm:hidden">Admin</span>
+              </Link>
+            ) : (
+              <Link
+                href="/tech"
+                className="inline-flex items-center gap-2 h-11 px-3 sm:px-4 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold transition-colors"
+              >
+                <Gauge className="w-4 h-4" /> <span className="max-sm:hidden">My performance</span>
+              </Link>
+            )}
+            <SignOutButton className="inline-flex items-center justify-center h-11 w-11 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 transition-colors">
+              <LogOut className="w-4 h-4" />
+            </SignOutButton>
           </div>
         </div>
       </header>
 
       <section className="flex-1 mx-auto w-full max-w-7xl px-3 sm:px-6 py-4 sm:py-5">
+        {denied === "admin" && (
+          <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+            The admin panel is restricted to administrators. Ask your manager if you need access.
+          </div>
+        )}
         <EntriesWorkstation
           locations={locs.map((l) => ({ id: l.id, name: l.name }))}
           initialColumns={s.kioskColumns}
         />
       </section>
+
+      {/* Always within thumb reach on a counter tablet. */}
+      <NewCheckinButton variant="fab" />
     </main>
   );
 }

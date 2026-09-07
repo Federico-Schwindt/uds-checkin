@@ -5,6 +5,8 @@ import { normalizePhone } from "@/lib/utils";
 import { storeDataUrl } from "@/lib/storage";
 import { notifyForEntry, notifyStatusChange } from "@/lib/notify";
 import { logActivity } from "@/lib/audit";
+import { sessionFromRequest } from "@/lib/session";
+import { actorLabel } from "@/lib/auth";
 import type { CheckinData } from "@/components/checkin/types";
 
 async function maybeStore(value: string, name: string): Promise<string> {
@@ -42,6 +44,8 @@ export async function POST(req: NextRequest) {
   }
 
   const db = await getDb();
+  // Whoever is signed in at the station owns this work order.
+  const session = sessionFromRequest(req);
   const toNumeric = (v: string) => {
     const n = parseFloat((v || "").replace(/[^0-9.]/g, ""));
     return isNaN(n) ? null : n.toFixed(2);
@@ -119,6 +123,8 @@ export async function POST(req: NextRequest) {
           vinPhoto,
           productImage,
           custom: customAssets,
+          createdByUserId: session?.uid ?? null,
+          createdByName: session?.name || "",
           toNumeric,
         }))
         .returning({ id: entries.id });
@@ -135,7 +141,12 @@ export async function POST(req: NextRequest) {
           }))
         );
       }
-      await tx.insert(statusHistory).values({ entryId: id, fromStatus: "", toStatus: data.jobStatus || "New" });
+      await tx.insert(statusHistory).values({
+        entryId: id,
+        fromStatus: "",
+        toStatus: data.jobStatus || "New",
+        changedBy: session?.name || "",
+      });
       return id;
     });
   } catch (err) {
@@ -168,7 +179,12 @@ export async function POST(req: NextRequest) {
     entity: "entry",
     entityId: entryId,
     summary: `New check-in #${entryId} — ${data.firstName} ${data.lastName}${data.jobNumber ? ` (Job ${data.jobNumber})` : ""}`,
-    details: { vehicle: [data.vehicleYear, data.vehicleMake, data.vehicleModel].filter(Boolean).join(" "), jobStatus: data.jobStatus || "New" },
+    details: {
+      vehicle: [data.vehicleYear, data.vehicleMake, data.vehicleModel].filter(Boolean).join(" "),
+      jobStatus: data.jobStatus || "New",
+      createdBy: session?.name || "",
+    },
+    actor: actorLabel(session),
     req,
   });
 
@@ -197,6 +213,8 @@ function buildEntryValues(
     vinPhoto: string;
     productImage: string;
     custom: Record<string, unknown> | null;
+    createdByUserId: number | null;
+    createdByName: string;
     toNumeric: (v: string) => string | null;
   }
 ) {
@@ -244,6 +262,8 @@ function buildEntryValues(
     designerType: data.designerType || "",
     howHeard: data.howHeard || "",
     custom: extra.custom,
+    createdByUserId: extra.createdByUserId,
+    createdByName: extra.createdByName,
     deposit: toNumeric(data.deposit),
     total: toNumeric(data.total),
     finalSignature: extra.finalSignature,
@@ -321,6 +341,7 @@ export async function GET(req: NextRequest) {
       locationId: entries.locationId,
       onHoldReason: entries.onHoldReason,
       assignedEmployee: entries.assignedEmployee,
+      createdByName: entries.createdByName,
       customerId: customers.id,
       firstName: customers.firstName,
       lastName: customers.lastName,

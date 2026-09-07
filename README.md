@@ -4,10 +4,17 @@ Customer check-in application for Universal Driveshafts (replaces the WordPress 
 
 ## Features
 
-- **PIN-locked station** — the whole app sits behind a PIN pad (default `2472026`, changeable in Admin → Settings), with configurable idle auto-lock for counter tablets and in-store screens.
+- **Per-person sign-in with roles** — every member of staff has their own profile and password. `admin` accounts get the admin panel; `tech` accounts get the check-in station plus their own performance panel. The sign-in screen is a profile picker; sessions are HMAC-signed cookies and idle auto-lock still applies to counter tablets.
+- **Working-hours gate + attendance** — technicians can only sign in during the shop's posted hours (Mon–Fri 8–5, Sat 9–2, Sun closed — editable in Admin → Settings). The first sign-in of each day is recorded as their arrival time, with lateness measured against that day's shift.
+- **Manual performance scoring** — everyone starts each month at 100 and the score only moves when an admin moves it. The editor shows the score now, the change being made and the score that will result; severity (minor / major / critical) only *suggests* an amount, and the admin can deduct, add, or type a target score outright. Lateness and missed shifts are reported next to the score but never deducted automatically. Admins can score a job straight from the entry it happened on, and each technician sees their own score, the reason behind every change, and whether they can apply for bonuses at `/tech`.
+- **Work-order authorship** — every check-in records who took it, and every status change records who made it.
+- **Staff requests with two-way email** — technicians ask for a day off, extra hours or raise a concern from their panel. Each thread is emailed to the shop manager with a short code in the subject (`[UDS-1A2B3C4D]`); a reply to that email lands back on the thread in the app, and the admin can also reply straight from the web panel.
+- **Team notices** — the admin posts shop-wide notices (early closing, holiday hours). Every technician sees them on their panel until they acknowledge.
+- **Scheduling calendar** — a month grid where the admin picks a day, a technician and a type: an appointment (customer name, detail, hour), an existing work order chosen from a searchable list, a task, or anything else. The technician sees new items flagged on their own calendar.
+- **Birthdays & work anniversaries** — birthday and start date live on each profile; the dashboard shows what is coming up and the technician gets a note on their panel.
 - **6-step check-in wizard** — replicates every field of the Gravity Forms "ODESSA CHECK-IN" form, including conditional logic, existing-customer search with autofill, signature pads, VIN/product photo capture, and structured parts lines. Drafts autosave locally so a refresh never loses a half-completed check-in.
 - **SMS + Email notifications** — job status changes (Confirmed / Ongoing / On hold / Completed) trigger Twilio SMS (consent-gated) and Hostinger SMTP emails, with per-status editable templates and variables like `{first_name}`, `{status}`, `{on_hold_reason}`.
-- **Admin panel** — dashboard with KPIs and status pipeline, searchable entries table with filters and CSV export, full entry detail with inline editing / status changer / print job sheet, template editor, message delivery log, settings (PIN, Twilio, SMTP, employees, locations), and a one-click Gravity Forms CSV importer.
+- **Admin panel** — dashboard with KPIs, warnings (who is late, who has not signed in, who is underperforming) and a technician leaderboard; team scorecards and per-technician detail; a daily attendance board with a 14-day arrival pattern; searchable entries table with filters and CSV export; full entry detail with inline editing / status changer / job-quality flagging / print job sheet; template editor; message delivery log; settings (working hours, scoring rules, Twilio, SMTP, employees, locations); and a one-click Gravity Forms CSV importer.
 
 ## Development
 
@@ -27,9 +34,34 @@ No external services needed: with no `DATABASE_URL`, an embedded Postgres (PGlit
 5. In **Admin → Settings**, enter Twilio credentials (SID, token, from number) and Hostinger SMTP credentials (host `smtp.hostinger.com`, port 465, mailbox + password), enable both toggles, and use the built-in test senders to verify.
 6. In **Admin → Import**, upload the Gravity Forms entries CSV export to migrate historical customers and jobs.
 
+## Accounts
+
+The database seeds three accounts on first run (existing rows are never overwritten):
+
+| Username | Role | Notes |
+| --- | --- | --- |
+| `admin` | Administrator | Full admin panel; can sign in at any hour |
+| `dani.ortega` | Technician | Station + `/tech`, working hours only |
+| `will.rose` | Technician | Station + `/tech`, working hours only |
+
+Passwords are stored as scrypt hashes — the plaintext is never in the repo or the database. Add people, reset passwords and change roles in **Admin → Team → Staff accounts**; a generated password is shown once, right after it is created.
+
+## Staff request emails
+
+Requests are emailed to the address in **Admin → Settings → Staff requests** (`moehamis@udshafts.com` by default). The subject carries a code like `[UDS-1A2B3C4D]`; keeping it in the subject is what threads a reply back to the right request.
+
+Replies come back in one of two ways:
+
+- **IMAP (no extra service).** Turn on *Pull replies back in* and give it the mailbox that sends the email — usually the same Hostinger mailbox as SMTP. **Admin → Requests → Check for email replies** reads it on demand. To collect replies automatically, call `POST /api/inbound/poll` from any scheduler with `Authorization: Bearer $CRON_SECRET`.
+- **Provider webhook.** Set `INBOUND_EMAIL_SECRET` and point an inbound-parse webhook (Mailgun, SendGrid, Postmark, …) at `POST /api/inbound/email?secret=…`.
+
+Either way, only mail from the requests address, the admin email, the sending mailbox, or an admin account's own email is accepted — a stranger who learns a code cannot post into a staff thread. Quoted history is stripped, and re-importing the same message never duplicates it.
+
 ## Architecture notes
 
-- `src/proxy.ts` — session gate (Next 16 proxy, formerly middleware). Cookie is an HMAC-signed expiry token; the PIN is checked in `/api/auth/login` against the settings table.
+- `src/proxy.ts` — session gate (Next 16 proxy, formerly middleware). The cookie is an HMAC-signed session (`uid`, `role`, `name`, `exp`); the proxy also keeps technicians out of `/admin` and `/api/admin`.
+- `src/lib/requests.ts` / `src/lib/inbound-mail.ts` — staff-request threads, the outbound email with its subject code, and the IMAP/webhook path that files replies back in.
+- `src/lib/work-hours.ts` — the weekly schedule, shop-timezone conversion and the sign-in window; `src/lib/attendance.ts` records arrivals; `src/lib/performance.ts` derives the score from the admin's points ledger (attendance is reported alongside it, never scored automatically).
 - `src/db/` — Drizzle schema + idempotent bootstrap (DDL + seeds) that runs once per process; works on both PGlite (dev) and Postgres (prod).
 - `src/lib/notify.ts` — template rendering and Twilio/SMTP senders; every attempt is recorded in `message_log`.
 - `src/lib/form-options.json` / `legal-texts.json` — dropdown options and legal texts extracted verbatim from the Gravity Forms export.

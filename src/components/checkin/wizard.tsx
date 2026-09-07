@@ -56,11 +56,17 @@ export function CheckinWizard({
   schema: schemaProp,
   options: optionOverrides,
   googleMapsKey,
+  initialCustomer,
+  fresh,
 }: {
   turnaroundBanner: string;
   schema?: FormSchema | null;
   options?: FormOptions | null;
   googleMapsKey?: string;
+  /** Customer chosen in the quick-start; their details start filled in. */
+  initialCustomer?: CustomerHit | null;
+  /** Deliberately starting a new one — any saved draft is dropped. */
+  fresh?: boolean;
 }) {
   const router = useRouter();
   const schema = useMemo(() => resolveSchema(schemaProp), [schemaProp]);
@@ -69,7 +75,25 @@ export function CheckinWizard({
   const steps = useMemo(() => schema.steps.filter((s) => s.enabled !== false), [schema]);
 
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<CheckinData>(initialCheckinData);
+  // A customer picked in the quick-start seeds the form at render — same output
+  // on the server and the client, so there is nothing to reconcile afterwards.
+  const [data, setData] = useState<CheckinData>(() =>
+    initialCustomer
+      ? {
+          ...initialCheckinData,
+          customerId: initialCustomer.id,
+          firstName: initialCustomer.firstName,
+          lastName: initialCustomer.lastName,
+          phone: formatPhoneSafe(initialCustomer.phone),
+          email: initialCustomer.email,
+          street: initialCustomer.street,
+          city: initialCustomer.city,
+          state: initialCustomer.state,
+          zip: initialCustomer.zip,
+          smsConsent: initialCustomer.smsConsent,
+        }
+      : initialCheckinData
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -80,6 +104,14 @@ export function CheckinWizard({
   /* ---------------- draft persistence ---------------- */
 
   useEffect(() => {
+    // Starting deliberately (new customer, or one picked in the quick-start):
+    // drop whatever was left over so two check-ins never bleed together.
+    if (fresh) {
+      try {
+        localStorage.removeItem(DRAFT_KEY);
+      } catch {}
+      return;
+    }
     try {
       const raw = localStorage.getItem(DRAFT_KEY);
       if (raw) {

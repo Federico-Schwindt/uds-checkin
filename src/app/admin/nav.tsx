@@ -11,13 +11,23 @@ import {
   History,
   Settings,
   Upload,
-  LockKeyhole,
+  LogOut,
+  CalendarClock,
+  CalendarRange,
+  Inbox,
+  Megaphone,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/entries", label: "Entries", icon: ClipboardList },
+  { href: "/admin/team", label: "Team", icon: Users },
+  { href: "/admin/schedule", label: "Schedule", icon: CalendarRange },
+  { href: "/admin/attendance", label: "Attendance", icon: CalendarClock },
+  { href: "/admin/requests", label: "Requests", icon: Inbox },
+  { href: "/admin/announcements", label: "Notices", icon: Megaphone },
   { href: "/admin/form", label: "Form Builder", icon: ListChecks },
   { href: "/admin/templates", label: "Notifications", icon: MessageSquareText },
   { href: "/admin/messages", label: "Message Log", icon: MailCheck },
@@ -26,10 +36,10 @@ const ITEMS = [
   { href: "/admin/import", label: "Import", icon: Upload },
 ];
 
-export function AdminNav() {
+export function AdminNav({ userName }: { userName?: string }) {
   const pathname = usePathname();
 
-  const lock = async () => {
+  const signOut = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     window.location.href = "/lock";
   };
@@ -53,11 +63,12 @@ export function AdminNav() {
         );
       })}
       <button
-        onClick={lock}
+        onClick={signOut}
         className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap text-ink-300 hover:bg-white/10 hover:text-white transition-colors lg:mt-auto"
+        title={userName ? `Signed in as ${userName}` : undefined}
       >
-        <LockKeyhole className="w-4.5 h-4.5 shrink-0" />
-        Lock station
+        <LogOut className="w-4.5 h-4.5 shrink-0" />
+        Sign out{userName ? <span className="text-ink-500 font-normal max-lg:hidden">· {userName}</span> : null}
       </button>
     </nav>
   );

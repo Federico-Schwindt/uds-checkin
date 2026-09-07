@@ -1,7 +1,9 @@
 import { sql } from "drizzle-orm";
 import type { Db } from "./index";
-import { locations, employees, messageTemplates, settings } from "./schema";
+import { locations, employees, messageTemplates, settings, users } from "./schema";
 import formOptions from "@/lib/form-options.json";
+import { DEFAULT_TIMEZONE, DEFAULT_WORK_HOURS } from "@/lib/work-hours";
+import { DEFAULT_SCORING } from "@/lib/performance-config";
 
 const DDL = `
 CREATE TABLE IF NOT EXISTS settings (
@@ -16,6 +18,85 @@ CREATE TABLE IF NOT EXISTS locations (
   active BOOLEAN NOT NULL DEFAULT true,
   created_at TIMESTAMP NOT NULL DEFAULT now()
 );
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  username TEXT NOT NULL,
+  name TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'tech',
+  password_hash TEXT NOT NULL DEFAULT '',
+  title TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  email TEXT NOT NULL DEFAULT '',
+  active BOOLEAN NOT NULL DEFAULT true,
+  bypass_work_hours BOOLEAN NOT NULL DEFAULT false,
+  last_login_at TIMESTAMP,
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS users_username_idx ON users (username);
+CREATE INDEX IF NOT EXISTS users_role_idx ON users (role);
+CREATE TABLE IF NOT EXISTS attendance (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  work_date TEXT NOT NULL,
+  first_login_at TIMESTAMP NOT NULL DEFAULT now(),
+  last_seen_at TIMESTAMP NOT NULL DEFAULT now(),
+  scheduled_start TEXT NOT NULL DEFAULT '',
+  arrival_minutes INTEGER NOT NULL DEFAULT 0,
+  minutes_late INTEGER NOT NULL DEFAULT 0,
+  late BOOLEAN NOT NULL DEFAULT false,
+  logins INTEGER NOT NULL DEFAULT 1
+);
+CREATE UNIQUE INDEX IF NOT EXISTS attendance_user_date_idx ON attendance (user_id, work_date);
+CREATE INDEX IF NOT EXISTS attendance_date_idx ON attendance (work_date);
+CREATE TABLE IF NOT EXISTS announcements (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL DEFAULT '',
+  body TEXT NOT NULL DEFAULT '',
+  kind TEXT NOT NULL DEFAULT 'info',
+  expires_at TIMESTAMP,
+  pinned BOOLEAN NOT NULL DEFAULT false,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS announcements_created_idx ON announcements (created_at);
+CREATE TABLE IF NOT EXISTS announcement_reads (
+  id SERIAL PRIMARY KEY,
+  announcement_id INTEGER NOT NULL REFERENCES announcements(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  read_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS announcement_reads_idx ON announcement_reads (announcement_id, user_id);
+CREATE TABLE IF NOT EXISTS requests (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  type TEXT NOT NULL DEFAULT 'other',
+  subject TEXT NOT NULL DEFAULT '',
+  requested_date TEXT NOT NULL DEFAULT '',
+  requested_end_date TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'open',
+  token TEXT NOT NULL DEFAULT '',
+  last_message_at TIMESTAMP NOT NULL DEFAULT now(),
+  unread_for_admin BOOLEAN NOT NULL DEFAULT true,
+  unread_for_user BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS requests_token_idx ON requests (token);
+CREATE INDEX IF NOT EXISTS requests_user_idx ON requests (user_id);
+CREATE INDEX IF NOT EXISTS requests_status_idx ON requests (status);
+CREATE TABLE IF NOT EXISTS request_messages (
+  id SERIAL PRIMARY KEY,
+  request_id INTEGER NOT NULL REFERENCES requests(id) ON DELETE CASCADE,
+  author_role TEXT NOT NULL DEFAULT 'tech',
+  author_name TEXT NOT NULL DEFAULT '',
+  body TEXT NOT NULL DEFAULT '',
+  via_email BOOLEAN NOT NULL DEFAULT false,
+  external_id TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS request_messages_request_idx ON request_messages (request_id);
+CREATE INDEX IF NOT EXISTS request_messages_ext_idx ON request_messages (external_id);
 CREATE TABLE IF NOT EXISTS employees (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
@@ -105,6 +186,41 @@ CREATE INDEX IF NOT EXISTS entries_status_idx ON entries (job_status);
 CREATE INDEX IF NOT EXISTS entries_customer_idx ON entries (customer_id);
 CREATE INDEX IF NOT EXISTS entries_created_idx ON entries (created_at);
 CREATE UNIQUE INDEX IF NOT EXISTS entries_source_idx ON entries (source_entry_id);
+CREATE TABLE IF NOT EXISTS assignments (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  work_date TEXT NOT NULL,
+  start_time TEXT NOT NULL DEFAULT '',
+  end_time TEXT NOT NULL DEFAULT '',
+  type TEXT NOT NULL DEFAULT 'task',
+  title TEXT NOT NULL DEFAULT '',
+  customer_name TEXT NOT NULL DEFAULT '',
+  details TEXT NOT NULL DEFAULT '',
+  entry_id INTEGER REFERENCES entries(id) ON DELETE SET NULL,
+  status TEXT NOT NULL DEFAULT 'scheduled',
+  seen_at TIMESTAMP,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS assignments_user_date_idx ON assignments (user_id, work_date);
+CREATE INDEX IF NOT EXISTS assignments_date_idx ON assignments (work_date);
+CREATE INDEX IF NOT EXISTS assignments_entry_idx ON assignments (entry_id);
+CREATE TABLE IF NOT EXISTS performance_events (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  entry_id INTEGER REFERENCES entries(id) ON DELETE SET NULL,
+  type TEXT NOT NULL DEFAULT 'mistake',
+  severity TEXT NOT NULL DEFAULT '',
+  category TEXT NOT NULL DEFAULT '',
+  note TEXT NOT NULL DEFAULT '',
+  points INTEGER NOT NULL DEFAULT 0,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS performance_user_idx ON performance_events (user_id);
+CREATE INDEX IF NOT EXISTS performance_created_idx ON performance_events (created_at);
+CREATE INDEX IF NOT EXISTS performance_entry_idx ON performance_events (entry_id);
 CREATE TABLE IF NOT EXISTS parts (
   id SERIAL PRIMARY KEY,
   entry_id INTEGER NOT NULL REFERENCES entries(id) ON DELETE CASCADE,
@@ -165,7 +281,6 @@ CREATE INDEX IF NOT EXISTS activity_created_idx ON activity_log (created_at);
 `;
 
 const DEFAULT_SETTINGS: Record<string, unknown> = {
-  pin: "2472026",
   idleLockMinutes: 15,
   sessionDays: 30,
   businessName: "Universal Driveshafts",
@@ -212,7 +327,70 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
   formSchema: null,
   // editable dropdown option overrides (null/{} = code defaults)
   fieldOptions: null,
+  // shop schedule — technicians may only sign in inside these hours
+  timezone: DEFAULT_TIMEZONE,
+  workHours: DEFAULT_WORK_HOURS,
+  /** How long before the shift a technician may sign in. */
+  earlyLoginMinutes: 30,
+  /** How long after closing sign-in still works (overtime). */
+  lateLoginMinutes: 60,
+  /** Technician sessions end this long after their shift. */
+  shiftSessionGraceMinutes: 60,
+  // performance / bonus rules
+  scoring: DEFAULT_SCORING,
+  // staff requests (time off, extra hours, concerns)
+  requestsEmail: "moehamis@udshafts.com",
+  requestsEmailEnabled: true,
+  /** Mailbox polled for replies to request emails — usually the sending mailbox. */
+  imapHost: "imap.hostinger.com",
+  imapPort: 993,
+  imapUser: "",
+  imapPass: "",
+  imapEnabled: false,
+  /** Days ahead the panel starts celebrating a birthday / work anniversary. */
+  celebrationLeadDays: 7,
 };
+
+/**
+ * Seed accounts. Passwords are pre-hashed so the plaintext never lives in the
+ * repository or the database; the admin can reset any of them from Admin → Team.
+ */
+const SEED_USERS: Array<{
+  username: string;
+  name: string;
+  role: string;
+  title: string;
+  passwordHash: string;
+  bypassWorkHours: boolean;
+}> = [
+  {
+    username: "admin",
+    name: "Administrator",
+    role: "admin",
+    title: "Shop Manager",
+    passwordHash:
+      "scrypt$16384$8$1$-cGFlYqGuqHhufOw6NY3xQ$oiz9MXVUnoNbAU6xLnesEh8hFmsMU5QHGbVVh0mNPAZVuEOvPGGaYH1JHAR8TVES1gqS4kP5bYesp_ePrnytpw",
+    bypassWorkHours: true,
+  },
+  {
+    username: "dani.ortega",
+    name: "Dani Ortega",
+    role: "tech",
+    title: "Driveshaft Technician",
+    passwordHash:
+      "scrypt$16384$8$1$IIM1jML0nI6sFGZhVc3Y1Q$gnbVJ9O03wiuYp4K4W3FNkfOUzfJwy7cexTsJtJQ9ZIgm4zADtqVTSDC7vXNmDqU_5lAeRmAFOnTttDraengWA",
+    bypassWorkHours: false,
+  },
+  {
+    username: "will.rose",
+    name: "Will Rose",
+    role: "tech",
+    title: "Driveshaft Technician",
+    passwordHash:
+      "scrypt$16384$8$1$mrbpBdPDB9BRfUoEv5Ezcg$oALeUJ2pCBdXvJ0FT7HDR1PUmb1605FEmz36HndTjtN4h-6oCvNwCLpPTkqaUUALQzoUZ4Py5rcs5666BFhF9g",
+    bypassWorkHours: false,
+  },
+];
 
 const SIGNOFF = "\n\nUniversal Driveshafts";
 
@@ -363,4 +541,34 @@ export async function bootstrap(db: Db) {
   // Micro-migration: soft-delete marker for entries.
   await db.execute(sql.raw("ALTER TABLE entries ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMP"));
   await db.execute(sql.raw("CREATE INDEX IF NOT EXISTS entries_deleted_idx ON entries (deleted_at)"));
+
+  // Micro-migration: who took the check-in.
+  await db.execute(sql.raw("ALTER TABLE entries ADD COLUMN IF NOT EXISTS created_by_user_id INTEGER"));
+  await db.execute(
+    sql.raw("ALTER TABLE entries ADD COLUMN IF NOT EXISTS created_by_name TEXT NOT NULL DEFAULT ''")
+  );
+  await db.execute(
+    sql.raw("ALTER TABLE status_history ADD COLUMN IF NOT EXISTS changed_by TEXT NOT NULL DEFAULT ''")
+  );
+
+  // Micro-migration: birthdays and hire dates on staff profiles.
+  await db.execute(sql.raw("ALTER TABLE users ADD COLUMN IF NOT EXISTS birthday TEXT NOT NULL DEFAULT ''"));
+  await db.execute(sql.raw("ALTER TABLE users ADD COLUMN IF NOT EXISTS hired_on TEXT NOT NULL DEFAULT ''"));
+
+  // Seed staff accounts. Existing rows are never overwritten, so password
+  // changes and renames made in the admin panel survive a redeploy.
+  const existingUsers = await db.select({ username: users.username }).from(users);
+  const usernames = new Set(existingUsers.map((u) => u.username));
+  for (const u of SEED_USERS) {
+    if (!usernames.has(u.username)) await db.insert(users).values(u);
+  }
+
+  // Technicians also need an employees row so they appear in the job dropdowns.
+  const empRows = await db.select({ name: employees.name }).from(employees);
+  const empNames = new Set(empRows.map((e) => e.name));
+  for (const u of SEED_USERS) {
+    if (u.role === "tech" && !empNames.has(u.name)) {
+      await db.insert(employees).values({ name: u.name, sortOrder: 50 });
+    }
+  }
 }

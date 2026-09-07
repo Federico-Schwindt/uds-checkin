@@ -1,10 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { KeyRound, Mail, MessageSquareText, Plus, Save, Send, Store, Trash2, Users } from "lucide-react";
+import Link from "next/link";
+import { Inbox, KeyRound, Mail, MessageSquareText, Plus, Save, Send, Store, Trash2, Users } from "lucide-react";
 import { Badge, Button, Card, Field, Input, Spinner, Toggle } from "@/components/ui";
+import { ScheduleCard } from "./schedule-card";
+import { ScoringCard } from "./scoring-card";
+import type { DaySchedule } from "@/lib/work-hours";
+import type { ScoringConfig } from "@/lib/performance-config";
 
-type Settings = Record<string, string | number | boolean>;
+type Settings = Record<string, unknown>;
 type Employee = { id: number; name: string; active: boolean };
 type Location = { id: number; name: string; twilioFrom: string | null; active: boolean };
 
@@ -33,7 +38,7 @@ export default function SettingsPage() {
     });
   }, []);
 
-  const set = (key: string, value: string | number | boolean) => setS((prev) => ({ ...prev!, [key]: value }));
+  const set = (key: string, value: unknown) => setS((prev) => ({ ...prev!, [key]: value }));
 
   const save = async () => {
     if (!s) return;
@@ -187,17 +192,19 @@ export default function SettingsPage() {
 
       {/* Security */}
       <Card className="p-5">
-        <SectionHeader icon={<KeyRound className="w-4.5 h-4.5" />} title="Security" subtitle="PIN lock for the station and admin" />
-        <div className="grid sm:grid-cols-3 gap-4">
-          <Field label="Station PIN" hint="4-10 digits. Leave empty to keep the current PIN">
-            <Input
-              type="password"
-              placeholder="••••••"
-              value={str("pin") === "2472026" ? str("pin") : str("pin")}
-              onChange={(e) => set("pin", e.target.value.replace(/\D/g, ""))}
-              inputMode="numeric"
-            />
-          </Field>
+        <SectionHeader
+          icon={<KeyRound className="w-4.5 h-4.5" />}
+          title="Security"
+          subtitle="Session behavior for the station and the admin panel"
+        />
+        <p className="text-[13px] text-ink-600 mb-4">
+          Everyone signs in with their own account. Passwords are created and reset in{" "}
+          <Link href="/admin/team" className="font-semibold text-brand-700 hover:underline">
+            Team → Staff accounts
+          </Link>
+          .
+        </p>
+        <div className="grid sm:grid-cols-2 gap-4">
           <Field label="Auto-lock after inactivity (minutes)" hint="0 disables auto-lock">
             <Input
               value={String(num("idleLockMinutes"))}
@@ -212,6 +219,84 @@ export default function SettingsPage() {
               inputMode="numeric"
             />
           </Field>
+        </div>
+      </Card>
+
+      <ScheduleCard
+        hours={s.workHours}
+        onChange={(v: DaySchedule[]) => set("workHours", v)}
+        timezone={str("timezone")}
+        onTimezoneChange={(v) => set("timezone", v)}
+        early={num("earlyLoginMinutes")}
+        onEarlyChange={(v) => set("earlyLoginMinutes", v)}
+        late={num("lateLoginMinutes")}
+        onLateChange={(v) => set("lateLoginMinutes", v)}
+        grace={num("shiftSessionGraceMinutes")}
+        onGraceChange={(v) => set("shiftSessionGraceMinutes", v)}
+      />
+
+      <ScoringCard scoring={s.scoring} onChange={(v: ScoringConfig) => set("scoring", v)} />
+
+      {/* Staff requests */}
+      <Card className="p-5">
+        <SectionHeader
+          icon={<Inbox className="w-4.5 h-4.5" />}
+          title="Staff requests"
+          subtitle="Where time-off and other staff requests are emailed, and how replies come back"
+          right={
+            <Toggle
+              checked={bool("requestsEmailEnabled")}
+              onChange={(v) => set("requestsEmailEnabled", v)}
+              label={bool("requestsEmailEnabled") ? "Emailing" : "App only"}
+            />
+          }
+        />
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Field label="Send requests to" hint="Every new request and reply is emailed here">
+            <Input value={str("requestsEmail")} onChange={(e) => set("requestsEmail", e.target.value)} inputMode="email" />
+          </Field>
+          <Field label="Celebration reminder (days ahead)" hint="How early birthdays and anniversaries appear">
+            <Input
+              value={String(num("celebrationLeadDays") || 7)}
+              onChange={(e) => set("celebrationLeadDays", parseInt(e.target.value) || 0)}
+              inputMode="numeric"
+            />
+          </Field>
+        </div>
+
+        <div className="mt-5 pt-4 border-t border-ink-100">
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <div>
+              <h3 className="font-bold text-[15px]">Pull replies back in</h3>
+              <p className="text-[13px] text-ink-500">
+                Reads the mailbox that sends the emails, and files any reply carrying a request code onto the right
+                thread. Leave it off to reply only from this panel.
+              </p>
+            </div>
+            <Toggle
+              checked={bool("imapEnabled")}
+              onChange={(v) => set("imapEnabled", v)}
+              label={bool("imapEnabled") ? "On" : "Off"}
+            />
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Field label="IMAP host">
+              <Input value={str("imapHost")} onChange={(e) => set("imapHost", e.target.value)} placeholder="imap.hostinger.com" />
+            </Field>
+            <Field label="Port">
+              <Input
+                value={String(num("imapPort") || 993)}
+                onChange={(e) => set("imapPort", parseInt(e.target.value) || 993)}
+                inputMode="numeric"
+              />
+            </Field>
+            <Field label="Mailbox" hint="Defaults to the SMTP user">
+              <Input value={str("imapUser")} onChange={(e) => set("imapUser", e.target.value)} inputMode="email" />
+            </Field>
+            <Field label="Password" hint="Defaults to the SMTP password">
+              <Input type="password" value={str("imapPass")} onChange={(e) => set("imapPass", e.target.value)} />
+            </Field>
+          </div>
         </div>
       </Card>
 

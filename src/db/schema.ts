@@ -25,6 +25,198 @@ export const locations = pgTable("locations", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+/** Staff accounts. `admin` runs the shop panel; `tech` signs in on the floor. */
+export const users = pgTable(
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    username: text("username").notNull(),
+    name: text("name").notNull(),
+    role: text("role").notNull().default("tech"), // admin | tech
+    passwordHash: text("password_hash").notNull().default(""),
+    title: text("title").notNull().default(""),
+    phone: text("phone").notNull().default(""),
+    email: text("email").notNull().default(""),
+    /** "YYYY-MM-DD" — the year is kept so the panel can show an age if wanted. */
+    birthday: text("birthday").notNull().default(""),
+    /** First day at Universal Driveshafts, "YYYY-MM-DD". Drives work anniversaries. */
+    hiredOn: text("hired_on").notNull().default(""),
+    active: boolean("active").notNull().default(true),
+    /** Lets a non-admin sign in outside the posted opening hours. */
+    bypassWorkHours: boolean("bypass_work_hours").notNull().default(false),
+    lastLoginAt: timestamp("last_login_at"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("users_username_idx").on(t.username), index("users_role_idx").on(t.role)]
+);
+
+/** One row per staff member per working day — the first sign-in is the arrival time. */
+export const attendance = pgTable(
+  "attendance",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** Shop-local calendar day, "YYYY-MM-DD". */
+    workDate: text("work_date").notNull(),
+    firstLoginAt: timestamp("first_login_at").notNull().defaultNow(),
+    lastSeenAt: timestamp("last_seen_at").notNull().defaultNow(),
+    /** Scheduled shift start that day, "HH:MM". */
+    scheduledStart: text("scheduled_start").notNull().default(""),
+    /** Arrival as minutes since shop-local midnight, so it is timezone-proof. */
+    arrivalMinutes: integer("arrival_minutes").notNull().default(0),
+    minutesLate: integer("minutes_late").notNull().default(0),
+    late: boolean("late").notNull().default(false),
+    logins: integer("logins").notNull().default(1),
+  },
+  (t) => [
+    uniqueIndex("attendance_user_date_idx").on(t.userId, t.workDate),
+    index("attendance_date_idx").on(t.workDate),
+  ]
+);
+
+/** Points ledger behind each technician's score. */
+export const performanceEvents = pgTable(
+  "performance_events",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** The job this is about, when the admin flagged it from an entry. */
+    entryId: integer("entry_id").references(() => entries.id, { onDelete: "set null" }),
+    type: text("type").notNull().default("mistake"), // mistake | praise | adjustment
+    severity: text("severity").notNull().default(""), // minor | major | critical
+    category: text("category").notNull().default(""),
+    note: text("note").notNull().default(""),
+    /** Negative for penalties, positive for recognition. */
+    points: integer("points").notNull().default(0),
+    createdBy: text("created_by").notNull().default(""),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("performance_user_idx").on(t.userId),
+    index("performance_created_idx").on(t.createdAt),
+    index("performance_entry_idx").on(t.entryId),
+  ]
+);
+
+/** Shop-wide notices from the admin: early closing, holiday hours, reminders. */
+export const announcements = pgTable(
+  "announcements",
+  {
+    id: serial("id").primaryKey(),
+    title: text("title").notNull().default(""),
+    body: text("body").notNull().default(""),
+    kind: text("kind").notNull().default("info"), // info | warning | closure
+    /** Hidden after this instant; null means it stays until deleted. */
+    expiresAt: timestamp("expires_at"),
+    pinned: boolean("pinned").notNull().default(false),
+    createdBy: text("created_by").notNull().default(""),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [index("announcements_created_idx").on(t.createdAt)]
+);
+
+/** Who has acknowledged which notice. */
+export const announcementReads = pgTable(
+  "announcement_reads",
+  {
+    id: serial("id").primaryKey(),
+    announcementId: integer("announcement_id")
+      .notNull()
+      .references(() => announcements.id, { onDelete: "cascade" }),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    readAt: timestamp("read_at").notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("announcement_reads_idx").on(t.announcementId, t.userId)]
+);
+
+/** Time off, extra hours, equipment, concerns — anything staff need to raise. */
+export const requests = pgTable(
+  "requests",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type").notNull().default("other"),
+    subject: text("subject").notNull().default(""),
+    /** Date the request is about (a day off, a shift), "YYYY-MM-DD". */
+    requestedDate: text("requested_date").notNull().default(""),
+    requestedEndDate: text("requested_end_date").notNull().default(""),
+    status: text("status").notNull().default("open"), // open | approved | declined | closed
+    /** Token embedded in the email subject so replies can be threaded back. */
+    token: text("token").notNull().default(""),
+    lastMessageAt: timestamp("last_message_at").notNull().defaultNow(),
+    /** Something the other side has not seen yet. */
+    unreadForAdmin: boolean("unread_for_admin").notNull().default(true),
+    unreadForUser: boolean("unread_for_user").notNull().default(false),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("requests_token_idx").on(t.token),
+    index("requests_user_idx").on(t.userId),
+    index("requests_status_idx").on(t.status),
+  ]
+);
+
+export const requestMessages = pgTable(
+  "request_messages",
+  {
+    id: serial("id").primaryKey(),
+    requestId: integer("request_id")
+      .notNull()
+      .references(() => requests.id, { onDelete: "cascade" }),
+    authorRole: text("author_role").notNull().default("tech"), // tech | admin
+    authorName: text("author_name").notNull().default(""),
+    body: text("body").notNull().default(""),
+    /** True when the message arrived as an email reply rather than through the app. */
+    viaEmail: boolean("via_email").notNull().default(false),
+    /** Message-ID of the source email, so the same reply is never imported twice. */
+    externalId: text("external_id").notNull().default(""),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [index("request_messages_request_idx").on(t.requestId), index("request_messages_ext_idx").on(t.externalId)]
+);
+
+/** A technician's calendar: appointments, work orders, tasks. */
+export const assignments = pgTable(
+  "assignments",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** Shop-local day, "YYYY-MM-DD". */
+    workDate: text("work_date").notNull(),
+    startTime: text("start_time").notNull().default(""), // "HH:MM"
+    endTime: text("end_time").notNull().default(""),
+    type: text("type").notNull().default("task"), // appointment | work_order | task | other
+    title: text("title").notNull().default(""),
+    customerName: text("customer_name").notNull().default(""),
+    details: text("details").notNull().default(""),
+    /** Set when the assignment is a check-in from the entries list. */
+    entryId: integer("entry_id").references(() => entries.id, { onDelete: "set null" }),
+    status: text("status").notNull().default("scheduled"), // scheduled | done | cancelled
+    /** Cleared once the technician has seen it on their panel. */
+    seenAt: timestamp("seen_at"),
+    createdBy: text("created_by").notNull().default(""),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("assignments_user_date_idx").on(t.userId, t.workDate),
+    index("assignments_date_idx").on(t.workDate),
+    index("assignments_entry_idx").on(t.entryId),
+  ]
+);
+
 export const employees = pgTable("employees", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -129,6 +321,9 @@ export const entries = pgTable(
     custom: jsonb("custom"),
 
     // meta
+    /** Who took the check-in. Kept as an id + a name snapshot that survives user deletion. */
+    createdByUserId: integer("created_by_user_id"),
+    createdByName: text("created_by_name").notNull().default(""),
     sourceEntryId: integer("source_entry_id"), // Gravity Forms entry id when imported
     /** Soft-delete marker. Deleted entries are hidden but recoverable from the log. */
     deletedAt: timestamp("deleted_at"),
@@ -190,6 +385,7 @@ export const statusHistory = pgTable(
     fromStatus: text("from_status").notNull().default(""),
     toStatus: text("to_status").notNull().default(""),
     note: text("note").notNull().default(""),
+    changedBy: text("changed_by").notNull().default(""),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => [index("status_history_entry_idx").on(t.entryId)]

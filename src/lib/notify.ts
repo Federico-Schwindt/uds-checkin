@@ -175,6 +175,8 @@ export async function sendEmail(opts: {
   entryId?: number | null;
   templateKey?: string;
   settings?: AppSettings;
+  /** Where replies should go — used to route staff-request replies back in. */
+  replyTo?: string;
 }): Promise<{ ok: boolean; error?: string }> {
   const s = opts.settings || (await getSettings());
   const base = {
@@ -208,6 +210,7 @@ export async function sendEmail(opts: {
     const info = await transport.sendMail({
       from: `"${s.smtpFromName || s.businessName}" <${s.smtpFromEmail || s.smtpUser}>`,
       to: opts.to,
+      ...(opts.replyTo ? { replyTo: opts.replyTo } : {}),
       subject: opts.subject,
       text: opts.body,
       html: renderBrandedEmail(opts.body, s),

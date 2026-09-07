@@ -7,10 +7,12 @@ import {
   ArrowLeft,
   Check,
   Copy,
+  Flag,
   MessageSquareText,
   Pencil,
   Printer,
   Trash2,
+  UserCircle2,
   X,
 } from "lucide-react";
 import {
@@ -25,6 +27,8 @@ import {
   StatusBadge,
   Textarea,
 } from "@/components/ui";
+import { EventChip, PointsChip } from "@/components/performance-ui";
+import { ScoreEditor, type SuggestedPoints } from "@/components/score-editor";
 import { cn, formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
 
@@ -105,7 +109,14 @@ const CUSTOMER_FIELDS: FieldDef[] = [
 type EntryData = Record<string, string | number | null>;
 type CustomerData = Record<string, string | number | boolean | null> | null;
 type PartRow = { id?: number; sku: string; name: string; qty: number; price: string | null };
-type HistoryRow = { id: number; fromStatus: string; toStatus: string; note: string; createdAt: string };
+type HistoryRow = {
+  id: number;
+  fromStatus: string;
+  toStatus: string;
+  note: string;
+  changedBy: string;
+  createdAt: string;
+};
 type MessageRow = {
   id: number;
   channel: string;
@@ -116,18 +127,34 @@ type MessageRow = {
   createdAt: string;
   body: string;
 };
+type FlagRow = {
+  id: number;
+  userId: number;
+  userName: string | null;
+  type: string;
+  severity: string;
+  category: string;
+  note: string;
+  points: number;
+  createdBy: string;
+  createdAt: string;
+};
+type TechOption = { id: number; name: string };
 
 export function EntryDetail({
   id,
   basePath = "/entry",
   backHref = "/",
   backLabel = "Entries",
+  admin = false,
 }: {
   id: number;
   /** Where "Duplicate" navigates (`${basePath}/${newId}`). */
   basePath?: string;
   backHref?: string;
   backLabel?: string;
+  /** Shows the job-quality tools — only the admin panel passes this. */
+  admin?: boolean;
 }) {
   const router = useRouter();
   const [entry, setEntry] = useState<EntryData | null>(null);
@@ -135,6 +162,7 @@ export function EntryDetail({
   const [partRows, setPartRows] = useState<PartRow[]>([]);
   const [history, setHistory] = useState<HistoryRow[]>([]);
   const [messages, setMessages] = useState<MessageRow[]>([]);
+  const [flags, setFlags] = useState<FlagRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [draftEntry, setDraftEntry] = useState<EntryData>({});
@@ -160,6 +188,7 @@ export function EntryDetail({
     setPartRows(j.parts || []);
     setHistory(j.history || []);
     setMessages(j.messages || []);
+    setFlags(j.flags || []);
     setLoading(false);
   }, [id]);
 
@@ -351,6 +380,12 @@ export function EntryDetail({
             {entry.jobNumber ? ` · Job ${entry.jobNumber}` : ""} · {vehicleLabel || "No vehicle"} ·{" "}
             {formatDateTime(entry.createdAt as string)}
           </p>
+          {(entry.createdByName as string) && (
+            <p className="text-[13px] text-ink-600 mt-1 inline-flex items-center gap-1.5">
+              <UserCircle2 className="w-4 h-4 text-ink-400" />
+              Work order created by <span className="font-semibold">{entry.createdByName}</span>
+            </p>
+          )}
         </div>
         <div className="flex gap-2">
           {editing ? (
@@ -576,6 +611,11 @@ export function EntryDetail({
         )}
       </Card>
 
+      {/* Job quality — admin only */}
+      {admin && !editing && (
+        <JobQualityCard entryId={id} flags={flags} onChange={load} createdBy={entry.createdByName as string} />
+      )}
+
       <div className="grid lg:grid-cols-2 gap-5 no-print">
         {/* History */}
         <Card className="p-5">
@@ -590,6 +630,7 @@ export function EntryDetail({
                   {h.fromStatus ? `${h.fromStatus} → ` : ""}
                   {h.toStatus}
                 </span>
+                {h.changedBy && <span className="text-ink-400 text-xs ml-auto">by {h.changedBy}</span>}
               </li>
             ))}
           </ol>
@@ -687,5 +728,180 @@ function SignatureBox({ label, src }: { label: string; src: string }) {
         </div>
       )}
     </div>
+  );
+}
+
+/* ---------------- job quality (admin) ---------------- */
+
+/**
+ * Scores a job where it happened: pick the technician, see the score they hold
+ * right now, and choose what this job is worth before saving.
+ */
+function JobQualityCard({
+  entryId,
+  flags,
+  onChange,
+  createdBy,
+}: {
+  entryId: number;
+  flags: FlagRow[];
+  onChange: () => void;
+  createdBy?: string;
+}) {
+  const [techs, setTechs] = useState<TechOption[]>([]);
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [scores, setScores] = useState<Record<number, number>>({});
+  const [suggested, setSuggested] = useState<SuggestedPoints>({ minor: 3, major: 8, critical: 15, praise: 3 });
+  const [saved, setSaved] = useState("");
+
+  useEffect(() => {
+    fetch("/api/admin/users?role=tech")
+      .then((r) => (r.ok ? r.json() : { users: [] }))
+      .then((j) => setTechs((j.users || []).filter((u: { active: boolean }) => u.active)))
+      .catch(() => setTechs([]));
+  }, []);
+
+  // Current scores for the picker, so the admin can see who they are about to dock.
+  const loadScores = useCallback(() => {
+    fetch("/api/admin/performance")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (!j?.team) return;
+        setScores(Object.fromEntries(j.team.map((t: { userId: number; score: number }) => [t.userId, t.score])));
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    loadScores();
+    fetch("/api/settings")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        const sc = j?.settings?.scoring;
+        if (!sc) return;
+        setSuggested({
+          minor: Number(sc.minorMistake) || 3,
+          major: Number(sc.majorMistake) || 8,
+          critical: Number(sc.criticalMistake) || 15,
+          praise: Number(sc.praise) || 3,
+        });
+      })
+      .catch(() => {});
+  }, [loadScores]);
+
+  const selected = techs.find((t) => String(t.id) === userId);
+  const currentScore = selected ? (scores[selected.id] ?? 100) : 100;
+
+  const remove = async (flagId: number) => {
+    if (!confirm("Remove this record? The points go back onto the technician's score.")) return;
+    await fetch("/api/admin/performance", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: flagId }),
+    });
+    loadScores();
+    onChange();
+  };
+
+  return (
+    <Card className="p-5 no-print">
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div>
+          <h2 className="font-bold">Job quality</h2>
+          <p className="text-[13px] text-ink-500 mt-0.5">
+            {createdBy ? `Taken by ${createdBy}. ` : ""}
+            Score this job against the technician responsible.
+          </p>
+        </div>
+        <Button size="sm" variant={open ? "outline" : "danger"} onClick={() => setOpen((v) => !v)}>
+          {open ? <X className="w-4 h-4" /> : <Flag className="w-4 h-4" />}
+          {open ? "Cancel" : "Score this job"}
+        </Button>
+      </div>
+
+      {open && (
+        <div className="rounded-xl border border-ink-200 bg-ink-50 p-4 mb-4 animate-fade-up space-y-4">
+          <Field label="Technician" required className="max-w-sm">
+            <Select
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+              placeholder="Select technician"
+              className="h-11"
+            >
+              {techs.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                  {scores[t.id] !== undefined ? ` — score ${scores[t.id]}` : ""}
+                </option>
+              ))}
+            </Select>
+          </Field>
+
+          {selected ? (
+            <ScoreEditor
+              key={selected.id}
+              userId={selected.id}
+              userName={selected.name}
+              currentScore={currentScore}
+              suggested={suggested}
+              entryId={entryId}
+              compact
+              onSaved={(score) => {
+                setSaved(
+                  score === null
+                    ? "Saved."
+                    : `Saved — ${selected.name.split(" ")[0]} is now at ${score}.`
+                );
+                setOpen(false);
+                loadScores();
+                onChange();
+                setTimeout(() => setSaved(""), 6000);
+              }}
+            />
+          ) : (
+            <p className="text-sm text-ink-500">Choose a technician to see their score and set the amount.</p>
+          )}
+        </div>
+      )}
+
+      {saved && <p className="mb-3 text-sm font-medium text-emerald-700">{saved}</p>}
+
+      {flags.length === 0 ? (
+        <p className="text-sm text-ink-400">No quality records on this job.</p>
+      ) : (
+        <div className="divide-y divide-ink-100 -mx-5">
+          {flags.map((f) => (
+            <div key={f.id} className="px-5 py-3 flex items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <EventChip type={f.type} severity={f.severity} />
+                  <Link
+                    href={`/admin/team/${f.userId}`}
+                    className="text-sm font-semibold text-ink-900 hover:text-brand-700"
+                  >
+                    {f.userName || `User #${f.userId}`}
+                  </Link>
+                  <span className="text-sm text-ink-600">{f.category || "General"}</span>
+                </div>
+                {f.note && <p className="text-[13px] text-ink-600 mt-1 break-words">{f.note}</p>}
+                <p className="text-[11px] text-ink-400 mt-1">
+                  {formatDateTime(f.createdAt)}
+                  {f.createdBy ? ` · logged by ${f.createdBy}` : ""}
+                </p>
+              </div>
+              <PointsChip points={f.points} />
+              <button
+                onClick={() => remove(f.id)}
+                className="text-ink-300 hover:text-rose-600 transition-colors shrink-0"
+                aria-label="Remove record"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </Card>
   );
 }
