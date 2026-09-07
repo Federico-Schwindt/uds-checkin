@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft, Eye, EyeOff, LogIn, ShieldCheck, Wrench } from "lucide-react";
+import { ArrowLeft, Delete, LogIn, ShieldCheck, Wrench } from "lucide-react";
 import { Spinner } from "@/components/ui";
+import { PIN_MAX } from "@/lib/password-rules";
 import { cn } from "@/lib/utils";
 
 type Profile = {
@@ -38,12 +39,11 @@ export function SignIn() {
   const [selected, setSelected] = useState<Profile | null>(null);
   const [manual, setManual] = useState(false);
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [reveal, setReveal] = useState(false);
+  const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [shake, setShake] = useState(false);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -65,30 +65,28 @@ export function SignIn() {
   const pick = (p: Profile) => {
     setSelected(p);
     setUsername(p.username);
-    setPassword("");
+    setPin("");
     setError("");
-    setTimeout(() => passwordRef.current?.focus(), 50);
   };
 
   const back = () => {
     setSelected(null);
     setManual(false);
     setUsername("");
-    setPassword("");
+    setPin("");
     setError("");
   };
 
   const submit = useCallback(
-    async (e?: React.FormEvent) => {
-      e?.preventDefault();
-      if (busy || !username || !password) return;
+    async (value: string) => {
+      if (busy || !username || !value) return;
       setBusy(true);
       setError("");
       try {
         const res = await fetch("/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({ username, password: value }),
         });
         const data = await res.json().catch(() => ({}));
         if (res.ok) {
@@ -97,8 +95,8 @@ export function SignIn() {
           router.refresh();
           return;
         }
-        setError(data.error || "Incorrect username or password");
-        setPassword("");
+        setError(data.error || "Incorrect PIN");
+        setPin("");
         setShake(true);
         setTimeout(() => setShake(false), 450);
       } catch {
@@ -107,8 +105,26 @@ export function SignIn() {
         setBusy(false);
       }
     },
-    [busy, params, password, router, username]
+    [busy, params, router, username]
   );
+
+  const press = useCallback((digit: string) => {
+    setError("");
+    setPin((p) => (p.length >= PIN_MAX ? p : p + digit));
+  }, []);
+
+  // A physical keyboard works too, for anyone signing in from a desk.
+  useEffect(() => {
+    if (!selected && !manual) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (document.activeElement === usernameRef.current) return;
+      if (/^\d$/.test(e.key)) press(e.key);
+      else if (e.key === "Backspace") setPin((p) => p.slice(0, -1));
+      else if (e.key === "Enter") submit(pin);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [manual, pin, press, selected, submit]);
 
   if (profiles === null) {
     return (
@@ -118,11 +134,11 @@ export function SignIn() {
     );
   }
 
-  /* ---------- step 2: password ---------- */
+  /* ---------- step 2: PIN ---------- */
   if (selected || manual) {
     const locked = selected ? !selected.canSignIn : false;
     return (
-      <form onSubmit={submit} className={cn("animate-fade-up", shake && "animate-shake")}>
+      <div className="animate-fade-up">
         <button
           type="button"
           onClick={back}
@@ -142,9 +158,10 @@ export function SignIn() {
         )}
 
         {manual && (
-          <label className="block mb-3">
+          <label className="block mb-4">
             <span className="text-[13px] font-semibold text-ink-700">Username</span>
             <input
+              ref={usernameRef}
               autoFocus
               value={username}
               onChange={(e) => setUsername(e.target.value.toLowerCase())}
@@ -156,52 +173,55 @@ export function SignIn() {
           </label>
         )}
 
-        <label className="block">
-          <span className="text-[13px] font-semibold text-ink-700">Password</span>
-          <div className="relative mt-1.5">
-            <input
-              ref={passwordRef}
-              type={reveal ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-              disabled={locked}
-              className="w-full h-12 pl-3.5 pr-12 rounded-xl border border-ink-300 bg-white text-[15px] tracking-wide focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/25 disabled:bg-ink-100"
-            />
-            <button
-              type="button"
-              onClick={() => setReveal((v) => !v)}
-              aria-label={reveal ? "Hide password" : "Show password"}
-              className="absolute right-1.5 top-1.5 w-9 h-9 rounded-lg text-ink-400 hover:text-ink-700 hover:bg-ink-100 flex items-center justify-center"
-            >
-              {reveal ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
-            </button>
-          </div>
-        </label>
+        <p className="text-center text-[13px] font-semibold text-ink-600 mb-3">Enter your PIN</p>
 
-        {locked && shop && (
-          <p className="mt-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[13px] px-3.5 py-2.5">
+        {/* One dot per digit entered */}
+        <div className={cn("flex justify-center items-center gap-3 h-6 mb-2", shake && "animate-shake")}>
+          {pin.length === 0 ? (
+            <span className="text-ink-400 text-sm select-none tracking-widest">• • • •</span>
+          ) : (
+            Array.from({ length: pin.length }).map((_, i) => (
+              <span key={i} className="w-3.5 h-3.5 rounded-full bg-brand-600 inline-block" />
+            ))
+          )}
+        </div>
+
+        <p className={cn("text-center text-sm h-5 mb-3", error ? "text-brand-600 font-medium" : "text-transparent")}>
+          {error || "."}
+        </p>
+
+        {locked && shop ? (
+          <p className="rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[13px] px-3.5 py-2.5">
             {shop.reason || "Sign-in is closed outside working hours."}
           </p>
+        ) : (
+          <div className="grid grid-cols-3 gap-3">
+            {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((d) => (
+              <Key key={d} onClick={() => press(d)} disabled={busy}>
+                {d}
+              </Key>
+            ))}
+            <Key onClick={() => setPin((p) => p.slice(0, -1))} disabled={busy} aria-label="Delete">
+              <Delete className="w-6 h-6 mx-auto" />
+            </Key>
+            <Key onClick={() => press("0")} disabled={busy}>
+              0
+            </Key>
+            <button
+              type="button"
+              onClick={() => submit(pin)}
+              disabled={busy || !pin || !username}
+              className={cn(
+                "h-16 rounded-2xl text-lg font-semibold transition-all select-none",
+                "bg-brand-600 text-white active:scale-95 hover:bg-brand-700",
+                "disabled:opacity-40 disabled:active:scale-100 inline-flex items-center justify-center gap-2"
+              )}
+            >
+              {busy ? <Spinner className="w-5 h-5" /> : <LogIn className="w-5 h-5" />}
+            </button>
+          </div>
         )}
-        {error && (
-          <p className="mt-3 rounded-xl bg-brand-50 border border-brand-200 text-brand-700 text-[13px] px-3.5 py-2.5">
-            {error}
-          </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={busy || !password || !username || locked}
-          className="mt-5 w-full h-13 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold transition-all active:scale-[0.98] disabled:opacity-40 disabled:active:scale-100 inline-flex items-center justify-center gap-2"
-        >
-          {busy ? <Spinner className="w-5 h-5" /> : <LogIn className="w-4.5 h-4.5" />}
-          Sign in
-        </button>
-      </form>
+      </div>
     );
   }
 
@@ -304,5 +324,22 @@ function Avatar({ name, role, muted }: { name: string; role: string; muted?: boo
         )}
       </span>
     </span>
+  );
+}
+
+function Key({
+  children,
+  onClick,
+  ...rest
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="h-16 rounded-2xl bg-ink-100 border border-ink-200 text-ink-800 text-2xl font-semibold transition-all select-none active:scale-95 active:bg-ink-200 hover:bg-ink-200/70 disabled:opacity-50"
+      {...rest}
+    >
+      {children}
+    </button>
   );
 }

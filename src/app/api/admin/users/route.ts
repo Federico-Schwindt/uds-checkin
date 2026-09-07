@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { asc, eq } from "drizzle-orm";
 import { getDb, employees, users } from "@/db";
-import { generatePassword, hashPassword } from "@/lib/password";
+import { generatePin, hashPassword, isValidPin, PIN_MAX, PIN_MIN } from "@/lib/password";
 import { sessionFromRequest } from "@/lib/session";
 import { actorLabel } from "@/lib/auth";
 import { logActivity } from "@/lib/audit";
@@ -21,6 +21,8 @@ const PUBLIC_COLUMNS = {
   lastLoginAt: users.lastLoginAt,
   createdAt: users.createdAt,
 };
+
+const PIN_ERROR = `A PIN must be ${PIN_MIN} to ${PIN_MAX} digits, numbers only.`;
 
 /** Keeps a bad date out of the profile rather than storing something unparseable. */
 function dateOrEmpty(value: unknown): string {
@@ -85,8 +87,13 @@ export async function POST(req: NextRequest) {
   const clash = await db.select({ id: users.id }).from(users).where(eq(users.username, username));
   if (clash.length) return NextResponse.json({ error: `Username “${username}” is already taken` }, { status: 409 });
 
-  // Generated here and returned exactly once — only the hash is stored.
-  const password = String(body.password || "") || generatePassword();
+  // The admin may set the PIN; otherwise one is generated. Either way it is
+  // returned exactly once and only the hash is stored.
+  const requested = String(body.password || "").trim();
+  if (requested && !isValidPin(requested)) {
+    return NextResponse.json({ error: PIN_ERROR }, { status: 400 });
+  }
+  const password = requested || generatePin();
   const [row] = await db
     .insert(users)
     .values({
@@ -162,7 +169,11 @@ export async function PUT(req: NextRequest) {
 
   let password: string | undefined;
   if (body.resetPassword) {
-    password = String(body.password || "") || generatePassword();
+    const requested = String(body.password || "").trim();
+    if (requested && !isValidPin(requested)) {
+      return NextResponse.json({ error: PIN_ERROR }, { status: 400 });
+    }
+    password = requested || generatePin();
     patch.passwordHash = hashPassword(password);
   }
 
@@ -179,7 +190,7 @@ export async function PUT(req: NextRequest) {
     entity: "user",
     entityId: id,
     summary: password
-      ? `Reset the password for “${current.name}”`
+      ? `Set a new PIN for “${current.name}”`
       : `Updated account “${current.name}”${patch.active === false ? " (deactivated)" : ""}`,
     details: password ? undefined : { ...patch, updatedAt: undefined },
     actor: actorLabel(session),

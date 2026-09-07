@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import type { Db } from "./index";
 import { locations, employees, messageTemplates, settings, users } from "./schema";
 import formOptions from "@/lib/form-options.json";
@@ -352,8 +352,8 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
 };
 
 /**
- * Seed accounts. Passwords are pre-hashed so the plaintext never lives in the
- * repository or the database; the admin can reset any of them from Admin → Team.
+ * Seed accounts. PINs are pre-hashed so the plaintext never lives in the
+ * repository or the database; the admin sets any of them from Admin → Team.
  */
 const SEED_USERS: Array<{
   username: string;
@@ -378,7 +378,7 @@ const SEED_USERS: Array<{
     role: "tech",
     title: "Driveshaft Technician",
     passwordHash:
-      "scrypt$16384$8$1$IIM1jML0nI6sFGZhVc3Y1Q$gnbVJ9O03wiuYp4K4W3FNkfOUzfJwy7cexTsJtJQ9ZIgm4zADtqVTSDC7vXNmDqU_5lAeRmAFOnTttDraengWA",
+      "scrypt$16384$8$1$m2M2kHolvFZhXAZKnF8H9Q$6TImjzReBMlYXLi8bmcCSVcpvxCgrGUfslkGac7WfnkdhWf1i_DKjXqWpdjO7FxrFlLnJydKVQh_03_Z71PWXQ",
     bypassWorkHours: false,
   },
   {
@@ -387,7 +387,7 @@ const SEED_USERS: Array<{
     role: "tech",
     title: "Driveshaft Technician",
     passwordHash:
-      "scrypt$16384$8$1$mrbpBdPDB9BRfUoEv5Ezcg$oALeUJ2pCBdXvJ0FT7HDR1PUmb1605FEmz36HndTjtN4h-6oCvNwCLpPTkqaUUALQzoUZ4Py5rcs5666BFhF9g",
+      "scrypt$16384$8$1$s_gl7lcvWcqdIMWr-wOsaQ$LJzM9pSb2Ck9S8r_C9oeDLqyYWEUnzVE7CaSxZiu8uPemT-_3bw0ImIQOlLsC8aGtt61qOXmT4sGL8iO4YEkmA",
     bypassWorkHours: false,
   },
 ];
@@ -495,6 +495,12 @@ const DEFAULT_TEMPLATES: Array<{
   },
 ];
 
+/** [username, hash shipped in the first release, hash to move it to] */
+const LEGACY_PASSWORD_MIGRATIONS: Array<[string, string, string]> = [
+  ["dani.ortega", "scrypt$16384$8$1$IIM1jML0nI6sFGZhVc3Y1Q$gnbVJ9O03wiuYp4K4W3FNkfOUzfJwy7cexTsJtJQ9ZIgm4zADtqVTSDC7vXNmDqU_5lAeRmAFOnTttDraengWA", "scrypt$16384$8$1$m2M2kHolvFZhXAZKnF8H9Q$6TImjzReBMlYXLi8bmcCSVcpvxCgrGUfslkGac7WfnkdhWf1i_DKjXqWpdjO7FxrFlLnJydKVQh_03_Z71PWXQ"],
+  ["will.rose", "scrypt$16384$8$1$mrbpBdPDB9BRfUoEv5Ezcg$oALeUJ2pCBdXvJ0FT7HDR1PUmb1605FEmz36HndTjtN4h-6oCvNwCLpPTkqaUUALQzoUZ4Py5rcs5666BFhF9g", "scrypt$16384$8$1$s_gl7lcvWcqdIMWr-wOsaQ$LJzM9pSb2Ck9S8r_C9oeDLqyYWEUnzVE7CaSxZiu8uPemT-_3bw0ImIQOlLsC8aGtt61qOXmT4sGL8iO4YEkmA"],
+];
+
 export async function bootstrap(db: Db) {
   for (const stmt of DDL.split(";")) {
     const s = stmt.trim();
@@ -555,8 +561,19 @@ export async function bootstrap(db: Db) {
   await db.execute(sql.raw("ALTER TABLE users ADD COLUMN IF NOT EXISTS birthday TEXT NOT NULL DEFAULT ''"));
   await db.execute(sql.raw("ALTER TABLE users ADD COLUMN IF NOT EXISTS hired_on TEXT NOT NULL DEFAULT ''"));
 
-  // Seed staff accounts. Existing rows are never overwritten, so password
-  // changes and renames made in the admin panel survive a redeploy.
+  // The first release shipped alphanumeric passwords for the two technicians;
+  // sign-in is a numeric keypad now, so those cannot be typed. Move them onto a
+  // PIN, but only while the account still carries the password we shipped — a
+  // PIN the admin has already set is left alone.
+  for (const [username, wasHash, nowHash] of LEGACY_PASSWORD_MIGRATIONS) {
+    await db
+      .update(users)
+      .set({ passwordHash: nowHash, updatedAt: new Date() })
+      .where(and(eq(users.username, username), eq(users.passwordHash, wasHash)));
+  }
+
+  // Seed staff accounts. Existing rows are never overwritten, so PIN changes
+  // and renames made in the admin panel survive a redeploy.
   const existingUsers = await db.select({ username: users.username }).from(users);
   const usernames = new Set(existingUsers.map((u) => u.username));
   for (const u of SEED_USERS) {
