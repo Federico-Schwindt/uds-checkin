@@ -31,7 +31,7 @@ const ITEMS = [
   { href: "/admin/form", label: "Form Builder", icon: ListChecks },
   { href: "/admin/templates", label: "Notifications", icon: MessageSquareText },
   { href: "/admin/messages", label: "Message Log", icon: MailCheck },
-  { href: "/admin/activity", label: "Activity Log", icon: History },
+  { href: "/admin/activity", label: "Who did what", icon: History },
   { href: "/admin/settings", label: "Settings", icon: Settings },
   { href: "/admin/import", label: "Import", icon: Upload },
 ];

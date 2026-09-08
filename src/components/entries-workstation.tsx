@@ -428,10 +428,14 @@ function ColumnsConfig({ cols, onChange }: { cols: ColumnPref[]; onChange: (next
             <div key={c.key} className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-ink-50">
               <button
                 onClick={() => toggle(i)}
-                disabled={c.key === "customer"}
+                disabled={c.key === "customer" || c.key === "jobNumber"}
                 className={cn(
                   "w-7 h-7 rounded-md flex items-center justify-center transition-colors",
-                  c.key === "customer" ? "text-ink-300" : c.visible ? "text-brand-600 hover:bg-brand-50" : "text-ink-400 hover:bg-ink-100"
+                  c.key === "customer" || c.key === "jobNumber"
+                    ? "text-ink-300"
+                    : c.visible
+                      ? "text-brand-600 hover:bg-brand-50"
+                      : "text-ink-400 hover:bg-ink-100"
                 )}
                 aria-label={c.visible ? "Hide column" : "Show column"}
               >
@@ -442,7 +446,7 @@ function ColumnsConfig({ cols, onChange }: { cols: ColumnPref[]; onChange: (next
               </span>
               <button
                 onClick={() => move(i, -1)}
-                disabled={i === 0}
+                disabled={i === 0 || i === 1 || c.key === "jobNumber"}
                 className="w-7 h-7 rounded-md flex items-center justify-center text-ink-400 hover:bg-ink-100 disabled:opacity-30"
                 aria-label="Move up"
               >
@@ -450,7 +454,7 @@ function ColumnsConfig({ cols, onChange }: { cols: ColumnPref[]; onChange: (next
               </button>
               <button
                 onClick={() => move(i, 1)}
-                disabled={i === cols.length - 1}
+                disabled={i === cols.length - 1 || c.key === "jobNumber"}
                 className="w-7 h-7 rounded-md flex items-center justify-center text-ink-400 hover:bg-ink-100 disabled:opacity-30"
                 aria-label="Move down"
               >
@@ -469,10 +473,10 @@ function ColumnsConfig({ cols, onChange }: { cols: ColumnPref[]; onChange: (next
 export type ColumnPref = { key: string; visible: boolean };
 
 const COLUMN_LABELS: Record<string, string> = {
+  jobNumber: "Job",
   customer: "Customer",
   phone: "Phone",
   vehicle: "Vehicle",
-  jobNumber: "Job #",
   status: "Status",
   payment: "Payment",
   total: "Total",
@@ -491,9 +495,14 @@ function normalizeColumns(prefs: ColumnPref[] | null | undefined): ColumnPref[] 
   for (const d of DEFAULT_COLUMNS) {
     if (!out.some((o) => o.key === d.key)) out.push({ ...d });
   }
-  // Customer is the anchor column and can't be hidden.
-  const customer = out.find((o) => o.key === "customer")!;
-  customer.visible = true;
+  // Job and customer identify the row, so neither can be hidden, and the job
+  // leads the table even when the saved preference predates that.
+  for (const key of ["jobNumber", "customer"]) {
+    const col = out.find((o) => o.key === key);
+    if (col) col.visible = true;
+  }
+  const jobAt = out.findIndex((o) => o.key === "jobNumber");
+  if (jobAt > 0) out.unshift(out.splice(jobAt, 1)[0]);
   return out;
 }
 
@@ -664,10 +673,9 @@ export function EntriesWorkstation({
           <td key={key} className="px-4 py-2">
             <button onClick={() => router.push(`/entry/${r.id}`)} className="group text-left" title="Open entry">
               <span className="font-semibold text-ink-900 group-hover:text-brand-700 inline-flex items-center gap-1.5">
-                {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : `Entry #${r.id}`}
+                {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : "No customer"}
                 <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </span>
-              <span className="block text-xs text-ink-400">#{r.id}</span>
             </button>
           </td>
         );
@@ -695,13 +703,16 @@ export function EntriesWorkstation({
         );
       case "jobNumber":
         return (
-          <td key={key} className="px-1.5 py-2 w-32">
+          <td key={key} className="px-2 py-2 min-w-[9rem]">
             <button
               onClick={() => router.push(`/entry/${r.id}`)}
-              className="px-2 py-1 rounded-lg font-bold text-brand-700 hover:bg-brand-50 hover:underline text-left transition-colors"
-              title="Open entry"
+              className="group px-2 py-1 rounded-lg text-left transition-colors hover:bg-brand-50 w-full"
+              title="Open this job"
             >
-              {r.jobNumber || <span className="text-ink-300 font-normal">— open</span>}
+              <span className="block font-bold text-brand-700 group-hover:underline break-words">
+                {r.jobNumber || `Entry #${r.id}`}
+              </span>
+              {r.jobNumber && <span className="block text-[11px] text-ink-400">#{r.id}</span>}
             </button>
           </td>
         );

@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Download, Search } from "lucide-react";
 import { Button, Card, Input, Select, StatusBadge, Badge, Spinner } from "@/components/ui";
@@ -141,6 +142,7 @@ function EntriesInner() {
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-xs uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-50">
+                <th className="px-4 py-3 font-semibold">Job</th>
                 <th className="px-4 py-3 font-semibold">Customer</th>
                 <th className="px-4 py-3 font-semibold">Vehicle</th>
                 <th className="px-4 py-3 font-semibold max-lg:hidden">Labor</th>
@@ -153,13 +155,13 @@ function EntriesInner() {
             <tbody className="divide-y divide-ink-100">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-16 text-center">
+                  <td colSpan={8} className="px-4 py-16 text-center">
                     <Spinner className="text-brand-600" />
                   </td>
                 </tr>
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-16 text-center text-ink-400">
+                  <td colSpan={8} className="px-4 py-16 text-center text-ink-400">
                     No entries match these filters.
                   </td>
                 </tr>
@@ -171,13 +173,19 @@ function EntriesInner() {
                     className="cursor-pointer hover:bg-ink-50 transition-colors"
                   >
                     <td className="px-4 py-3">
+                      <Link
+                        href={`/admin/entries/${r.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-bold text-brand-700 hover:text-brand-800 hover:underline break-words"
+                      >
+                        {r.jobNumber || `Entry #${r.id}`}
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3">
                       <p className="font-semibold text-ink-900">
                         {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : "—"}
                       </p>
-                      <p className="text-xs text-ink-500">
-                        {formatPhone(r.phone || "")}
-                        {r.jobNumber ? ` · Job ${r.jobNumber}` : ""}
-                      </p>
+                      <p className="text-xs text-ink-500">{formatPhone(r.phone || "")}</p>
                     </td>
                     <td className="px-4 py-3 text-ink-700">
                       {[r.vehicleYear, r.vehicleMake, r.vehicleModel].filter(Boolean).join(" ") || "—"}
