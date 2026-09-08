@@ -28,6 +28,7 @@ import {
   Textarea,
 } from "@/components/ui";
 import { EventChip, PointsChip } from "@/components/performance-ui";
+import { EntryHistory } from "@/components/entry-history";
 import { ScoreEditor, type SuggestedPoints } from "@/components/score-editor";
 import { cn, formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
@@ -615,6 +616,8 @@ export function EntryDetail({
       {admin && !editing && (
         <JobQualityCard entryId={id} flags={flags} onChange={load} createdBy={entry.createdByName as string} />
       )}
+
+      <EntryHistory entryId={id} />
 
       <div className="grid lg:grid-cols-2 gap-5 no-print">
         {/* History */}

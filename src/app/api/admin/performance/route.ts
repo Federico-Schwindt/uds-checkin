@@ -98,13 +98,15 @@ export async function POST(req: NextRequest) {
 
   await logActivity({
     action: `performance.${type}`,
-    entity: "user",
-    entityId: userId,
+    // Tied to the job when it came from one, so it shows on that job's history;
+    // the technician's own ledger is read from performance_events either way.
+    entity: row.entryId ? "entry" : "user",
+    entityId: row.entryId ?? userId,
     summary:
       type === "mistake"
         ? `Flagged a ${severity} mistake for ${tech.name}${row.entryId ? ` on entry #${row.entryId}` : ""} (${points} pts)`
         : `${type === "praise" ? "Recognized" : "Adjusted"} ${tech.name} (${points > 0 ? "+" : ""}${points} pts)`,
-    details: { category: row.category, note: row.note, entryId: row.entryId },
+    details: { category: row.category, note: row.note, entryId: row.entryId, technician: tech.name },
     actor: actorLabel(session),
     req,
   });
