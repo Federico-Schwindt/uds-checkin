@@ -335,6 +335,8 @@ export const entries = pgTable(
     index("entries_customer_idx").on(t.customerId),
     index("entries_created_idx").on(t.createdAt),
     index("entries_deleted_idx").on(t.deletedAt),
+    index("entries_created_by_idx").on(t.createdByUserId),
+    index("entries_assigned_idx").on(t.assignedEmployee),
     uniqueIndex("entries_source_idx").on(t.sourceEntryId),
   ]
 );
@@ -357,6 +359,7 @@ export const activityLog = pgTable(
     index("activity_action_idx").on(t.action),
     index("activity_entity_idx").on(t.entity, t.entityId),
     index("activity_created_idx").on(t.createdAt),
+    index("activity_actor_idx").on(t.actor),
   ]
 );
 

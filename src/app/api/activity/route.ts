@@ -27,21 +27,22 @@ export async function GET(req: NextRequest) {
   }
   const where = conds.length ? and(...conds) : undefined;
 
-  const rows = await db
-    .select()
-    .from(activityLog)
-    .where(where)
-    .orderBy(desc(activityLog.createdAt))
-    .limit(pageSize)
-    .offset((page - 1) * pageSize);
-  const [total] = await db.select({ n: count() }).from(activityLog).where(where);
-
-  // Everyone who has ever done something, for the "who" filter.
-  const people = await db
-    .selectDistinct({ actor: activityLog.actor })
-    .from(activityLog)
-    .where(sql`${activityLog.actor} <> ''`)
-    .orderBy(activityLog.actor);
+  const [rows, [total], people] = await Promise.all([
+    db
+      .select()
+      .from(activityLog)
+      .where(where)
+      .orderBy(desc(activityLog.createdAt))
+      .limit(pageSize)
+      .offset((page - 1) * pageSize),
+    db.select({ n: count() }).from(activityLog).where(where),
+    // Everyone who has ever done something, for the "who" filter.
+    db
+      .selectDistinct({ actor: activityLog.actor })
+      .from(activityLog)
+      .where(sql`${activityLog.actor} <> ''`)
+      .orderBy(activityLog.actor),
+  ]);
 
   return NextResponse.json({
     rows,

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { AdminNav } from "./nav";
 import { IdleLock } from "@/components/idle-lock";
 import { Logo } from "@/components/logo";
-import { getSettings } from "@/lib/settings";
+import { getSettingsCached } from "@/lib/settings";
 import { getSession } from "@/lib/session";
 
 export const metadata = { title: "Admin | UDS Check-In" };
@@ -16,7 +16,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!session) redirect("/lock?next=/admin");
   if (session.role !== "admin") redirect("/?denied=admin");
 
-  const s = await getSettings();
+  const s = await getSettingsCached();
   return (
     <div className="min-h-dvh flex flex-col lg:flex-row bg-ink-100">
       <IdleLock minutes={Number(s.idleLockMinutes) || 0} />

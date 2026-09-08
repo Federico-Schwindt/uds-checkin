@@ -17,18 +17,13 @@ async function loadEntry(id: number, includeFlags = false) {
     .leftJoin(customers, eq(entries.customerId, customers.id))
     .where(eq(entries.id, id));
   if (!rows.length) return null;
-  const partRows = await db.select().from(parts).where(eq(parts.entryId, id)).orderBy(asc(parts.id));
-  const history = await db
-    .select()
-    .from(statusHistory)
-    .where(eq(statusHistory.entryId, id))
-    .orderBy(asc(statusHistory.createdAt));
-  const messages = await db
-    .select()
-    .from(messageLog)
-    .where(eq(messageLog.entryId, id))
-    .orderBy(asc(messageLog.createdAt));
-  const flags = includeFlags ? await getEntryEvents(id) : [];
+  // The four related lists are independent — fetch them in one go.
+  const [partRows, history, messages, flags] = await Promise.all([
+    db.select().from(parts).where(eq(parts.entryId, id)).orderBy(asc(parts.id)),
+    db.select().from(statusHistory).where(eq(statusHistory.entryId, id)).orderBy(asc(statusHistory.createdAt)),
+    db.select().from(messageLog).where(eq(messageLog.entryId, id)).orderBy(asc(messageLog.createdAt)),
+    includeFlags ? getEntryEvents(id) : Promise.resolve([]),
+  ]);
   return { entry: rows[0].entries, customer: rows[0].customers, parts: partRows, history, messages, flags };
 }
 

@@ -172,59 +172,60 @@ export async function getTeamStats(
   if (!list.length) return [];
   const ids = list.map((u) => u.id);
 
-  const attRows = await db
-    .select({
-      userId: attendance.userId,
-      workDate: attendance.workDate,
-      arrivalMinutes: attendance.arrivalMinutes,
-      minutesLate: attendance.minutesLate,
-      late: attendance.late,
-      scheduledStart: attendance.scheduledStart,
-    })
-    .from(attendance)
-    .where(
-      and(inArray(attendance.userId, ids), gte(attendance.workDate, period.from), lte(attendance.workDate, period.to))
-    );
-
   const periodStart = new Date(`${period.from}T00:00:00Z`);
   const periodEnd = new Date(`${period.to}T23:59:59Z`);
 
-  const eventRows = await db
-    .select({
-      userId: performanceEvents.userId,
-      type: performanceEvents.type,
-      severity: performanceEvents.severity,
-      points: performanceEvents.points,
-    })
-    .from(performanceEvents)
-    .where(
-      and(
-        inArray(performanceEvents.userId, ids),
-        gte(performanceEvents.createdAt, periodStart),
-        lte(performanceEvents.createdAt, periodEnd)
+  // Independent of each other, so they go out together: on a remote database
+  // four sequential reads are four round-trips for no reason.
+  const [attRows, eventRows, createdRows, assignedRows] = await Promise.all([
+    db
+      .select({
+        userId: attendance.userId,
+        workDate: attendance.workDate,
+        arrivalMinutes: attendance.arrivalMinutes,
+        minutesLate: attendance.minutesLate,
+        late: attendance.late,
+        scheduledStart: attendance.scheduledStart,
+      })
+      .from(attendance)
+      .where(
+        and(inArray(attendance.userId, ids), gte(attendance.workDate, period.from), lte(attendance.workDate, period.to))
+      ),
+    db
+      .select({
+        userId: performanceEvents.userId,
+        type: performanceEvents.type,
+        severity: performanceEvents.severity,
+        points: performanceEvents.points,
+      })
+      .from(performanceEvents)
+      .where(
+        and(
+          inArray(performanceEvents.userId, ids),
+          gte(performanceEvents.createdAt, periodStart),
+          lte(performanceEvents.createdAt, periodEnd)
+        )
+      ),
+    db
+      .select({ userId: entries.createdByUserId, n: count() })
+      .from(entries)
+      .where(
+        and(
+          isNull(entries.deletedAt),
+          inArray(entries.createdByUserId, ids),
+          gte(entries.createdAt, periodStart),
+          lte(entries.createdAt, periodEnd)
+        )
       )
-    );
-
-  const createdRows = await db
-    .select({ userId: entries.createdByUserId, n: count() })
-    .from(entries)
-    .where(
-      and(
-        isNull(entries.deletedAt),
-        inArray(entries.createdByUserId, ids),
-        gte(entries.createdAt, periodStart),
-        lte(entries.createdAt, periodEnd)
-      )
-    )
-    .groupBy(entries.createdByUserId);
+      .groupBy(entries.createdByUserId),
+    // Jobs are assigned by name (the dropdown predates user accounts).
+    db
+      .select({ name: entries.assignedEmployee, status: entries.jobStatus, n: count() })
+      .from(entries)
+      .where(and(isNull(entries.deletedAt), gte(entries.createdAt, periodStart), lte(entries.createdAt, periodEnd)))
+      .groupBy(entries.assignedEmployee, entries.jobStatus),
+  ]);
   const createdMap = new Map(createdRows.map((r) => [r.userId, r.n]));
-
-  // Jobs are assigned by name (the dropdown predates user accounts).
-  const assignedRows = await db
-    .select({ name: entries.assignedEmployee, status: entries.jobStatus, n: count() })
-    .from(entries)
-    .where(and(isNull(entries.deletedAt), gte(entries.createdAt, periodStart), lte(entries.createdAt, periodEnd)))
-    .groupBy(entries.assignedEmployee, entries.jobStatus);
 
   return list.map((u) => {
     const att = attendanceStats(
@@ -288,12 +289,14 @@ export async function getAttendance(userId: number, period: Period) {
 /** Everyone's attendance for a single day, including the technicians who never showed. */
 export async function getDayBoard(dateKey: string) {
   const db = await getDb();
-  const staff = await db
-    .select()
-    .from(users)
-    .where(and(eq(users.role, "tech"), eq(users.active, true)))
-    .orderBy(asc(users.name));
-  const rows = await db.select().from(attendance).where(eq(attendance.workDate, dateKey));
+  const [staff, rows] = await Promise.all([
+    db
+      .select()
+      .from(users)
+      .where(and(eq(users.role, "tech"), eq(users.active, true)))
+      .orderBy(asc(users.name)),
+    db.select().from(attendance).where(eq(attendance.workDate, dateKey)),
+  ]);
   const byUser = new Map(rows.map((r) => [r.userId, r]));
   return staff.map((u) => ({ user: u, record: byUser.get(u.id) || null }));
 }

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Gauge, LogOut, Settings } from "lucide-react";
 import { asc, eq } from "drizzle-orm";
 import { getDb, locations } from "@/db";
-import { getSettings } from "@/lib/settings";
+import { getSettingsCached } from "@/lib/settings";
 import { getSession } from "@/lib/session";
 import { IdleLock } from "@/components/idle-lock";
 import { Logo } from "@/components/logo";
@@ -18,9 +18,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   if (!session) redirect("/lock");
 
   const db = await getDb();
-  const s = await getSettings();
-  const { denied } = await searchParams;
-  const locs = await db.select().from(locations).where(eq(locations.active, true)).orderBy(asc(locations.id));
+  const [s, { denied }, locs] = await Promise.all([
+    getSettingsCached(),
+    searchParams,
+    db.select().from(locations).where(eq(locations.active, true)).orderBy(asc(locations.id)),
+  ]);
   const isAdmin = session.role === "admin";
 
   return (
