@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import {
   ArrowDown,
   ArrowUp,
-  Check,
   ChevronLeft,
   ChevronRight,
   ExternalLink,
@@ -16,36 +15,22 @@ import {
   Settings2,
   X,
 } from "lucide-react";
-import { Badge, Card, Input, Select, Spinner, StatusBadge } from "@/components/ui";
+import { Card, Input, Select, Spinner } from "@/components/ui";
+import {
+  EntryRow,
+  InlineChoice,
+  InlineFields,
+  InlineStatus,
+  InlineText,
+  RowEditButton,
+  paymentBadge,
+} from "@/components/quick-edit";
 import { cn, formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
 
 const LOCATION_KEY = "uds-location-id";
 
 export type LocationOption = { id: number; name: string };
-
-type Row = {
-  id: number;
-  jobNumber: string;
-  jobStatus: string;
-  payment: string;
-  vehicleYear: string;
-  vehicleMake: string;
-  vehicleModel: string;
-  laborRequest: string;
-  total: string | null;
-  deposit: string | null;
-  createdAt: string;
-  etaJob: string;
-  locationId: number | null;
-  onHoldReason: string;
-  assignedEmployee: string;
-  createdByName: string;
-  customerId: number | null;
-  firstName: string | null;
-  lastName: string | null;
-  phone: string | null;
-};
 
 type Toast = { tone: "ok" | "err"; text: string };
 
@@ -109,278 +94,6 @@ function LocationGate({ locations, onPick }: { locations: LocationOption[]; onPi
           ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-/* ================= Inline editable cells ================= */
-
-function InlineText({
-  value,
-  display,
-  onSave,
-  placeholder,
-  align = "left",
-  inputMode,
-  className,
-}: {
-  value: string;
-  display?: string;
-  onSave: (v: string) => Promise<void>;
-  placeholder?: string;
-  align?: "left" | "right";
-  inputMode?: "tel" | "decimal" | "numeric" | "text";
-  className?: string;
-}) {
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(value);
-  const [busy, setBusy] = useState(false);
-
-  const commit = async () => {
-    setEditing(false);
-    if (draft === value) return;
-    setBusy(true);
-    try {
-      await onSave(draft);
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  if (editing) {
-    return (
-      <input
-        autoFocus
-        value={draft}
-        onChange={(e) => setDraft(e.target.value)}
-        onBlur={commit}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") commit();
-          if (e.key === "Escape") {
-            setDraft(value);
-            setEditing(false);
-          }
-        }}
-        onClick={(e) => e.stopPropagation()}
-        inputMode={inputMode}
-        className={cn(
-          "w-full h-8 px-2 rounded-lg border border-brand-400 ring-2 ring-brand-500/25 bg-white text-sm focus:outline-none",
-          align === "right" && "text-right"
-        )}
-      />
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={(e) => {
-        e.stopPropagation();
-        setDraft(value);
-        setEditing(true);
-      }}
-      className={cn(
-        "w-full min-h-8 px-2 py-1 rounded-lg text-sm text-left hover:bg-brand-50 hover:ring-1 hover:ring-brand-200 transition-all cursor-text",
-        align === "right" && "text-right",
-        value && className,
-        !value && "text-ink-300"
-      )}
-      title="Click to edit"
-    >
-      {busy ? <Spinner className="w-3.5 h-3.5" /> : display || value || placeholder || "—"}
-    </button>
-  );
-}
-
-function InlineChoice({
-  value,
-  options,
-  onSave,
-  render,
-}: {
-  value: string;
-  options: string[];
-  onSave: (v: string) => Promise<void>;
-  render?: (v: string) => React.ReactNode;
-}) {
-  const [open, setOpen] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
-  }, [open]);
-
-  const pick = async (v: string) => {
-    setOpen(false);
-    if (v === value) return;
-    setBusy(true);
-    try {
-      await onSave(v);
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <div className="relative" ref={ref} onClick={(e) => e.stopPropagation()}>
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="min-h-8 px-1.5 py-1 rounded-lg hover:bg-brand-50 hover:ring-1 hover:ring-brand-200 transition-all"
-        title="Click to change"
-      >
-        {busy ? <Spinner className="w-3.5 h-3.5" /> : render ? render(value) : value || "—"}
-      </button>
-      {open && (
-        <div className="absolute z-30 top-full left-0 mt-1 bg-white rounded-xl border border-ink-200 shadow-pop p-1.5 min-w-40 animate-fade-up">
-          {options.map((o) => (
-            <button
-              key={o}
-              onClick={() => pick(o)}
-              className={cn(
-                "w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-left hover:bg-ink-50",
-                o === value && "text-brand-700"
-              )}
-            >
-              <span className="w-4">{o === value && <Check className="w-4 h-4" />}</span>
-              {o}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-/** Status editor: choosing "On hold" / "Ongoing" asks for the follow-up field, then applies + notifies. */
-function InlineStatus({
-  row,
-  onApply,
-}: {
-  row: Row;
-  onApply: (patch: Record<string, string>, skipNotify: boolean) => Promise<void>;
-}) {
-  const [open, setOpen] = useState(false);
-  const [step, setStep] = useState<"status" | "reason" | "employee">("status");
-  const [pending, setPending] = useState("");
-  const [notify, setNotify] = useState(true);
-  const [busy, setBusy] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  const close = useCallback(() => {
-    setOpen(false);
-    setStep("status");
-    setPending("");
-    setNotify(true);
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) close();
-    };
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
-  }, [open, close]);
-
-  const apply = async (patch: Record<string, string>) => {
-    setBusy(true);
-    try {
-      await onApply(patch, !notify);
-    } finally {
-      setBusy(false);
-      close();
-    }
-  };
-
-  const chooseStatus = (st: string) => {
-    if (st === row.jobStatus) return close();
-    if (st === "On hold") {
-      setPending(st);
-      setStep("reason");
-      return;
-    }
-    if (st === "Ongoing") {
-      setPending(st);
-      setStep("employee");
-      return;
-    }
-    apply({ jobStatus: st });
-  };
-
-  return (
-    <div className="relative" ref={ref} onClick={(e) => e.stopPropagation()}>
-      <button type="button" onClick={() => setOpen(!open)} title="Click to change status" className="group">
-        {busy ? (
-          <Spinner className="w-4 h-4 text-brand-600" />
-        ) : (
-          <StatusBadge status={row.jobStatus} className="group-hover:ring-2 group-hover:ring-brand-300 transition-all" />
-        )}
-      </button>
-      {open && (
-        <div className="absolute z-30 top-full left-0 mt-1 bg-white rounded-xl border border-ink-200 shadow-pop p-2 w-56 animate-fade-up">
-          {step === "status" && (
-            <>
-              {["New", ...formOptions.jobStatuses.filter((s) => s !== "New")].map((st) => (
-                <button
-                  key={st}
-                  onClick={() => chooseStatus(st)}
-                  className={cn(
-                    "w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-left hover:bg-ink-50",
-                    st === row.jobStatus && "bg-ink-50"
-                  )}
-                >
-                  <StatusBadge status={st} />
-                  {st === row.jobStatus && <Check className="w-4 h-4 ml-auto text-ink-400" />}
-                </button>
-              ))}
-              <label className="flex items-center gap-2 px-2.5 py-2 mt-1 border-t border-ink-100 text-xs text-ink-600 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={notify}
-                  onChange={(e) => setNotify(e.target.checked)}
-                  className="w-3.5 h-3.5 accent-brand-600"
-                />
-                Notify customer (SMS/email)
-              </label>
-            </>
-          )}
-          {step === "reason" && (
-            <>
-              <p className="px-2.5 py-1.5 text-xs font-bold uppercase tracking-wide text-ink-500">On hold — reason</p>
-              {formOptions.onHoldReasons.map((r) => (
-                <button
-                  key={r}
-                  onClick={() => apply({ jobStatus: pending, onHoldReason: r })}
-                  className="w-full px-2.5 py-2 rounded-lg text-sm font-medium text-left hover:bg-ink-50"
-                >
-                  {r}
-                </button>
-              ))}
-            </>
-          )}
-          {step === "employee" && (
-            <>
-              <p className="px-2.5 py-1.5 text-xs font-bold uppercase tracking-wide text-ink-500">Assign employee</p>
-              {formOptions.assignedEmployees.map((emp) => (
-                <button
-                  key={emp}
-                  onClick={() => apply({ jobStatus: pending, assignedEmployee: emp })}
-                  className="w-full px-2.5 py-2 rounded-lg text-sm font-medium text-left hover:bg-ink-50"
-                >
-                  {emp}
-                </button>
-              ))}
-            </>
-          )}
-        </div>
-      )}
     </div>
   );
 }
@@ -520,7 +233,7 @@ export function EntriesWorkstation({
   const [locationId, setLocationId] = useState<number | null>(null);
   const [locationReady, setLocationReady] = useState(false);
   const [cols, setCols] = useState<ColumnPref[]>(() => normalizeColumns(initialColumns));
-  const [rows, setRows] = useState<Row[]>([]);
+  const [rows, setRows] = useState<EntryRow[]>([]);
   const [total, setTotal] = useState(0);
   const [statusCounts, setStatusCounts] = useState<Record<string, number>>({});
   const [page, setPage] = useState(1);
@@ -594,7 +307,7 @@ export function EntriesWorkstation({
 
   /** PATCH helper for inline edits; merges the row locally on success. */
   const patchRow = useCallback(
-    async (row: Row, body: Record<string, unknown>, okText?: string) => {
+    async (row: EntryRow, body: Record<string, unknown>, okText?: string) => {
       const res = await fetch(`/api/entries/${row.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -616,12 +329,19 @@ export function EntriesWorkstation({
                       jobStatus: j.entry.jobStatus,
                       payment: j.entry.payment,
                       total: j.entry.total,
+                      deposit: j.entry.deposit,
                       etaJob: j.entry.etaJob,
                       onHoldReason: j.entry.onHoldReason,
                       assignedEmployee: j.entry.assignedEmployee,
+                      vehicleYear: j.entry.vehicleYear,
+                      vehicleMake: j.entry.vehicleMake,
+                      vehicleModel: j.entry.vehicleModel,
+                      laborRequest: j.entry.laborRequest,
                     }
                   : {}),
-                ...(j.customer ? { phone: j.customer.phone, firstName: j.customer.firstName, lastName: j.customer.lastName } : {}),
+                ...(j.customer
+                  ? { phone: j.customer.phone, firstName: j.customer.firstName, lastName: j.customer.lastName }
+                  : {}),
               }
             : r
         )
@@ -669,17 +389,32 @@ export function EntriesWorkstation({
     );
   };
 
-  const cellFor = (key: string, r: Row) => {
+  const cellFor = (key: string, r: EntryRow) => {
     switch (key) {
       case "customer":
         return (
-          <td key={key} className="px-4 py-2">
-            <button onClick={() => router.push(`/entry/${r.id}`)} className="group text-left" title="Open entry">
-              <span className="font-semibold text-ink-900 group-hover:text-brand-700 inline-flex items-center gap-1.5">
-                {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : "No customer"}
-                <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </span>
-            </button>
+          <td key={key} className="px-2.5 py-2">
+            <div className="flex items-center gap-1">
+              <InlineFields
+                title="Customer name"
+                display={`${r.firstName ?? ""} ${r.lastName ?? ""}`.trim()}
+                placeholder="No customer"
+                className="font-semibold text-ink-900"
+                fields={[
+                  { key: "firstName", label: "First name", value: r.firstName || "" },
+                  { key: "lastName", label: "Last name", value: r.lastName || "" },
+                ]}
+                onSave={(v) => patchRow(r, { customer: v }, "Customer name updated.")}
+              />
+              <button
+                onClick={() => router.push(`/entry/${r.id}`)}
+                title="Open entry"
+                aria-label="Open entry"
+                className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-ink-300 hover:bg-ink-100 hover:text-brand-700"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </td>
         );
       case "phone":
@@ -697,27 +432,40 @@ export function EntriesWorkstation({
       case "vehicle":
         return (
           <td key={key} className="px-1.5 py-2 w-48">
-            <InlineText
-              value={r.vehicleModel}
+            <InlineFields
+              title="Vehicle"
               display={[r.vehicleYear, r.vehicleMake, r.vehicleModel].filter(Boolean).join(" ")}
-              onSave={(v) => patchRow(r, { entry: { vehicleModel: v } }, "Vehicle updated.").then(load)}
               placeholder="No vehicle"
+              fields={[
+                { key: "vehicleYear", label: "Year", value: r.vehicleYear || "", inputMode: "numeric" },
+                { key: "vehicleMake", label: "Make", value: r.vehicleMake || "" },
+                { key: "vehicleModel", label: "Model", value: r.vehicleModel || "" },
+              ]}
+              onSave={(v) => patchRow(r, { entry: v }, "Vehicle updated.")}
             />
           </td>
         );
       case "jobNumber":
         return (
-          <td key={key} className="px-2 py-2 min-w-[9rem]">
-            <button
-              onClick={() => router.push(`/entry/${r.id}`)}
-              className="group px-2 py-1 rounded-lg text-left transition-colors hover:bg-brand-50 w-full"
-              title="Open this job"
-            >
-              <span className="block font-bold text-brand-700 group-hover:underline break-words">
-                {r.jobNumber || `Entry #${r.id}`}
-              </span>
-              {r.jobNumber && <span className="block text-[11px] text-ink-400">#{r.id}</span>}
-            </button>
+          <td key={key} className="px-2 py-2 min-w-[10.5rem]">
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => router.push(`/entry/${r.id}`)}
+                className="group px-2 py-1 rounded-lg text-left transition-colors hover:bg-brand-50 flex-1 min-w-0"
+                title="Open this job"
+              >
+                <span className="block font-bold text-brand-700 group-hover:underline break-words">
+                  {r.jobNumber || `Entry #${r.id}`}
+                </span>
+                {r.jobNumber && <span className="block text-[11px] text-ink-400">#{r.id}</span>}
+              </button>
+              <InlineFields
+                as="pencil"
+                title="Job name / number"
+                fields={[{ key: "jobNumber", label: "Job name / number", value: r.jobNumber || "" }]}
+                onSave={(v) => patchRow(r, { entry: v }, "Job name updated.")}
+              />
+            </div>
           </td>
         );
       case "status":
@@ -732,14 +480,9 @@ export function EntriesWorkstation({
             <InlineChoice
               value={r.payment}
               options={formOptions.payments}
+              title="Payment"
               onSave={(v) => patchRow(r, { entry: { payment: v } }, "Payment updated.")}
-              render={(v) =>
-                v ? (
-                  <Badge tone={v === "Paid" ? "success" : v === "Unpaid" ? "danger" : "warning"}>{v}</Badge>
-                ) : (
-                  <span className="text-ink-300 text-sm px-1">—</span>
-                )
-              }
+              render={(v) => paymentBadge(v)}
             />
           </td>
         );
@@ -880,6 +623,9 @@ export function EntriesWorkstation({
                 </button>
                 <span className="text-ink-400 text-xs whitespace-nowrap">{formatDateTime(r.createdAt)}</span>
               </div>
+              {r.createdByName && (
+                <p className="mt-1 text-[11px] text-ink-400">Checked in by {r.createdByName}</p>
+              )}
               <div className="mt-2.5 pt-2.5 border-t border-ink-100 flex items-center justify-between gap-2">
                 <a href={`tel:${(r.phone || "").replace(/\D/g, "")}`} className="text-brand-700 font-bold text-sm">
                   {formatPhone(r.phone || "") || "—"}
@@ -888,16 +634,17 @@ export function EntriesWorkstation({
                   <InlineChoice
                     value={r.payment}
                     options={formOptions.payments}
+                    title="Payment"
                     onSave={(v) => patchRow(r, { entry: { payment: v } }, "Payment updated.")}
-                    render={(v) =>
-                      v ? (
-                        <Badge tone={v === "Paid" ? "success" : v === "Unpaid" ? "danger" : "warning"}>{v}</Badge>
-                      ) : (
-                        <span className="text-ink-300 text-sm px-1">Payment</span>
-                      )
-                    }
+                    render={(v) => paymentBadge(v, "Payment")}
                   />
                   <span className="font-semibold text-ink-900 text-sm">{r.total ? formatMoney(r.total) : ""}</span>
+                  <RowEditButton
+                    row={r}
+                    variant="button"
+                    onSave={(patch) => patchRow(r, patch, "Job updated.")}
+                    onOpenEntry={() => router.push(`/entry/${r.id}`)}
+                  />
                 </div>
               </div>
             </Card>
@@ -939,25 +686,33 @@ export function EntriesWorkstation({
             <thead>
               <tr className="text-left text-xs uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-50">
                 {visibleCols.map((c) => headerFor(c.key))}
+                <th className="px-2 py-3 font-semibold text-right whitespace-nowrap w-14">Edit</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-ink-100">
               {loading ? (
                 <tr>
-                  <td colSpan={visibleCols.length} className="px-4 py-16 text-center">
+                  <td colSpan={visibleCols.length + 1} className="px-4 py-16 text-center">
                     <Spinner className="text-brand-600" />
                   </td>
                 </tr>
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={visibleCols.length} className="px-4 py-16 text-center text-ink-400">
+                  <td colSpan={visibleCols.length + 1} className="px-4 py-16 text-center text-ink-400">
                     No entries yet. Start a new check-in above.
                   </td>
                 </tr>
               ) : (
                 rows.map((r) => (
-                  <tr key={r.id} className="hover:bg-ink-50/60 transition-colors">
+                  <tr key={r.id} className="group/row hover:bg-ink-50/60 transition-colors">
                     {visibleCols.map((c) => cellFor(c.key, r))}
+                    <td className="px-2 py-2 text-right">
+                      <RowEditButton
+                        row={r}
+                        onSave={(patch) => patchRow(r, patch, "Job updated.")}
+                        onOpenEntry={() => router.push(`/entry/${r.id}`)}
+                      />
+                    </td>
                   </tr>
                 ))
               )}
@@ -995,7 +750,7 @@ export function EntriesWorkstation({
       {toast && (
         <div
           className={cn(
-            "fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-xl shadow-pop text-sm font-semibold animate-fade-up",
+            "fixed bottom-5 left-1/2 -translate-x-1/2 z-[80] px-5 py-3 rounded-xl shadow-pop text-sm font-semibold animate-fade-up",
             toast.tone === "ok" ? "bg-ink-900 text-white" : "bg-brand-600 text-white"
           )}
         >

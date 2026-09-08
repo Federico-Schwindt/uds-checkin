@@ -144,6 +144,18 @@ export function describeActivity(row: ActivityRow): HistoryItem {
         changes,
       };
     }
+    case "customer.update": {
+      const changes = readChanges(row.details);
+      return {
+        ...base,
+        kind: "edit",
+        title:
+          changes.length === 1
+            ? `Edited the customer's ${changes[0].label.toLowerCase()}`
+            : `Edited ${changes.length} customer fields`,
+        changes,
+      };
+    }
     case "entry.delete":
       return { ...base, kind: "danger", title: "Deleted this job" };
     case "entry.restore":

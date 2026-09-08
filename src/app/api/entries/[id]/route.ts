@@ -76,10 +76,13 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
     typeof patch.jobStatus === "string" && patch.jobStatus !== "" && patch.jobStatus !== current.jobStatus;
 
   if (Object.keys(patch).length) {
-    const changed = diffFields(current as Record<string, unknown>, patch, Object.keys(patch));
+    // A status move gets its own record below, but anything else saved in the
+    // same edit still has to land in the trail — quick edit saves whole rows.
+    const audited = Object.keys(patch).filter((k) => !(statusChanged && k === "jobStatus"));
+    const changed = diffFields(current as Record<string, unknown>, patch, audited);
     patch.updatedAt = new Date();
     await db.update(entries).set(patch).where(eq(entries.id, id));
-    if (Object.keys(changed).length && !statusChanged) {
+    if (Object.keys(changed).length) {
       await logActivity({
         action: "entry.update",
         entity: "entry",
@@ -100,8 +103,24 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
     }
     if (typeof cPatch.phone === "string") cPatch.phone = normalizePhone(cPatch.phone);
     if (Object.keys(cPatch).length) {
+      const keys = Object.keys(cPatch);
+      const before = await db.select().from(customers).where(eq(customers.id, current.customerId));
       cPatch.updatedAt = new Date();
       await db.update(customers).set(cPatch).where(eq(customers.id, current.customerId));
+      // Logged against the entry, so a customer edit shows up on the job's own
+      // timeline rather than somewhere nobody thinks to look.
+      const changed = diffFields((before[0] || {}) as Record<string, unknown>, cPatch, keys);
+      if (Object.keys(changed).length) {
+        await logActivity({
+          action: "customer.update",
+          entity: "entry",
+          entityId: id,
+          summary: `Edited the customer on entry #${id} (${keys.join(", ")})`,
+          details: changed,
+          actor: actorLabel(session),
+          req,
+        });
+      }
     }
   }
 
