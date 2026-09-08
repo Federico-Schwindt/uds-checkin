@@ -324,7 +324,8 @@ export async function GET(req: NextRequest) {
   const where = allConds.length ? and(...allConds) : undefined;
   const baseWhere = baseConds.length ? and(...baseConds) : undefined;
 
-  const rows = await db
+  const [rows, [total], byStatus] = await Promise.all([
+    db
     .select({
       id: entries.id,
       jobNumber: entries.jobNumber,
@@ -352,21 +353,20 @@ export async function GET(req: NextRequest) {
     .where(where)
     .orderBy(desc(entries.createdAt))
     .limit(pageSize)
-    .offset((page - 1) * pageSize);
-
-  const [total] = await db
-    .select({ n: count() })
-    .from(entries)
-    .leftJoin(customers, eq(entries.customerId, customers.id))
-    .where(where);
-
-  // Per-status counters for the kiosk filter chips (same filters, status excluded).
-  const byStatus = await db
-    .select({ status: entries.jobStatus, n: count() })
-    .from(entries)
-    .leftJoin(customers, eq(entries.customerId, customers.id))
-    .where(baseWhere)
-    .groupBy(entries.jobStatus);
+    .offset((page - 1) * pageSize),
+    db
+      .select({ n: count() })
+      .from(entries)
+      .leftJoin(customers, eq(entries.customerId, customers.id))
+      .where(where),
+    // Per-status counters for the kiosk filter chips (same filters, status excluded).
+    db
+      .select({ status: entries.jobStatus, n: count() })
+      .from(entries)
+      .leftJoin(customers, eq(entries.customerId, customers.id))
+      .where(baseWhere)
+      .groupBy(entries.jobStatus),
+  ]);
   const statusCounts: Record<string, number> = {};
   let all = 0;
   for (const r of byStatus) {

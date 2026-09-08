@@ -52,32 +52,67 @@ export default async function AdminDashboard() {
   const monthStart = shopDayStart(addDays(todayKey, -29), config.timezone);
 
   const live = isNull(entries.deletedAt);
-  const [today] = await db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, todayStart)));
-  const [week] = await db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, weekStart)));
-  const [month] = await db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, monthStart)));
-
-  const byStatus = await db
-    .select({ status: entries.jobStatus, n: count() })
-    .from(entries)
-    .where(live)
-    .groupBy(entries.jobStatus);
-  const statusMap = Object.fromEntries(byStatus.map((r) => [r.status, r.n]));
-
-  const [smsFailed] = await db
-    .select({ n: count() })
-    .from(messageLog)
-    .where(and(eq(messageLog.status, "failed"), gte(messageLog.createdAt, weekStart)));
-
   // Last 14 days volume for the mini chart. Timestamps are stored in UTC, so the
   // bucket key is converted into shop time before it is grouped.
+  const period = currentPeriod(now, config);
   const shopDay = sql<string>`to_char(${entries.createdAt} AT TIME ZONE 'UTC' AT TIME ZONE ${config.timezone}, 'YYYY-MM-DD')`;
-  const daily = await db
-    .select({ day: shopDay, n: count() })
-    .from(entries)
-    .where(and(live, gte(entries.createdAt, shopDayStart(addDays(todayKey, -13), config.timezone))))
-    // Group by the output column: repeating the expression would re-bind the
-    // timezone as a second parameter, which Postgres will not match.
-    .groupBy(sql`1`);
+
+  // Nothing below depends on anything else below, so it all goes out at once.
+  // Sequentially this was a dozen round-trips to a database in another region.
+  const [[today], [week], [month], byStatus, [smsFailed], daily, recent, team, board, pendingRequests, todaysCalendar, celebrations] =
+    await Promise.all([
+      db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, todayStart))),
+      db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, weekStart))),
+      db.select({ n: count() }).from(entries).where(and(live, gte(entries.createdAt, monthStart))),
+      db.select({ status: entries.jobStatus, n: count() }).from(entries).where(live).groupBy(entries.jobStatus),
+      db
+        .select({ n: count() })
+        .from(messageLog)
+        .where(and(eq(messageLog.status, "failed"), gte(messageLog.createdAt, weekStart))),
+      db
+        .select({ day: shopDay, n: count() })
+        .from(entries)
+        .where(and(live, gte(entries.createdAt, shopDayStart(addDays(todayKey, -13), config.timezone))))
+        // Group by the output column: repeating the expression would re-bind the
+        // timezone as a second parameter, which Postgres will not match.
+        .groupBy(sql`1`),
+      db
+        .select({
+          id: entries.id,
+          jobNumber: entries.jobNumber,
+          jobStatus: entries.jobStatus,
+          vehicleYear: entries.vehicleYear,
+          vehicleMake: entries.vehicleMake,
+          vehicleModel: entries.vehicleModel,
+          createdAt: entries.createdAt,
+          firstName: customers.firstName,
+          lastName: customers.lastName,
+          phone: customers.phone,
+        })
+        .from(entries)
+        .leftJoin(customers, eq(entries.customerId, customers.id))
+        .where(live)
+        .orderBy(desc(entries.createdAt))
+        .limit(8),
+      getTeamStats(config, period),
+      getDayBoard(todayKey),
+      db
+        .select({ request: requests, userName: users.name })
+        .from(requests)
+        .leftJoin(users, eq(requests.userId, users.id))
+        .where(eq(requests.status, "open"))
+        .orderBy(desc(requests.lastMessageAt))
+        .limit(6),
+      db
+        .select({ assignment: assignments, userName: users.name })
+        .from(assignments)
+        .leftJoin(users, eq(assignments.userId, users.id))
+        .where(eq(assignments.workDate, todayKey))
+        .orderBy(asc(assignments.startTime)),
+      upcomingCelebrations(todayKey, config.celebrationLeadDays),
+    ]);
+
+  const statusMap = Object.fromEntries(byStatus.map((r) => [r.status, r.n]));
   const dailyMap = Object.fromEntries(daily.map((d) => [d.day, d.n]));
   const days = Array.from({ length: 14 }, (_, i) => {
     const key = addDays(todayKey, -(13 - i));
@@ -85,29 +120,6 @@ export default async function AdminDashboard() {
   });
   const maxDay = Math.max(1, ...days.map((d) => d.n));
 
-  const recent = await db
-    .select({
-      id: entries.id,
-      jobNumber: entries.jobNumber,
-      jobStatus: entries.jobStatus,
-      vehicleYear: entries.vehicleYear,
-      vehicleMake: entries.vehicleMake,
-      vehicleModel: entries.vehicleModel,
-      createdAt: entries.createdAt,
-      firstName: customers.firstName,
-      lastName: customers.lastName,
-      phone: customers.phone,
-    })
-    .from(entries)
-    .leftJoin(customers, eq(entries.customerId, customers.id))
-    .where(live)
-    .orderBy(desc(entries.createdAt))
-    .limit(8);
-
-  /* ---------- team, attendance and warnings ---------- */
-  const period = currentPeriod(now, config);
-  const team = await getTeamStats(config, period);
-  const board = await getDayBoard(todayKey);
   const todaySchedule = scheduleForDay(config.workHours, weekdayOf(todayKey));
   const shopOpen = isShopOpen(now, config.workHours, config.timezone);
 
@@ -168,14 +180,6 @@ export default async function AdminDashboard() {
     });
   }
 
-  // Open staff requests and anything scheduled for today.
-  const pendingRequests = await db
-    .select({ request: requests, userName: users.name })
-    .from(requests)
-    .leftJoin(users, eq(requests.userId, users.id))
-    .where(eq(requests.status, "open"))
-    .orderBy(desc(requests.lastMessageAt))
-    .limit(6);
   const newForAdmin = pendingRequests.filter((r) => r.request.unreadForAdmin).length;
   if (pendingRequests.length) {
     warnings.push({
@@ -188,15 +192,6 @@ export default async function AdminDashboard() {
       href: "/admin/requests",
     });
   }
-
-  const todaysCalendar = await db
-    .select({ assignment: assignments, userName: users.name })
-    .from(assignments)
-    .leftJoin(users, eq(assignments.userId, users.id))
-    .where(eq(assignments.workDate, todayKey))
-    .orderBy(asc(assignments.startTime));
-
-  const celebrations = await upcomingCelebrations(todayKey, config.celebrationLeadDays);
 
   const presentToday = board.filter((b) => b.record).length;
   const lateToday = board.filter((b) => b.record?.late).length;

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { eq } from "drizzle-orm";
 import { getDb, settings } from "@/db";
 import type { FormSchema } from "@/lib/form-schema";
@@ -87,7 +88,7 @@ export function toShopConfig(s: Partial<AppSettings>): ShopConfig {
 }
 
 export async function getShopConfig(): Promise<ShopConfig> {
-  return toShopConfig(await getSettings());
+  return toShopConfig(await getSettingsCached());
 }
 
 export async function getSettings(): Promise<AppSettings> {
@@ -97,6 +98,14 @@ export async function getSettings(): Promise<AppSettings> {
   for (const r of rows) map[r.key] = r.value;
   return map as unknown as AppSettings;
 }
+
+/**
+ * Same read, memoized for the life of one request. A page and its layout both
+ * want the settings; on a remote database that is two round-trips for one
+ * answer. Never use it after writing settings in the same request — it would
+ * hand back the values from before the write.
+ */
+export const getSettingsCached = cache(getSettings);
 
 export async function getSetting<K extends keyof AppSettings>(key: K): Promise<AppSettings[K]> {
   const all = await getSettings();

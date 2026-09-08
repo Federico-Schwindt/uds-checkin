@@ -1,11 +1,11 @@
 import { RequestsInbox } from "./inbox";
-import { getSettings } from "@/lib/settings";
+import { getSettingsCached } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Requests | UDS Admin" };
 
 export default async function AdminRequestsPage() {
-  const s = await getSettings();
+  const s = await getSettingsCached();
   return (
     <RequestsInbox
       inboxEmail={s.requestsEmail || ""}

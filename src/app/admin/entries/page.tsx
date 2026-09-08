@@ -185,7 +185,7 @@ function EntriesInner() {
                       <p className="font-semibold text-ink-900">
                         {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : "—"}
                       </p>
-                      <p className="text-xs text-ink-500">{formatPhone(r.phone || "")}</p>
+                      <p className="text-[13px] font-bold text-ink-800">{formatPhone(r.phone || "")}</p>
                     </td>
                     <td className="px-4 py-3 text-ink-700">
                       {[r.vehicleYear, r.vehicleMake, r.vehicleModel].filter(Boolean).join(" ") || "—"}

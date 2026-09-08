@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSettings } from "@/lib/settings";
+import { getSettingsCached } from "@/lib/settings";
 import { EntryDetail } from "@/components/entry-detail";
 import { IdleLock } from "@/components/idle-lock";
 import { Logo } from "@/components/logo";
@@ -9,7 +9,7 @@ export const metadata = { title: "Entry | UDS Check-In" };
 
 export default async function EntryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const s = await getSettings();
+  const s = await getSettingsCached();
   return (
     <main className="min-h-dvh bg-ink-100">
       <IdleLock minutes={Number(s.idleLockMinutes) || 0} />

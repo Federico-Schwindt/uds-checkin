@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { customers, getDb } from "@/db";
-import { getSettings } from "@/lib/settings";
+import { getSettingsCached } from "@/lib/settings";
 import { CheckinWizard } from "@/components/checkin/wizard";
 import { IdleLock } from "@/components/idle-lock";
 
@@ -12,7 +12,7 @@ export default async function CheckinPage({
 }: {
   searchParams: Promise<{ customer?: string; fresh?: string }>;
 }) {
-  const s = await getSettings();
+  const s = await getSettingsCached();
   const { customer, fresh } = await searchParams;
 
   // Started from the quick-start with a returning customer: load them here so

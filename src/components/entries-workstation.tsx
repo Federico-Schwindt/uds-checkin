@@ -122,6 +122,7 @@ function InlineText({
   placeholder,
   align = "left",
   inputMode,
+  className,
 }: {
   value: string;
   display?: string;
@@ -129,6 +130,7 @@ function InlineText({
   placeholder?: string;
   align?: "left" | "right";
   inputMode?: "tel" | "decimal" | "numeric" | "text";
+  className?: string;
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(value);
@@ -180,6 +182,7 @@ function InlineText({
       className={cn(
         "w-full min-h-8 px-2 py-1 rounded-lg text-sm text-left hover:bg-brand-50 hover:ring-1 hover:ring-brand-200 transition-all cursor-text",
         align === "right" && "text-right",
+        value && className,
         !value && "text-ink-300"
       )}
       title="Click to edit"
@@ -687,6 +690,7 @@ export function EntriesWorkstation({
               onSave={(v) => patchRow(r, { customer: { phone: v } }, "Phone updated.")}
               inputMode="tel"
               placeholder="No phone"
+              className="font-bold text-ink-900"
             />
           </td>
         );
@@ -877,7 +881,7 @@ export function EntriesWorkstation({
                 <span className="text-ink-400 text-xs whitespace-nowrap">{formatDateTime(r.createdAt)}</span>
               </div>
               <div className="mt-2.5 pt-2.5 border-t border-ink-100 flex items-center justify-between gap-2">
-                <a href={`tel:${(r.phone || "").replace(/\D/g, "")}`} className="text-brand-700 font-semibold text-sm">
+                <a href={`tel:${(r.phone || "").replace(/\D/g, "")}`} className="text-brand-700 font-bold text-sm">
                   {formatPhone(r.phone || "") || "—"}
                 </a>
                 <div className="flex items-center gap-2">

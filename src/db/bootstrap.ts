@@ -557,6 +557,12 @@ export async function bootstrap(db: Db) {
     sql.raw("ALTER TABLE status_history ADD COLUMN IF NOT EXISTS changed_by TEXT NOT NULL DEFAULT ''")
   );
 
+  // Indexes for the reporting queries: without these, the dashboard and the
+  // team scores scan the whole entries table on every load.
+  await db.execute(sql.raw("CREATE INDEX IF NOT EXISTS entries_created_by_idx ON entries (created_by_user_id)"));
+  await db.execute(sql.raw("CREATE INDEX IF NOT EXISTS entries_assigned_idx ON entries (assigned_employee)"));
+  await db.execute(sql.raw("CREATE INDEX IF NOT EXISTS activity_actor_idx ON activity_log (actor)"));
+
   // Micro-migration: birthdays and hire dates on staff profiles.
   await db.execute(sql.raw("ALTER TABLE users ADD COLUMN IF NOT EXISTS birthday TEXT NOT NULL DEFAULT ''"));
   await db.execute(sql.raw("ALTER TABLE users ADD COLUMN IF NOT EXISTS hired_on TEXT NOT NULL DEFAULT ''"));
