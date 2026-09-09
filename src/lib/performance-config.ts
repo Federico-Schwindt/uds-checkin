@@ -43,25 +43,41 @@ export const SEVERITY_LABEL: Record<Severity, string> = {
   critical: "Critical",
 };
 
-/** Suggested reasons for flagging a job; the admin can always type their own. */
-export const MISTAKE_CATEGORIES = [
-  "Wrong measurement",
-  "Wrong parts ordered",
-  "Rework required",
-  "Customer complaint",
-  "Damaged component",
-  "Incomplete work order",
-  "Missed deadline",
-  "Safety issue",
+/**
+ * The reasons a score moves. Cleanliness and commitment sit on both sides
+ * because either can go well or badly; "Other" stays as the escape hatch for
+ * anything the note field has to explain instead.
+ */
+export const PRAISE_CATEGORIES = [
+  "Great performance",
+  "Positive Google review",
+  "Positive attitude",
+  "Cleanliness",
+  "Commitment to work",
   "Other",
 ];
 
-export const PRAISE_CATEGORIES = [
-  "Excellent workmanship",
-  "Customer compliment",
-  "Fast turnaround",
-  "Helped a teammate",
-  "Covered an extra shift",
+export const MISTAKE_CATEGORIES = [
+  "Bad attitude",
+  "Tool damage",
+  "Disorganized station",
+  "Late arrival",
+  "Cleanliness",
+  "Commitment to work",
+  "Other",
+];
+
+/** Setting a score outright can go either way, so it offers both sides. */
+export const ALL_CATEGORIES = [
+  "Great performance",
+  "Positive Google review",
+  "Positive attitude",
+  "Cleanliness",
+  "Commitment to work",
+  "Bad attitude",
+  "Tool damage",
+  "Disorganized station",
+  "Late arrival",
   "Other",
 ];
 

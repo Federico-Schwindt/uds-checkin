@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Flag, Minus, Pencil, Plus, ThumbsUp } from "lucide-react";
 import { Button, Field, Input, Select, SelectOptions, Spinner, Textarea } from "@/components/ui";
 import {
+  ALL_CATEGORIES,
   MISTAKE_CATEGORIES,
   PRAISE_CATEGORIES,
   SEVERITIES,
@@ -249,7 +250,9 @@ export function ScoreEditor({
             placeholder="Choose a reason"
             className="h-11"
           >
-            <SelectOptions options={mode === "add" ? PRAISE_CATEGORIES : MISTAKE_CATEGORIES} />
+            <SelectOptions
+              options={mode === "add" ? PRAISE_CATEGORIES : mode === "set" ? ALL_CATEGORIES : MISTAKE_CATEGORIES}
+            />
           </Select>
         </Field>
         <Field label="Note" className={compact ? "sm:col-span-2" : ""}>
@@ -258,8 +261,8 @@ export function ScoreEditor({
             onChange={(e) => setNote(e.target.value)}
             placeholder={
               mode === "add"
-                ? "e.g. Finished three rush jobs before noon."
-                : "e.g. Driveshaft cut 1/2 inch short, customer had to come back."
+                ? "e.g. Kept the station spotless all week and helped close on Saturday."
+                : "e.g. Dropped the torque wrench, it had to be replaced."
             }
             className="min-h-20"
           />
