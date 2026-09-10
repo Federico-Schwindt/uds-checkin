@@ -36,7 +36,7 @@ export const Button = forwardRef<
 /* ---------- Card ---------- */
 
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("bg-white rounded-2xl shadow-card border border-ink-200/60", className)} {...props} />;
+  return <div className={cn("bg-white rounded-xl shadow-card border border-ink-200", className)} {...props} />;
 }
 
 export function SectionTitle({ children, className }: { children: React.ReactNode; className?: string }) {

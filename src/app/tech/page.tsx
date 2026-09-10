@@ -3,21 +3,18 @@ import { redirect } from "next/navigation";
 import { and, asc, desc, eq, gte, isNull, lte, or } from "drizzle-orm";
 import {
   AlertTriangle,
-  ArrowLeft,
   BadgeCheck,
   CalendarClock,
   CalendarRange,
   ClipboardList,
   Clock,
-  LogOut,
   PartyPopper,
   TrendingUp,
 } from "lucide-react";
 import { announcementReads, announcements, assignments, attendance, customers, entries, getDb, requests } from "@/db";
 import { Card, StatusBadge } from "@/components/ui";
-import { Logo } from "@/components/logo";
 import { EventChip, GradeChip, PointsChip, ScoreRing, StatTile } from "@/components/performance-ui";
-import { SignOutButton } from "@/components/sign-out-button";
+import { AppShell } from "@/components/app-shell";
 import { MyCalendar, MyRequests, NoticeBoard } from "@/components/tech-panel-sections";
 import { NewCheckinButton } from "@/components/new-checkin-button";
 import { getSession } from "@/lib/session";
@@ -115,33 +112,12 @@ export default async function TechPanel() {
   const { scoring } = config;
 
   return (
-    <div className="min-h-dvh bg-ink-100">
-      <header className="bg-white border-b border-ink-200 sticky top-0 z-20">
-        <div className="mx-auto max-w-5xl px-3 sm:px-6 h-16 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
-            <Logo className="h-7 sm:h-8" />
-            <span className="hidden sm:block text-sm text-ink-400 border-l border-ink-200 pl-3">My Performance</span>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <NewCheckinButton className="h-10 px-4 text-sm" />
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 h-10 px-3 sm:px-4 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" /> <span className="max-sm:hidden">Station</span>
-            </Link>
-            <SignOutButton className="inline-flex items-center gap-2 h-10 px-3 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 text-sm font-semibold transition-colors">
-              <LogOut className="w-4 h-4" /> <span className="max-sm:hidden">Sign out</span>
-            </SignOutButton>
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-5xl px-3 sm:px-6 py-5 sm:py-7 space-y-5">
+    <AppShell session={session} active="/tech" actions={<NewCheckinButton className="h-10 px-4 text-sm" />}>
+      <div className="space-y-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Hi, {session.name.split(" ")[0]}</h1>
+          <h2 className="text-xl font-bold tracking-tight">Hi, {session.name.split(" ")[0]}</h2>
           <p className="text-sm text-ink-500 mt-0.5">
-            Your scorecard for {period.label} · {stats.title || "Technician"}
+            {period.label} · {stats.title || "Technician"}
           </p>
         </div>
 
@@ -450,7 +426,7 @@ export default async function TechPanel() {
             </div>
           </Card>
         </div>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }

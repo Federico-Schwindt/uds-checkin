@@ -4,9 +4,11 @@
 export function SignOutButton({
   className,
   children,
+  title,
 }: {
   className?: string;
   children: React.ReactNode;
+  title?: string;
 }) {
   const signOut = async () => {
     try {
@@ -16,7 +18,7 @@ export function SignOutButton({
     }
   };
   return (
-    <button type="button" onClick={signOut} className={className}>
+    <button type="button" onClick={signOut} className={className} title={title} aria-label={title}>
       {children}
     </button>
   );

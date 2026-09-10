@@ -29,7 +29,9 @@
   --font-sans: var(--font-poppins);
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", monospace;
 
-  --shadow-card: 0 1px 2px rgb(18 45 95 / 0.06), 0 6px 20px rgb(18 45 95 / 0.07);
+  /* Hairline surfaces, not floating brochure cards. Only things that genuinely
+     sit above the page — menus, sheets, dialogs — get a real shadow. */
+  --shadow-card: 0 1px 2px rgb(18 45 95 / 0.05);
   --shadow-pop: 0 10px 34px rgb(18 45 95 / 0.18);
 }
 

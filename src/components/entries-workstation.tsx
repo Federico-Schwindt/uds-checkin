@@ -532,7 +532,7 @@ export function EntriesWorkstation({
 
       {/* Filters */}
       <div className="flex items-center gap-2 flex-wrap">
-        <div className="relative w-full sm:flex-1 sm:w-auto order-1">
+        <div className="relative flex-1 min-w-0 order-1">
           <Search className="w-4.5 h-4.5 absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
           <Input
             value={qLive}
@@ -550,7 +550,7 @@ export function EntriesWorkstation({
             </button>
           )}
         </div>
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar order-3 sm:order-2 w-full sm:w-auto -mx-3 px-3 sm:mx-0 sm:px-0 pb-1 sm:pb-0">
+        <div className="flex gap-1.5 overflow-x-auto no-scrollbar order-3 sm:order-2 basis-full sm:basis-auto -mx-3 px-3 sm:mx-0 sm:px-0 pb-1 sm:pb-0">
           {["", "New", "Confirmed", "Ongoing", "On hold", "Completed"].map((st) => {
             const n = statusCounts[st || "All"] ?? 0;
             const active = status === st;
@@ -581,14 +581,14 @@ export function EntriesWorkstation({
             );
           })}
         </div>
-        <div className="order-2 sm:order-3 flex items-center gap-2 ml-auto sm:ml-0">
+        <div className="order-2 sm:order-3 flex items-center gap-2 shrink-0">
           <LocationPicker locations={locations} value={locationId} onChange={pickLocation} />
           <ColumnsConfig cols={cols} onChange={saveColumns} />
         </div>
       </div>
 
       {/* Mobile card list */}
-      <div className="sm:hidden space-y-2.5">
+      <div className="sm:hidden space-y-2.5 pb-2">
         {loading ? (
           <div className="py-16 text-center">
             <Spinner className="text-brand-600" />
@@ -627,9 +627,18 @@ export function EntriesWorkstation({
                 <p className="mt-1 text-[11px] text-ink-400">Checked in by {r.createdByName}</p>
               )}
               <div className="mt-2.5 pt-2.5 border-t border-ink-100 flex items-center justify-between gap-2">
-                <a href={`tel:${(r.phone || "").replace(/\D/g, "")}`} className="text-brand-700 font-bold text-sm">
-                  {formatPhone(r.phone || "") || "—"}
-                </a>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <a href={`tel:${(r.phone || "").replace(/\D/g, "")}`} className="text-brand-700 font-bold text-sm">
+                    {formatPhone(r.phone || "") || "—"}
+                  </a>
+                  {/* Left of centre, so the floating New button never sits on it. */}
+                  <RowEditButton
+                    row={r}
+                    variant="button"
+                    onSave={(patch) => patchRow(r, patch, "Job updated.")}
+                    onOpenEntry={() => router.push(`/entry/${r.id}`)}
+                  />
+                </div>
                 <div className="flex items-center gap-2">
                   <InlineChoice
                     value={r.payment}
@@ -639,12 +648,6 @@ export function EntriesWorkstation({
                     render={(v) => paymentBadge(v, "Payment")}
                   />
                   <span className="font-semibold text-ink-900 text-sm">{r.total ? formatMoney(r.total) : ""}</span>
-                  <RowEditButton
-                    row={r}
-                    variant="button"
-                    onSave={(patch) => patchRow(r, patch, "Job updated.")}
-                    onOpenEntry={() => router.push(`/entry/${r.id}`)}
-                  />
                 </div>
               </div>
             </Card>
@@ -654,7 +657,7 @@ export function EntriesWorkstation({
 
       {/* Mobile pagination */}
       {rows.length > 0 && (
-        <div className="sm:hidden flex items-center justify-between px-1">
+        <div className="sm:hidden flex items-center justify-between px-1 pb-20">
           <span className="text-xs text-ink-500">
             {total} entries · page {page}/{pages}
           </span>
