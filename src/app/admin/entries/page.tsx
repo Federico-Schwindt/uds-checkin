@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Download, Search } from "lucide-react";
 import { Button, Card, Input, Select, StatusBadge, Badge, Spinner } from "@/components/ui";
-import { formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
+import { formatDateTime, formatMoney, formatPhone, jobLabel } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
 
 type Row = {
@@ -178,7 +178,7 @@ function EntriesInner() {
                         onClick={(e) => e.stopPropagation()}
                         className="font-bold text-brand-700 hover:text-brand-800 hover:underline break-words"
                       >
-                        {r.jobNumber || `Entry #${r.id}`}
+                        {jobLabel(r.jobNumber, r.id)}
                       </Link>
                     </td>
                     <td className="px-4 py-3">

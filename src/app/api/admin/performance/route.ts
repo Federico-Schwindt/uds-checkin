@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
     entityId: row.entryId ?? userId,
     summary:
       type === "mistake"
-        ? `Flagged a ${severity} mistake for ${tech.name}${row.entryId ? ` on entry #${row.entryId}` : ""} (${points} pts)`
+        ? `Flagged a ${severity} mistake for ${tech.name}${row.entryId ? ` on JOB${row.entryId}` : ""} (${points} pts)`
         : `${type === "praise" ? "Recognized" : "Adjusted"} ${tech.name} (${points > 0 ? "+" : ""}${points} pts)`,
     details: { category: row.category, note: row.note, entryId: row.entryId, technician: tech.name },
     actor: actorLabel(session),

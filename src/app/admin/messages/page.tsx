@@ -91,7 +91,7 @@ function MessagesInner() {
                       onClick={(e) => e.stopPropagation()}
                       className="text-xs font-semibold text-brand-700 hover:underline"
                     >
-                      Entry #{m.entryId}
+                      JOB{m.entryId}
                     </Link>
                   )}
                   <span className="text-xs text-ink-400 ml-auto whitespace-nowrap">{formatDateTime(m.createdAt)}</span>

@@ -25,7 +25,7 @@ import {
   RowEditButton,
   paymentBadge,
 } from "@/components/quick-edit";
-import { cn, formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
+import { cn, formatDateTime, formatMoney, formatPhone, jobLabel } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
 
 const LOCATION_KEY = "uds-location-id";
@@ -455,7 +455,7 @@ export function EntriesWorkstation({
                 title="Open this job"
               >
                 <span className="block font-bold text-brand-700 group-hover:underline break-words">
-                  {r.jobNumber || `Entry #${r.id}`}
+                  {jobLabel(r.jobNumber, r.id)}
                 </span>
                 {r.jobNumber && <span className="block text-[11px] text-ink-400">#{r.id}</span>}
               </button>
@@ -605,14 +605,14 @@ export function EntriesWorkstation({
                     className="font-bold text-brand-700 hover:underline flex items-center gap-1.5 text-left"
                     title="Open entry"
                   >
-                    {r.jobNumber ? `Job ${r.jobNumber}` : `Entry #${r.id}`}
+                    {jobLabel(r.jobNumber, r.id)}
                     <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                   </button>
                   <button
                     onClick={() => router.push(`/entry/${r.id}`)}
                     className="block text-left font-semibold text-ink-900 truncate max-w-full"
                   >
-                    {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : `Entry #${r.id}`}
+                    {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : "No customer"}
                   </button>
                 </div>
                 <InlineStatus row={r} onApply={(patch, skipNotify) => patchRow(r, { entry: patch, skipNotify })} />

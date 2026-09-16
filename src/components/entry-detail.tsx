@@ -30,7 +30,7 @@ import {
 import { EventChip, PointsChip } from "@/components/performance-ui";
 import { EntryHistory } from "@/components/entry-history";
 import { ScoreEditor, type SuggestedPoints } from "@/components/score-editor";
-import { cn, formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
+import { cn, formatDateTime, formatMoney, formatPhone, jobLabel } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
 
 /* ---------------- field definitions ---------------- */
@@ -274,13 +274,18 @@ export function EntryDetail({
   };
 
   const remove = async () => {
-    if (!confirm(`Delete entry #${id}? This cannot be undone.`)) return;
+    if (!confirm(`Delete ${jobLabel(entry?.jobNumber as string | null, id)}? This cannot be undone.`)) return;
     await fetch(`/api/entries/${id}`, { method: "DELETE" });
     router.push(backHref);
   };
 
   const duplicate = async () => {
-    if (!confirm(`Duplicate entry #${id} as a new job? Signatures, job number and status are reset.`)) return;
+    if (
+      !confirm(
+        `Duplicate ${jobLabel(entry?.jobNumber as string | null, id)} as a new job? Signatures, job number and status are reset.`
+      )
+    )
+      return;
     const res = await fetch(`/api/entries/${id}/duplicate`, { method: "POST" });
     const j = await res.json();
     if (res.ok) {
@@ -377,8 +382,7 @@ export function EntryDetail({
             <StatusBadge status={String(entry.jobStatus)} />
           </h1>
           <p className="text-sm text-ink-500 mt-0.5">
-            Entry #{entry.id}
-            {entry.jobNumber ? ` · Job ${entry.jobNumber}` : ""} · {vehicleLabel || "No vehicle"} ·{" "}
+            {jobLabel(entry.jobNumber as string | null, entry.id as number)} · {vehicleLabel || "No vehicle"} ·{" "}
             {formatDateTime(entry.createdAt as string)}
           </p>
           {(entry.createdByName as string) && (

@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { Badge, Button, Card, Field, Input, Select, Spinner, Textarea } from "@/components/ui";
 import { addDays, DAY_SHORT, formatClock, formatDateKey, parseHhMm } from "@/lib/work-hours";
-import { cn } from "@/lib/utils";
+import { cn, jobLabel } from "@/lib/utils";
 
 type Tech = { id: number; name: string; title: string };
 type Assignment = {
@@ -304,7 +304,7 @@ export function ScheduleBoard({
                     <>
                       {" · "}
                       <Link href={`/admin/entries/${a.entryId}`} className="font-semibold text-brand-700 hover:underline">
-                        {jobNumber ? `Job ${jobNumber}` : `Entry #${a.entryId}`}
+                        {jobLabel(jobNumber, a.entryId)}
                       </Link>
                     </>
                   ) : null}
@@ -448,7 +448,7 @@ function AssignmentForm({
                 )}
               >
                 <span className="block text-sm font-semibold text-ink-900">
-                  {w.jobNumber ? `Job ${w.jobNumber}` : `Entry #${w.id}`} · {`${w.firstName ?? ""} ${w.lastName ?? ""}`.trim() || "No customer"}
+                  {jobLabel(w.jobNumber, w.id)} · {`${w.firstName ?? ""} ${w.lastName ?? ""}`.trim() || "No customer"}
                 </span>
                 <span className="block text-[13px] text-ink-500">
                   {[w.vehicleYear, w.vehicleMake, w.vehicleModel].filter(Boolean).join(" ") || "No vehicle"} · {w.jobStatus}

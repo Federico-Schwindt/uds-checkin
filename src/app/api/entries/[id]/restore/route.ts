@@ -19,7 +19,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     action: "entry.restore",
     entity: "entry",
     entityId: id,
-    summary: `Restored entry #${id}`,
+    summary: `Restored JOB${id}`,
     actor: actorLabel(sessionFromRequest(req)),
     req,
   });

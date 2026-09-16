@@ -176,7 +176,7 @@ export function MyCalendar({ items, todayKey }: { items: AssignmentRow[]; todayK
                     <p className="text-[13px] text-ink-500">
                       {a.startTime ? formatClock(parseHhMm(a.startTime)) : "All day"}
                       {a.customerName ? ` · ${a.customerName}` : ""}
-                      {a.entryId ? ` · Entry #${a.entryId}` : ""}
+                      {a.entryId ? ` · JOB${a.entryId}` : ""}
                     </p>
                     {a.details && <p className="text-[13px] text-ink-600 mt-1 break-words">{a.details}</p>}
                   </div>

@@ -5,6 +5,7 @@ import { sessionFromRequest } from "@/lib/session";
 import { actorLabel } from "@/lib/auth";
 import { logActivity } from "@/lib/audit";
 import { formatDateKey } from "@/lib/work-hours";
+import { jobLabel } from "@/lib/utils";
 
 export const ASSIGNMENT_TYPES = ["appointment", "work_order", "task", "other"] as const;
 
@@ -90,7 +91,7 @@ export async function POST(req: NextRequest) {
     customerName = customerName || `${e.firstName ?? ""} ${e.lastName ?? ""}`.trim();
     title =
       title ||
-      `Job ${e.jobNumber || `#${e.id}`} — ${[e.vehicleYear, e.vehicleMake, e.vehicleModel].filter(Boolean).join(" ") || "vehicle"}`;
+      `${jobLabel(e.jobNumber, e.id)} — ${[e.vehicleYear, e.vehicleMake, e.vehicleModel].filter(Boolean).join(" ") || "vehicle"}`;
   }
   if (type === "appointment" && !customerName && !title) {
     return NextResponse.json({ error: "Add the customer name or a short detail" }, { status: 400 });

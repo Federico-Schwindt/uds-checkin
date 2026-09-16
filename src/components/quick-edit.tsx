@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Check, ChevronDown, ExternalLink, Pencil, X } from "lucide-react";
 import { Badge, Button, Spinner, StatusBadge } from "@/components/ui";
-import { cn, formatDateTime, formatPhone } from "@/lib/utils";
+import { cn, formatDateTime, formatPhone, jobLabel } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
 
 /* ================= The floating panel ================= */
@@ -728,7 +728,7 @@ export function RowEditor({
       anchor={anchor}
       onClose={onClose}
       variant="modal"
-      title={row.jobNumber ? `Quick edit — Job ${row.jobNumber}` : `Quick edit — Entry #${row.id}`}
+      title={`Quick edit — ${jobLabel(row.jobNumber, row.id)}`}
       footer={
         <div className="flex items-center gap-2">
           <button
@@ -888,7 +888,7 @@ export function RowEditor({
 
         <p className="text-xs text-ink-500 border-t border-ink-100 pt-3">
           Checked in by <b className="text-ink-700">{row.createdByName || "—"}</b> on {formatDateTime(row.createdAt)} ·
-          Entry #{row.id}. Every edit you save here is recorded with your name.
+          JOB{row.id}. Every edit you save here is recorded with your name.
         </p>
       </div>
     </FloatingPanel>

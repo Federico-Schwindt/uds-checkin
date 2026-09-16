@@ -383,7 +383,7 @@ export default async function TechPanel() {
                     {e.note && <p className="text-[13px] text-ink-600 mt-1 break-words">{e.note}</p>}
                     <p className="text-[11px] text-ink-400 mt-1">
                       {new Date(e.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                      {e.entryId ? ` · Entry #${e.entryId}` : ""}
+                      {e.entryId ? ` · JOB${e.entryId}` : ""}
                       {e.createdBy ? ` · by ${e.createdBy}` : ""}
                     </p>
                   </div>

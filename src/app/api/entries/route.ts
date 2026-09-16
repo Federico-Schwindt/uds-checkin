@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { and, count, desc, eq, gte, ilike, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { getDb, entries, customers, parts, statusHistory, locations } from "@/db";
-import { normalizePhone } from "@/lib/utils";
+import { jobLabel, normalizePhone } from "@/lib/utils";
 import { storeDataUrl } from "@/lib/storage";
 import { notifyForEntry, notifyStatusChange } from "@/lib/notify";
 import { logActivity } from "@/lib/audit";
@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
     action: "entry.create",
     entity: "entry",
     entityId: entryId,
-    summary: `New check-in #${entryId} — ${data.firstName} ${data.lastName}${data.jobNumber ? ` (Job ${data.jobNumber})` : ""}`,
+    summary: `New check-in ${jobLabel(data.jobNumber, entryId)} — ${data.firstName} ${data.lastName}`,
     details: {
       vehicle: [data.vehicleYear, data.vehicleMake, data.vehicleModel].filter(Boolean).join(" "),
       jobStatus: data.jobStatus || "New",

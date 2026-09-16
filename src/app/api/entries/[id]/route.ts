@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { asc, eq } from "drizzle-orm";
 import { getDb, entries, customers, parts, statusHistory, messageLog } from "@/db";
 import { notifyStatusChange } from "@/lib/notify";
-import { normalizePhone } from "@/lib/utils";
+import { jobLabel, normalizePhone } from "@/lib/utils";
 import { diffFields, logActivity } from "@/lib/audit";
 import { sessionFromRequest } from "@/lib/session";
 import { actorLabel } from "@/lib/auth";
@@ -87,7 +87,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
         action: "entry.update",
         entity: "entry",
         entityId: id,
-        summary: `Edited entry #${id} (${Object.keys(changed).join(", ")})`,
+        summary: `Edited JOB${id} (${Object.keys(changed).join(", ")})`,
         details: changed,
         actor: actorLabel(session),
         req,
@@ -115,7 +115,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
           action: "customer.update",
           entity: "entry",
           entityId: id,
-          summary: `Edited the customer on entry #${id} (${keys.join(", ")})`,
+          summary: `Edited the customer on JOB${id} (${keys.join(", ")})`,
           details: changed,
           actor: actorLabel(session),
           req,
@@ -162,7 +162,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
       action: "status.change",
       entity: "entry",
       entityId: id,
-      summary: `Entry #${id} status: ${current.jobStatus} → ${patch.jobStatus}`,
+      summary: `JOB${id} status: ${current.jobStatus} → ${patch.jobStatus}`,
       details: { from: current.jobStatus, to: patch.jobStatus, notified: !skipNotify, by: session?.name || "" },
       actor: actorLabel(session),
       req,
@@ -196,7 +196,7 @@ export async function DELETE(req: NextRequest, ctx: { params: Promise<{ id: stri
     action: "entry.delete",
     entity: "entry",
     entityId: id,
-    summary: `Deleted entry #${id}${name ? ` — ${name}` : ""}${entry.jobNumber ? ` (Job ${entry.jobNumber})` : ""}`,
+    summary: `Deleted ${jobLabel(entry.jobNumber, id)}${name ? ` — ${name}` : ""}`,
     details: { entry, customer },
     actor: actorLabel(session),
     req,

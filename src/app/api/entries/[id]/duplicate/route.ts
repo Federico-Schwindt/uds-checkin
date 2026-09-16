@@ -55,7 +55,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     entryId: created.id,
     fromStatus: "",
     toStatus: "New",
-    note: `Duplicated from entry #${id}`,
+    note: `Duplicated from JOB${id}`,
     changedBy: session?.name || "",
   });
 
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     action: "entry.duplicate",
     entity: "entry",
     entityId: created.id,
-    summary: `Duplicated entry #${id} → new entry #${created.id}`,
+    summary: `Duplicated JOB${id} → new JOB${created.id}`,
     actor: actorLabel(session),
     details: { sourceId: id },
     req,

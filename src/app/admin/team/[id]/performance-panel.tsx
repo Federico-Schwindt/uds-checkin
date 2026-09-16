@@ -94,7 +94,7 @@ export function PerformancePanel({
                       href={`/admin/entries/${e.entryId}`}
                       className="text-[12px] font-semibold text-brand-700 hover:underline"
                     >
-                      Entry #{e.entryId}
+                      JOB{e.entryId}
                     </Link>
                   )}
                 </div>

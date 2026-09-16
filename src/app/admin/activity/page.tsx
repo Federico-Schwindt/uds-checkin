@@ -249,7 +249,7 @@ function ActivityInner() {
                               isDeleted ? "text-ink-400 pointer-events-none" : "text-brand-700 hover:underline"
                             )}
                           >
-                            (entry #{row.entityId})
+                            (JOB{row.entityId})
                           </Link>
                         </>
                       ) : null}

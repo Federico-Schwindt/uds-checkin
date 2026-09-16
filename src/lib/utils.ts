@@ -41,6 +41,17 @@ export function formatDate(d: Date | string | null | undefined): string {
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
+/**
+ * The label a job goes by: whatever was typed into its job number/name field,
+ * or — when nobody has set one — "JOB" plus the entry's own id. That id is a
+ * database serial, so it is already sequential and never reused; no separate
+ * numbering scheme to maintain.
+ */
+export function jobLabel(jobNumber: string | null | undefined, id: number): string {
+  const trimmed = (jobNumber || "").trim();
+  return trimmed || `JOB${id}`;
+}
+
 export function formatDateTime(d: Date | string | null | undefined): string {
   if (!d) return "—";
   const date = typeof d === "string" ? new Date(d) : d;
