@@ -13,7 +13,10 @@ export type CheckinData = {
   city: string;
   state: string;
   zip: string;
+  /** Cell that receives the SMS job updates. */
   phone: string;
+  /** Office line the shop calls once the job is finished. Optional. */
+  companyPhone: string;
   email: string;
   howHeard: string;
   smsConsent: boolean;
@@ -92,6 +95,7 @@ export const initialCheckinData: CheckinData = {
   state: "Florida",
   zip: "",
   phone: "",
+  companyPhone: "",
   email: "",
   howHeard: "",
   smsConsent: false,

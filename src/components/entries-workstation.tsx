@@ -191,7 +191,8 @@ export type ColumnPref = { key: string; visible: boolean };
 const COLUMN_LABELS: Record<string, string> = {
   jobNumber: "Job",
   customer: "Customer",
-  phone: "Phone",
+  phone: "Cell (texts)",
+  companyPhone: "Company phone",
   vehicle: "Vehicle",
   status: "Status",
   payment: "Payment",
@@ -203,13 +204,19 @@ const COLUMN_LABELS: Record<string, string> = {
 
 const DEFAULT_COLUMNS: ColumnPref[] = Object.keys(COLUMN_LABELS).map((key) => ({ key, visible: true }));
 
+/** Columns added after a layout was saved, and the column each one joins. */
+const COLUMN_AFTER: Record<string, string> = { companyPhone: "phone" };
+
 function normalizeColumns(prefs: ColumnPref[] | null | undefined): ColumnPref[] {
   const out: ColumnPref[] = [];
   for (const p of prefs || []) {
     if (COLUMN_LABELS[p.key] && !out.some((o) => o.key === p.key)) out.push({ key: p.key, visible: p.visible !== false });
   }
   for (const d of DEFAULT_COLUMNS) {
-    if (!out.some((o) => o.key === d.key)) out.push({ ...d });
+    if (out.some((o) => o.key === d.key)) continue;
+    const at = COLUMN_AFTER[d.key] ? out.findIndex((o) => o.key === COLUMN_AFTER[d.key]) : -1;
+    if (at >= 0) out.splice(at + 1, 0, { ...d });
+    else out.push({ ...d });
   }
   // Job and customer identify the row, so neither can be hidden, and the job
   // leads the table even when the saved preference predates that.
@@ -340,7 +347,12 @@ export function EntriesWorkstation({
                     }
                   : {}),
                 ...(j.customer
-                  ? { phone: j.customer.phone, firstName: j.customer.firstName, lastName: j.customer.lastName }
+                  ? {
+                      phone: j.customer.phone,
+                      companyPhone: j.customer.companyPhone,
+                      firstName: j.customer.firstName,
+                      lastName: j.customer.lastName,
+                    }
                   : {}),
               }
             : r
@@ -422,10 +434,22 @@ export function EntriesWorkstation({
           <td key={key} className="px-1.5 py-2 w-36">
             <InlineText
               value={formatPhone(r.phone || "")}
-              onSave={(v) => patchRow(r, { customer: { phone: v } }, "Phone updated.")}
+              onSave={(v) => patchRow(r, { customer: { phone: v } }, "Cell phone updated.")}
               inputMode="tel"
               placeholder="No phone"
               className="font-bold text-ink-900"
+            />
+          </td>
+        );
+      case "companyPhone":
+        return (
+          <td key={key} className="px-1.5 py-2 w-36">
+            <InlineText
+              value={formatPhone(r.companyPhone || "")}
+              onSave={(v) => patchRow(r, { customer: { companyPhone: v } }, "Company phone updated.")}
+              inputMode="tel"
+              placeholder="—"
+              className="text-ink-900"
             />
           </td>
         );
@@ -625,6 +649,14 @@ export function EntriesWorkstation({
               </div>
               {r.createdByName && (
                 <p className="mt-1 text-[11px] text-ink-400">Checked in by {r.createdByName}</p>
+              )}
+              {r.companyPhone && (
+                <p className="mt-1 text-[13px] text-ink-500">
+                  Company:{" "}
+                  <a href={`tel:${r.companyPhone.replace(/\D/g, "")}`} className="text-brand-700 font-semibold">
+                    {formatPhone(r.companyPhone)}
+                  </a>
+                </p>
               )}
               <div className="mt-2.5 pt-2.5 border-t border-ink-100 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">

@@ -85,6 +85,7 @@ export function CheckinWizard({
           firstName: initialCustomer.firstName,
           lastName: initialCustomer.lastName,
           phone: formatPhoneSafe(initialCustomer.phone),
+          companyPhone: formatPhoneSafe(initialCustomer.companyPhone),
           email: initialCustomer.email,
           street: initialCustomer.street,
           city: initialCustomer.city,
@@ -162,6 +163,7 @@ export function CheckinWizard({
       firstName: c.firstName,
       lastName: c.lastName,
       phone: formatPhoneSafe(c.phone),
+      companyPhone: formatPhoneSafe(c.companyPhone),
       email: c.email,
       street: c.street,
       city: c.city,
@@ -200,12 +202,17 @@ export function CheckinWizard({
     const current = steps[step];
     if (!current) return {};
     const errs = validateFields(current.fields, data as ValueBag, lookup);
-    // Phone needs format validation beyond "not empty".
-    const phoneField = current.fields.find((f) => f.key === "phone") || lookup.get("phone");
-    const phoneVisible =
-      phoneField && current.fields.some((f) => f.key === "phone" || f.children?.some((c) => c.key === "phone"));
-    if (phoneVisible && phoneField?.required && normalizePhone(data.phone).length !== 10) {
-      errs.phone = "A valid 10-digit phone is required";
+    // Phones need format validation beyond "not empty".
+    const onStep = (key: string) =>
+      current.fields.some((f) => f.key === key || f.children?.some((c) => c.key === key));
+    const phoneField = lookup.get("phone");
+    if (onStep("phone") && phoneField?.required && normalizePhone(data.phone).length !== 10) {
+      errs.phone = "A valid 10-digit cell number is required";
+    }
+    // The company line is optional, but one that is given has to be callable.
+    const companyPhone = normalizePhone(data.companyPhone || "");
+    if (onStep("companyPhone") && companyPhone && companyPhone.length !== 10) {
+      errs.companyPhone = "Enter a 10-digit phone number";
     }
     return errs;
   }, [steps, step, data, lookup]);

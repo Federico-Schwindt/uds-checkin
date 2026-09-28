@@ -57,6 +57,17 @@ const cust = (
   ...extra,
 });
 
+/** The cell phone the job updates are texted to. */
+const PHONE_LABEL = "Cell Phone (Text Updates)";
+const PHONE_HELP = "Job status updates are texted to this number.";
+
+/** The office line the shop calls once the job is finished. Optional. */
+const COMPANY_PHONE_FIELD = cust("companyPhone", "Company Phone Number", "phone", {
+  width: 6,
+  placeholder: "(123) 123-1233",
+  help: "We call this number when the job is finished.",
+});
+
 const heading = (id: string, label: string): FormField => ({
   id: `h_${id}`,
   type: "heading",
@@ -107,7 +118,14 @@ const customerStep: FormStep = {
       cust("lastName", "Last Name", "text", { required: true, locked: true, width: 6, placeholder: "Last" }),
     ]),
     row("contact", [
-      cust("phone", "Phone", "phone", { required: true, locked: true, width: 6, placeholder: "(123) 123-1233" }),
+      cust("phone", PHONE_LABEL, "phone", {
+        required: true,
+        locked: true,
+        width: 6,
+        placeholder: "(123) 123-1233",
+        help: PHONE_HELP,
+      }),
+      COMPANY_PHONE_FIELD,
       cust("email", "Email", "email", { width: 6, placeholder: "customer@email.com" }),
     ]),
     cust("street", "Street Address", "text", { placeholder: "Address" }),
@@ -307,16 +325,72 @@ const staffStep: FormStep = {
   ],
 };
 
+const SCHEMA_VERSION = 2;
+
 export const DEFAULT_FORM_SCHEMA: FormSchema = {
-  version: 1,
+  version: SCHEMA_VERSION,
   steps: [customerStep, estimateStep, vehicleStep, termsStep, staffStep],
 };
 
+/** Inserts `field` right after the field keyed `afterKey`, wherever that sits. */
+function insertAfter(fields: FormField[], afterKey: string, field: FormField): { fields: FormField[]; done: boolean } {
+  const at = fields.findIndex((f) => f.key === afterKey);
+  if (at >= 0) return { fields: [...fields.slice(0, at + 1), field, ...fields.slice(at + 1)], done: true };
+  let done = false;
+  const out = fields.map((f) => {
+    if (done || !f.children?.length) return f;
+    const r = insertAfter(f.children, afterKey, field);
+    done = r.done;
+    return r.done ? { ...f, children: r.fields } : f;
+  });
+  return { fields: out, done };
+}
+
+function hasKey(fields: FormField[], key: string): boolean {
+  return fields.some((f) => f.key === key || (f.children ? hasKey(f.children, key) : false));
+}
+
 /**
- * Stored schemas are used as-is (the admin owns them). We only fall back to the
- * default when nothing has been saved yet.
+ * v1 → v2: the phone became the texting number and a company phone joined it.
+ * Runs once per saved form — the version is bumped the next time the admin
+ * saves, so a company phone they later delete stays deleted, and a label they
+ * reworded is left as they wrote it.
+ */
+function upgradeToV2(schema: FormSchema): FormSchema {
+  const relabel = (fields: FormField[]): FormField[] =>
+    fields.map((f) => {
+      const next = f.children ? { ...f, children: relabel(f.children) } : f;
+      if (next.core && next.key === "phone" && next.label === "Phone") {
+        return { ...next, label: PHONE_LABEL, help: next.help || PHONE_HELP };
+      }
+      return next;
+    });
+
+  let steps = schema.steps.map((s) => ({ ...s, fields: relabel(s.fields) }));
+  if (!steps.some((s) => hasKey(s.fields, "companyPhone"))) {
+    let placed = false;
+    steps = steps.map((s) => {
+      if (placed) return s;
+      const r = insertAfter(s.fields, "phone", COMPANY_PHONE_FIELD);
+      placed = r.done;
+      return r.done ? { ...s, fields: r.fields } : s;
+    });
+    // No phone to sit beside: put it at the end of the first step rather than lose it.
+    if (!placed && steps.length) {
+      steps = [{ ...steps[0], fields: [...steps[0].fields, COMPANY_PHONE_FIELD] }, ...steps.slice(1)];
+    }
+  }
+  return { ...schema, version: SCHEMA_VERSION, steps };
+}
+
+/**
+ * Stored schemas are used as-is (the admin owns them), apart from one-time
+ * upgrades for fields the app gained after they were saved. We fall back to
+ * the default when nothing has been saved yet.
  */
 export function resolveSchema(stored: FormSchema | null | undefined): FormSchema {
   if (!stored || !Array.isArray(stored.steps) || stored.steps.length === 0) return DEFAULT_FORM_SCHEMA;
-  return stored;
+  let schema = stored;
+  if ((schema.version ?? 1) < 2) schema = upgradeToV2(schema);
+  return schema;
 }

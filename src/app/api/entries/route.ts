@@ -40,7 +40,11 @@ export async function POST(req: NextRequest) {
 
   const phone = normalizePhone(data.phone);
   if (!data.firstName?.trim() || !data.lastName?.trim() || phone.length !== 10) {
-    return NextResponse.json({ error: "First name, last name and a valid phone are required" }, { status: 400 });
+    return NextResponse.json({ error: "First name, last name and a valid cell phone are required" }, { status: 400 });
+  }
+  const companyPhone = normalizePhone(data.companyPhone || "");
+  if (companyPhone && companyPhone.length !== 10) {
+    return NextResponse.json({ error: "The company phone number must have 10 digits" }, { status: 400 });
   }
 
   const db = await getDb();
@@ -78,6 +82,7 @@ export async function POST(req: NextRequest) {
     firstName: data.firstName.trim(),
     lastName: data.lastName.trim(),
     phone,
+    companyPhone,
     email: (data.email || "").trim(),
     street: data.street || "",
     city: data.city || "",
@@ -316,7 +321,9 @@ export async function GET(req: NextRequest) {
       ilike(entries.vehicleMake, like),
       ilike(sql`(${customers.firstName} || ' ' || ${customers.lastName})`, like),
     ];
-    if (digits.length >= 3) parts_.push(ilike(customers.phone, `%${digits}%`));
+    if (digits.length >= 3) {
+      parts_.push(ilike(customers.phone, `%${digits}%`), ilike(customers.companyPhone, `%${digits}%`));
+    }
     baseConds.push(or(...parts_)!);
   }
 
@@ -347,6 +354,7 @@ export async function GET(req: NextRequest) {
       firstName: customers.firstName,
       lastName: customers.lastName,
       phone: customers.phone,
+      companyPhone: customers.companyPhone,
     })
     .from(entries)
     .leftJoin(customers, eq(entries.customerId, customers.id))

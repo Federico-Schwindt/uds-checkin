@@ -230,7 +230,10 @@ export const customers = pgTable(
     id: serial("id").primaryKey(),
     firstName: text("first_name").notNull().default(""),
     lastName: text("last_name").notNull().default(""),
-    phone: text("phone").notNull().default(""), // digits only
+    /** The cell that gets the SMS job updates. Digits only. */
+    phone: text("phone").notNull().default(""),
+    /** The office line the shop calls when the job is finished. Digits only, may be empty. */
+    companyPhone: text("company_phone").notNull().default(""),
     email: text("email").notNull().default(""),
     street: text("street").notNull().default(""),
     address2: text("address2").notNull().default(""),

@@ -13,6 +13,7 @@ export type CustomerHit = {
   firstName: string;
   lastName: string;
   phone: string;
+  companyPhone: string;
   email: string;
   street: string;
   city: string;

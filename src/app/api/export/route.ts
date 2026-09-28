@@ -39,7 +39,9 @@ export async function GET(req: NextRequest) {
       ilike(entries.jobNumber, like),
       ilike(sql`(${customers.firstName} || ' ' || ${customers.lastName})`, like),
     ];
-    if (digits.length >= 3) parts_.push(ilike(customers.phone, `%${digits}%`));
+    if (digits.length >= 3) {
+      parts_.push(ilike(customers.phone, `%${digits}%`), ilike(customers.companyPhone, `%${digits}%`));
+    }
     conds.push(or(...parts_)!);
   }
   const where = conds.length ? and(...conds) : undefined;
@@ -61,7 +63,7 @@ export async function GET(req: NextRequest) {
 
   const header = [
     "Entry ID", "Created", "Job Number", "Status", "Payment",
-    "First Name", "Last Name", "Phone", "Email", "Street", "City", "State", "ZIP", "SMS Consent",
+    "First Name", "Last Name", "Cell Phone (Texts)", "Company Phone", "Email", "Street", "City", "State", "ZIP", "SMS Consent",
     "Year", "Make", "Model", "Drive", "Location", "Cab", "Transmission", "Trans Speed",
     "Engine", "Bed Size", "Wheelbase", "HP", "VIN", "Mileage", "Stock", "Save Old Parts",
     "Complaint", "Notes", "Labor Request", "Driveshaft Pieces", "Material", "U-Joint Serial",
@@ -77,7 +79,8 @@ export async function GET(req: NextRequest) {
     lines.push(
       [
         e.id, e.createdAt?.toISOString() ?? "", e.jobNumber, e.jobStatus, e.payment,
-        c?.firstName ?? "", c?.lastName ?? "", formatPhone(c?.phone ?? ""), c?.email ?? "",
+        c?.firstName ?? "", c?.lastName ?? "", formatPhone(c?.phone ?? ""), formatPhone(c?.companyPhone ?? ""),
+        c?.email ?? "",
         c?.street ?? "", c?.city ?? "", c?.state ?? "", c?.zip ?? "", c?.smsConsent ? "Yes" : "No",
         e.vehicleYear, e.vehicleMake, e.vehicleModel, e.drive, e.axleLocation, e.cab,
         e.transmission, e.transmissionSpeed, e.engineSize,

@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     rows = await db
       .select()
       .from(customers)
-      .where(ilike(customers.phone, `%${digits}%`))
+      .where(or(ilike(customers.phone, `%${digits}%`), ilike(customers.companyPhone, `%${digits}%`)))
       .orderBy(desc(customers.updatedAt))
       .limit(8);
   } else {
@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
       firstName: c.firstName,
       lastName: c.lastName,
       phone: c.phone,
+      companyPhone: c.companyPhone,
       email: c.email,
       street: c.street,
       city: c.city,

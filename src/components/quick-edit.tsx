@@ -180,6 +180,7 @@ export type EntryRow = {
   firstName: string | null;
   lastName: string | null;
   phone: string | null;
+  companyPhone: string | null;
 };
 
 /** PATCH body for /api/entries/[id] — what every editor here hands back. */
@@ -628,6 +629,7 @@ type Draft = {
   firstName: string;
   lastName: string;
   phone: string;
+  companyPhone: string;
   vehicleYear: string;
   vehicleMake: string;
   vehicleModel: string;
@@ -652,7 +654,7 @@ const ENTRY_KEYS = [
   "etaJob",
 ] as const;
 const MONEY_KEYS = ["total", "deposit"] as const;
-const CUSTOMER_KEYS = ["firstName", "lastName", "phone"] as const;
+const CUSTOMER_KEYS = ["firstName", "lastName", "phone", "companyPhone"] as const;
 
 function draftFrom(row: EntryRow): Draft {
   return {
@@ -660,6 +662,7 @@ function draftFrom(row: EntryRow): Draft {
     firstName: row.firstName || "",
     lastName: row.lastName || "",
     phone: formatPhone(row.phone || "") || row.phone || "",
+    companyPhone: formatPhone(row.companyPhone || "") || row.companyPhone || "",
     vehicleYear: row.vehicleYear || "",
     vehicleMake: row.vehicleMake || "",
     vehicleModel: row.vehicleModel || "",
@@ -844,14 +847,25 @@ export function RowEditor({
               />
             </EditRow>
           </div>
-          <EditRow label="Phone">
-            <PanelInput
-              value={d.phone}
-              inputMode="tel"
-              onChange={(e) => set("phone", e.target.value)}
-              disabled={!row.customerId}
-            />
-          </EditRow>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <EditRow label="Cell (text updates)">
+              <PanelInput
+                value={d.phone}
+                inputMode="tel"
+                onChange={(e) => set("phone", e.target.value)}
+                disabled={!row.customerId}
+              />
+            </EditRow>
+            <EditRow label="Company phone">
+              <PanelInput
+                value={d.companyPhone}
+                inputMode="tel"
+                placeholder="Called when the job is done"
+                onChange={(e) => set("companyPhone", e.target.value)}
+                disabled={!row.customerId}
+              />
+            </EditRow>
+          </div>
           {!row.customerId && <p className="-mt-1 text-xs text-ink-500">No customer on this entry yet.</p>}
         </div>
 

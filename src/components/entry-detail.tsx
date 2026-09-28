@@ -10,6 +10,7 @@ import {
   Flag,
   MessageSquareText,
   Pencil,
+  Phone,
   Printer,
   Trash2,
   UserCircle2,
@@ -38,7 +39,7 @@ import formOptions from "@/lib/form-options.json";
 type FieldDef = {
   key: string;
   label: string;
-  type?: "text" | "select" | "date" | "datetime" | "textarea" | "money";
+  type?: "text" | "select" | "date" | "datetime" | "textarea" | "money" | "phone";
   options?: string[];
   span2?: boolean;
 };
@@ -97,7 +98,8 @@ const STAFF_FIELDS: FieldDef[] = [
 const CUSTOMER_FIELDS: FieldDef[] = [
   { key: "firstName", label: "First Name" },
   { key: "lastName", label: "Last Name" },
-  { key: "phone", label: "Phone" },
+  { key: "phone", label: "Cell (text updates)", type: "phone" },
+  { key: "companyPhone", label: "Company phone", type: "phone" },
   { key: "email", label: "Email" },
   { key: "street", label: "Street", span2: true },
   { key: "city", label: "City" },
@@ -325,13 +327,19 @@ export function EntryDetail({
       const display =
         f.type === "money"
           ? formatMoney(value)
-          : f.key === "phone"
-            ? formatPhone(value)
+          : f.type === "phone"
+            ? formatPhone(value) || "—"
             : value || "—";
       return (
         <div key={f.key} className={cn("min-w-0", f.span2 && "sm:col-span-2")}>
           <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-400">{f.label}</p>
-          <p className={cn("text-sm text-ink-900 mt-0.5 break-words", !value && "text-ink-300")}>{display}</p>
+          {f.type === "phone" && value ? (
+            <a href={telHref(value)} className="block text-sm font-semibold text-brand-700 hover:underline mt-0.5">
+              {display}
+            </a>
+          ) : (
+            <p className={cn("text-sm text-ink-900 mt-0.5 break-words", !value && "text-ink-300")}>{display}</p>
+          )}
         </div>
       );
     }
@@ -349,8 +357,9 @@ export function EntryDetail({
           <Textarea value={value} onChange={(e) => setVal(e.target.value)} className="min-h-20" />
         ) : (
           <Input
-            type={f.type === "datetime" ? "datetime-local" : f.type === "date" ? "date" : "text"}
-            value={value}
+            type={f.type === "datetime" ? "datetime-local" : f.type === "date" ? "date" : f.type === "phone" ? "tel" : "text"}
+            inputMode={f.type === "phone" ? "tel" : undefined}
+            value={f.type === "phone" ? formatPhone(value) : value}
             onChange={(e) => setVal(e.target.value)}
             className="h-10"
           />
@@ -453,6 +462,10 @@ export function EntryDetail({
               );
             })}
           </div>
+
+          {entry.jobStatus === "Completed" && !pendingStatus && (
+            <FinishedCallout companyPhone={String(customer?.companyPhone || "")} cellPhone={String(customer?.phone || "")} />
+          )}
 
           {pendingStatus && (
             <div className="mt-4 rounded-xl border border-ink-200 bg-ink-50 p-4 animate-fade-up space-y-4">
@@ -906,5 +919,30 @@ function JobQualityCard({
         </div>
       )}
     </Card>
+  );
+}
+
+function telHref(phone: string) {
+  return `tel:${phone.replace(/\D/g, "")}`;
+}
+
+/** A finished job gets a call: the company line when there is one, otherwise the cell. */
+function FinishedCallout({ companyPhone, cellPhone }: { companyPhone: string; cellPhone: string }) {
+  const number = companyPhone || cellPhone;
+  if (!number) return null;
+  return (
+    <div className="mt-4 flex items-center justify-between gap-3 flex-wrap rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+      <p className="text-sm text-emerald-900">
+        <span className="font-bold">Job finished — call to let them know.</span>{" "}
+        {companyPhone ? "Company phone" : "No company phone on file, so this is their cell"}:{" "}
+        <span className="font-semibold">{formatPhone(number)}</span>
+      </p>
+      <a
+        href={telHref(number)}
+        className="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold"
+      >
+        <Phone className="w-4 h-4" /> Call
+      </a>
+    </div>
   );
 }

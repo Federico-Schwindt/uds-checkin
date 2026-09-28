@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS customers (
   first_name TEXT NOT NULL DEFAULT '',
   last_name TEXT NOT NULL DEFAULT '',
   phone TEXT NOT NULL DEFAULT '',
+  company_phone TEXT NOT NULL DEFAULT '',
   email TEXT NOT NULL DEFAULT '',
   street TEXT NOT NULL DEFAULT '',
   address2 TEXT NOT NULL DEFAULT '',
@@ -313,6 +314,7 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
   kioskColumns: [
     { key: "customer", visible: true },
     { key: "phone", visible: true },
+    { key: "companyPhone", visible: true },
     { key: "vehicle", visible: true },
     { key: "jobNumber", visible: true },
     { key: "status", visible: true },
@@ -393,6 +395,9 @@ const SEED_USERS: Array<{
 ];
 
 const SIGNOFF = "\n\nUniversal Driveshafts";
+
+const ADMIN_SUBMISSION_BODY =
+  "A new check-in was submitted.\n\nCustomer: {full_name}\nCell (texts): {phone}\nCompany phone: {company_phone}\nEmail: {email}\nVehicle: {vehicle}\nJob #: {job_number}\nStatus: {status}\nDeposit: {deposit}\nTotal: {total}\n\nOpen the admin panel to view the full entry.";
 
 const DEFAULT_TEMPLATES: Array<{
   key: string;
@@ -491,9 +496,13 @@ const DEFAULT_TEMPLATES: Array<{
     name: "New check-in (Admin notification)",
     subject: "New job order from {full_name}",
     body:
-      "A new check-in was submitted.\n\nCustomer: {full_name}\nPhone: {phone}\nEmail: {email}\nVehicle: {vehicle}\nJob #: {job_number}\nStatus: {status}\nDeposit: {deposit}\nTotal: {total}\n\nOpen the admin panel to view the full entry.",
+      ADMIN_SUBMISSION_BODY,
   },
 ];
+
+/** The admin email as first shipped, before the company phone existed. */
+const LEGACY_ADMIN_SUBMISSION_BODY =
+  "A new check-in was submitted.\n\nCustomer: {full_name}\nPhone: {phone}\nEmail: {email}\nVehicle: {vehicle}\nJob #: {job_number}\nStatus: {status}\nDeposit: {deposit}\nTotal: {total}\n\nOpen the admin panel to view the full entry.";
 
 /** [username, hash shipped in the first release, hash to move it to] */
 const LEGACY_PASSWORD_MIGRATIONS: Array<[string, string, string]> = [
@@ -562,6 +571,22 @@ export async function bootstrap(db: Db) {
   await db.execute(sql.raw("CREATE INDEX IF NOT EXISTS entries_created_by_idx ON entries (created_by_user_id)"));
   await db.execute(sql.raw("CREATE INDEX IF NOT EXISTS entries_assigned_idx ON entries (assigned_employee)"));
   await db.execute(sql.raw("CREATE INDEX IF NOT EXISTS activity_actor_idx ON activity_log (actor)"));
+
+  // Micro-migration: the office line the shop calls when a job is finished.
+  await db.execute(
+    sql.raw("ALTER TABLE customers ADD COLUMN IF NOT EXISTS company_phone TEXT NOT NULL DEFAULT ''")
+  );
+  // Bring the admin email up to date with it, unless someone has reworded it.
+  await db
+    .update(messageTemplates)
+    .set({ body: ADMIN_SUBMISSION_BODY })
+    .where(
+      and(
+        eq(messageTemplates.key, "admin_submission"),
+        eq(messageTemplates.channel, "email"),
+        eq(messageTemplates.body, LEGACY_ADMIN_SUBMISSION_BODY)
+      )
+    );
 
   // Micro-migration: birthdays and hire dates on staff profiles.
   await db.execute(sql.raw("ALTER TABLE users ADD COLUMN IF NOT EXISTS birthday TEXT NOT NULL DEFAULT ''"));

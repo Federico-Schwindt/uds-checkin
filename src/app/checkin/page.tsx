@@ -28,6 +28,7 @@ export default async function CheckinPage({
         firstName: row.firstName,
         lastName: row.lastName,
         phone: row.phone,
+        companyPhone: row.companyPhone,
         email: row.email,
         street: row.street,
         city: row.city,

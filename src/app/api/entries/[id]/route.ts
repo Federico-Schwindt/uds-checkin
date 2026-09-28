@@ -49,7 +49,7 @@ const ENTRY_EDITABLE = new Set([
 ]);
 
 const CUSTOMER_EDITABLE = new Set([
-  "firstName", "lastName", "phone", "email", "street", "city", "state", "zip", "smsConsent",
+  "firstName", "lastName", "phone", "companyPhone", "email", "street", "city", "state", "zip", "smsConsent",
 ]);
 
 export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
@@ -102,6 +102,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
       if (CUSTOMER_EDITABLE.has(k)) cPatch[k] = v ?? "";
     }
     if (typeof cPatch.phone === "string") cPatch.phone = normalizePhone(cPatch.phone);
+    if (typeof cPatch.companyPhone === "string") cPatch.companyPhone = normalizePhone(cPatch.companyPhone);
     if (Object.keys(cPatch).length) {
       const keys = Object.keys(cPatch);
       const before = await db.select().from(customers).where(eq(customers.id, current.customerId));
