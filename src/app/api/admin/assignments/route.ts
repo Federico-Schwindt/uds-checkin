@@ -6,7 +6,7 @@ import { actorLabel } from "@/lib/auth";
 import { logActivity } from "@/lib/audit";
 import { formatDateKey } from "@/lib/work-hours";
 
-export const ASSIGNMENT_TYPES = ["appointment", "work_order", "task", "other"] as const;
+const ASSIGNMENT_TYPES = ["appointment", "work_order", "task", "other"] as const;
 
 function requireAdmin(req: NextRequest) {
   const session = sessionFromRequest(req);
