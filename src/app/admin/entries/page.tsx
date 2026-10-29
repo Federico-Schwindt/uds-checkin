@@ -23,6 +23,7 @@ type Row = {
   etaJob: string;
   firstName: string | null;
   lastName: string | null;
+  companyName: string | null;
   phone: string | null;
 };
 
@@ -185,6 +186,7 @@ function EntriesInner() {
                       <p className="font-semibold text-ink-900">
                         {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : "—"}
                       </p>
+                      {r.companyName && <p className="text-[13px] text-ink-500">{r.companyName}</p>}
                       <p className="text-[13px] font-bold text-ink-800">{formatPhone(r.phone || "")}</p>
                     </td>
                     <td className="px-4 py-3 text-ink-700">

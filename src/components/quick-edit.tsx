@@ -180,6 +180,7 @@ export type EntryRow = {
   firstName: string | null;
   lastName: string | null;
   phone: string | null;
+  companyName: string | null;
   companyPhone: string | null;
 };
 
@@ -629,6 +630,7 @@ type Draft = {
   firstName: string;
   lastName: string;
   phone: string;
+  companyName: string;
   companyPhone: string;
   vehicleYear: string;
   vehicleMake: string;
@@ -654,7 +656,7 @@ const ENTRY_KEYS = [
   "etaJob",
 ] as const;
 const MONEY_KEYS = ["total", "deposit"] as const;
-const CUSTOMER_KEYS = ["firstName", "lastName", "phone", "companyPhone"] as const;
+const CUSTOMER_KEYS = ["firstName", "lastName", "companyName", "phone", "companyPhone"] as const;
 
 function draftFrom(row: EntryRow): Draft {
   return {
@@ -662,6 +664,7 @@ function draftFrom(row: EntryRow): Draft {
     firstName: row.firstName || "",
     lastName: row.lastName || "",
     phone: formatPhone(row.phone || "") || row.phone || "",
+    companyName: row.companyName || "",
     companyPhone: formatPhone(row.companyPhone || "") || row.companyPhone || "",
     vehicleYear: row.vehicleYear || "",
     vehicleMake: row.vehicleMake || "",
@@ -847,6 +850,14 @@ export function RowEditor({
               />
             </EditRow>
           </div>
+          <EditRow label="Company">
+            <PanelInput
+              value={d.companyName}
+              placeholder="Blank for a private customer"
+              onChange={(e) => set("companyName", e.target.value)}
+              disabled={!row.customerId}
+            />
+          </EditRow>
           <div className="grid sm:grid-cols-2 gap-3">
             <EditRow label="Cell (text updates)">
               <PanelInput

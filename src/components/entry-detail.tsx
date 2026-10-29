@@ -98,6 +98,7 @@ const STAFF_FIELDS: FieldDef[] = [
 const CUSTOMER_FIELDS: FieldDef[] = [
   { key: "firstName", label: "First Name" },
   { key: "lastName", label: "Last Name" },
+  { key: "companyName", label: "Company" },
   { key: "phone", label: "Cell (text updates)", type: "phone" },
   { key: "companyPhone", label: "Company phone", type: "phone" },
   { key: "email", label: "Email" },
@@ -385,6 +386,9 @@ export function EntryDetail({
             {custData?.firstName as string} {custData?.lastName as string}
             <StatusBadge status={String(entry.jobStatus)} />
           </h1>
+          {(custData?.companyName as string) && (
+            <p className="text-[15px] font-semibold text-ink-700">{custData?.companyName as string}</p>
+          )}
           <p className="text-sm text-ink-500 mt-0.5">
             Entry #{entry.id}
             {entry.jobNumber ? ` · Job ${entry.jobNumber}` : ""} · {vehicleLabel || "No vehicle"} ·{" "}
@@ -464,7 +468,11 @@ export function EntryDetail({
           </div>
 
           {entry.jobStatus === "Completed" && !pendingStatus && (
-            <FinishedCallout companyPhone={String(customer?.companyPhone || "")} cellPhone={String(customer?.phone || "")} />
+            <FinishedCallout
+              companyName={String(customer?.companyName || "")}
+              companyPhone={String(customer?.companyPhone || "")}
+              cellPhone={String(customer?.phone || "")}
+            />
           )}
 
           {pendingStatus && (
@@ -927,14 +935,27 @@ function telHref(phone: string) {
 }
 
 /** A finished job gets a call: the company line when there is one, otherwise the cell. */
-function FinishedCallout({ companyPhone, cellPhone }: { companyPhone: string; cellPhone: string }) {
+function FinishedCallout({
+  companyName,
+  companyPhone,
+  cellPhone,
+}: {
+  companyName: string;
+  companyPhone: string;
+  cellPhone: string;
+}) {
   const number = companyPhone || cellPhone;
   if (!number) return null;
   return (
     <div className="mt-4 flex items-center justify-between gap-3 flex-wrap rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
       <p className="text-sm text-emerald-900">
         <span className="font-bold">Job finished — call to let them know.</span>{" "}
-        {companyPhone ? "Company phone" : "No company phone on file, so this is their cell"}:{" "}
+        {companyPhone
+          ? companyName
+            ? `${companyName}'s phone`
+            : "Company phone"
+          : "No company phone on file, so this is their cell"}
+        :{" "}
         <span className="font-semibold">{formatPhone(number)}</span>
       </p>
       <a

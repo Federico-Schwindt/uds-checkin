@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
     firstName: data.firstName.trim(),
     lastName: data.lastName.trim(),
     phone,
+    companyName: (data.companyName || "").trim(),
     companyPhone,
     email: (data.email || "").trim(),
     street: data.street || "",
@@ -320,6 +321,7 @@ export async function GET(req: NextRequest) {
       ilike(entries.vehicleModel, like),
       ilike(entries.vehicleMake, like),
       ilike(sql`(${customers.firstName} || ' ' || ${customers.lastName})`, like),
+      ilike(customers.companyName, like),
     ];
     if (digits.length >= 3) {
       parts_.push(ilike(customers.phone, `%${digits}%`), ilike(customers.companyPhone, `%${digits}%`));
@@ -354,6 +356,7 @@ export async function GET(req: NextRequest) {
       firstName: customers.firstName,
       lastName: customers.lastName,
       phone: customers.phone,
+      companyName: customers.companyName,
       companyPhone: customers.companyPhone,
     })
     .from(entries)

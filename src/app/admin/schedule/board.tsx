@@ -43,6 +43,7 @@ type WorkOrder = {
   vehicleModel: string;
   firstName: string | null;
   lastName: string | null;
+  companyName: string | null;
 };
 
 const TYPE_LABEL: Record<string, string> = {
@@ -449,6 +450,7 @@ function AssignmentForm({
               >
                 <span className="block text-sm font-semibold text-ink-900">
                   {w.jobNumber ? `Job ${w.jobNumber}` : `Entry #${w.id}`} · {`${w.firstName ?? ""} ${w.lastName ?? ""}`.trim() || "No customer"}
+                  {w.companyName ? ` (${w.companyName})` : ""}
                 </span>
                 <span className="block text-[13px] text-ink-500">
                   {[w.vehicleYear, w.vehicleMake, w.vehicleModel].filter(Boolean).join(" ") || "No vehicle"} · {w.jobStatus}

@@ -349,6 +349,7 @@ export function EntriesWorkstation({
                 ...(j.customer
                   ? {
                       phone: j.customer.phone,
+                      companyName: j.customer.companyName,
                       companyPhone: j.customer.companyPhone,
                       firstName: j.customer.firstName,
                       lastName: j.customer.lastName,
@@ -407,17 +408,21 @@ export function EntriesWorkstation({
         return (
           <td key={key} className="px-2.5 py-2">
             <div className="flex items-center gap-1">
-              <InlineFields
-                title="Customer name"
-                display={`${r.firstName ?? ""} ${r.lastName ?? ""}`.trim()}
-                placeholder="No customer"
-                className="font-semibold text-ink-900"
-                fields={[
-                  { key: "firstName", label: "First name", value: r.firstName || "" },
-                  { key: "lastName", label: "Last name", value: r.lastName || "" },
-                ]}
-                onSave={(v) => patchRow(r, { customer: v }, "Customer name updated.")}
-              />
+              <div className="min-w-0">
+                <InlineFields
+                  title="Customer"
+                  display={`${r.firstName ?? ""} ${r.lastName ?? ""}`.trim()}
+                  placeholder="No customer"
+                  className="font-semibold text-ink-900"
+                  fields={[
+                    { key: "firstName", label: "First name", value: r.firstName || "" },
+                    { key: "lastName", label: "Last name", value: r.lastName || "" },
+                    { key: "companyName", label: "Company", value: r.companyName || "" },
+                  ]}
+                  onSave={(v) => patchRow(r, { customer: v }, "Customer updated.")}
+                />
+                {r.companyName && <p className="px-2 -mt-0.5 text-[12px] text-ink-500 truncate">{r.companyName}</p>}
+              </div>
               <button
                 onClick={() => router.push(`/entry/${r.id}`)}
                 title="Open entry"
@@ -638,6 +643,7 @@ export function EntriesWorkstation({
                   >
                     {r.firstName || r.lastName ? `${r.firstName ?? ""} ${r.lastName ?? ""}`.trim() : `Entry #${r.id}`}
                   </button>
+                  {r.companyName && <p className="text-[13px] text-ink-500 truncate">{r.companyName}</p>}
                 </div>
                 <InlineStatus row={r} onApply={(patch, skipNotify) => patchRow(r, { entry: patch, skipNotify })} />
               </div>

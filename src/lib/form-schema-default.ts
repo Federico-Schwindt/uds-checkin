@@ -61,6 +61,12 @@ const cust = (
 const PHONE_LABEL = "Cell Phone (Text Updates)";
 const PHONE_HELP = "Job status updates are texted to this number.";
 
+/** The business the customer is checking in for. Optional. */
+const COMPANY_NAME_FIELD = cust("companyName", "Company Name", "text", {
+  width: 6,
+  placeholder: "Leave blank for a private customer",
+});
+
 /** The office line the shop calls once the job is finished. Optional. */
 const COMPANY_PHONE_FIELD = cust("companyPhone", "Company Phone Number", "phone", {
   width: 6,
@@ -125,9 +131,9 @@ const customerStep: FormStep = {
         placeholder: "(123) 123-1233",
         help: PHONE_HELP,
       }),
-      COMPANY_PHONE_FIELD,
       cust("email", "Email", "email", { width: 6, placeholder: "customer@email.com" }),
     ]),
+    row("company", [COMPANY_NAME_FIELD, COMPANY_PHONE_FIELD]),
     cust("street", "Street Address", "text", { placeholder: "Address" }),
     row("cityStateZip", [
       cust("city", "City", "text", { width: 6, placeholder: "City" }),
@@ -325,25 +331,45 @@ const staffStep: FormStep = {
   ],
 };
 
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
 
 export const DEFAULT_FORM_SCHEMA: FormSchema = {
   version: SCHEMA_VERSION,
   steps: [customerStep, estimateStep, vehicleStep, termsStep, staffStep],
 };
 
-/** Inserts `field` right after the field keyed `afterKey`, wherever that sits. */
-function insertAfter(fields: FormField[], afterKey: string, field: FormField): { fields: FormField[]; done: boolean } {
-  const at = fields.findIndex((f) => f.key === afterKey);
-  if (at >= 0) return { fields: [...fields.slice(0, at + 1), field, ...fields.slice(at + 1)], done: true };
+/** Inserts `field` right after (or before) the field keyed `key`, wherever that sits. */
+function insertNear(
+  fields: FormField[],
+  key: string,
+  field: FormField,
+  side: "after" | "before" = "after"
+): { fields: FormField[]; done: boolean } {
+  const at = fields.findIndex((f) => f.key === key);
+  if (at >= 0) {
+    const cut = side === "after" ? at + 1 : at;
+    return { fields: [...fields.slice(0, cut), field, ...fields.slice(cut)], done: true };
+  }
   let done = false;
   const out = fields.map((f) => {
     if (done || !f.children?.length) return f;
-    const r = insertAfter(f.children, afterKey, field);
+    const r = insertNear(f.children, key, field, side);
     done = r.done;
     return r.done ? { ...f, children: r.fields } : f;
   });
   return { fields: out, done };
+}
+
+/** Tries `place` on each step in turn until one takes the field. */
+function placeInSteps(steps: FormStep[], place: (fields: FormField[]) => { fields: FormField[]; done: boolean }) {
+  let placed = false;
+  const out = steps.map((s) => {
+    if (placed) return s;
+    const r = place(s.fields);
+    placed = r.done;
+    return r.done ? { ...s, fields: r.fields } : s;
+  });
+  return { steps: out, placed };
 }
 
 function hasKey(fields: FormField[], key: string): boolean {
@@ -368,19 +394,45 @@ function upgradeToV2(schema: FormSchema): FormSchema {
 
   let steps = schema.steps.map((s) => ({ ...s, fields: relabel(s.fields) }));
   if (!steps.some((s) => hasKey(s.fields, "companyPhone"))) {
-    let placed = false;
-    steps = steps.map((s) => {
-      if (placed) return s;
-      const r = insertAfter(s.fields, "phone", COMPANY_PHONE_FIELD);
-      placed = r.done;
-      return r.done ? { ...s, fields: r.fields } : s;
-    });
+    const r = placeInSteps(steps, (fields) => insertNear(fields, "phone", COMPANY_PHONE_FIELD));
+    steps = r.steps;
     // No phone to sit beside: put it at the end of the first step rather than lose it.
-    if (!placed && steps.length) {
+    if (!r.placed && steps.length) {
       steps = [{ ...steps[0], fields: [...steps[0].fields, COMPANY_PHONE_FIELD] }, ...steps.slice(1)];
     }
   }
-  return { ...schema, version: SCHEMA_VERSION, steps };
+  return { ...schema, version: 2, steps };
+}
+
+/**
+ * v2 → v3: a company name joins the company phone. Where v2 left the company
+ * phone in the contact row right after the cell, the two company fields move
+ * to a row of their own under it; anywhere else the name goes just before the
+ * company phone, wherever the admin put it.
+ */
+function upgradeToV3(schema: FormSchema): FormSchema {
+  let steps = schema.steps;
+  if (!steps.some((s) => hasKey(s.fields, "companyName"))) {
+    let r = placeInSteps(steps, (fields) => {
+      const at = fields.findIndex((f) => {
+        const i = f.type === "row" ? (f.children || []).findIndex((c) => c.key === "companyPhone") : -1;
+        return i > 0 && f.children![i - 1].key === "phone";
+      });
+      if (at < 0) return { fields, done: false };
+      const contact = fields[at];
+      const companyPhone = contact.children!.find((c) => c.key === "companyPhone")!;
+      const company = row("company", [COMPANY_NAME_FIELD, { ...companyPhone, width: 6 }]);
+      const rest = { ...contact, children: contact.children!.filter((c) => c.key !== "companyPhone") };
+      return { fields: [...fields.slice(0, at), rest, company, ...fields.slice(at + 1)], done: true };
+    });
+    if (!r.placed) r = placeInSteps(steps, (fields) => insertNear(fields, "companyPhone", COMPANY_NAME_FIELD, "before"));
+    if (!r.placed) r = placeInSteps(steps, (fields) => insertNear(fields, "phone", COMPANY_NAME_FIELD));
+    steps = r.steps;
+    if (!r.placed && steps.length) {
+      steps = [{ ...steps[0], fields: [...steps[0].fields, COMPANY_NAME_FIELD] }, ...steps.slice(1)];
+    }
+  }
+  return { ...schema, version: 3, steps };
 }
 
 /**
@@ -392,5 +444,6 @@ export function resolveSchema(stored: FormSchema | null | undefined): FormSchema
   if (!stored || !Array.isArray(stored.steps) || stored.steps.length === 0) return DEFAULT_FORM_SCHEMA;
   let schema = stored;
   if ((schema.version ?? 1) < 2) schema = upgradeToV2(schema);
+  if (schema.version < SCHEMA_VERSION) schema = upgradeToV3(schema);
   return schema;
 }

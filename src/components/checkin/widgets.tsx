@@ -13,6 +13,7 @@ export type CustomerHit = {
   firstName: string;
   lastName: string;
   phone: string;
+  companyName: string;
   companyPhone: string;
   email: string;
   street: string;
@@ -100,6 +101,7 @@ export function CustomerSearchWidget({
                 <span className="min-w-0">
                   <span className="block font-semibold text-ink-900 truncate">
                     {c.firstName} {c.lastName}
+                    {c.companyName && <span className="font-normal text-ink-500"> · {c.companyName}</span>}
                   </span>
                   <span className="block text-sm text-ink-500 truncate">
                     {formatPhone(c.phone)}

@@ -93,6 +93,7 @@ export const GUIDE: GuideSection[] = [
           "Press New check-in.",
           "Start typing the customer's name or phone. If they have been here before, pick them and everything fills in.",
           "Take two numbers: their cell, which gets the text updates, and the company phone, which we call when the job is finished.",
+          "If they are bringing it in for a business, put the company name in too — it shows under their name on the jobs list.",
           "Work through the steps. Anything with a red star has to be filled in.",
           "Take photos as you go — they stay attached to the job.",
           "Finish, and the job appears at the top of the list under your name.",

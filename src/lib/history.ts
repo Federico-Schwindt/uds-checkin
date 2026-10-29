@@ -57,6 +57,7 @@ export const FIELD_LABELS: Record<string, string> = {
   firstName: "First name",
   lastName: "Last name",
   phone: "Cell phone (texts)",
+  companyName: "Company name",
   companyPhone: "Company phone",
   email: "Email",
   street: "Street",

@@ -87,6 +87,7 @@ export default async function AdminDashboard() {
           createdAt: entries.createdAt,
           firstName: customers.firstName,
           lastName: customers.lastName,
+          companyName: customers.companyName,
           phone: customers.phone,
         })
         .from(entries)
@@ -530,6 +531,7 @@ export default async function AdminDashboard() {
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-ink-900 truncate">
                     {r.firstName} {r.lastName}
+                    {r.companyName ? <span className="text-ink-500 font-normal"> · {r.companyName}</span> : null}
                     {r.jobNumber ? <span className="text-ink-400 font-normal"> · Job {r.jobNumber}</span> : null}
                   </p>
                   <p className="text-sm text-ink-500 truncate">

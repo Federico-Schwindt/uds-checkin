@@ -232,6 +232,8 @@ export const customers = pgTable(
     lastName: text("last_name").notNull().default(""),
     /** The cell that gets the SMS job updates. Digits only. */
     phone: text("phone").notNull().default(""),
+    /** The business the customer is checking in for, when there is one. */
+    companyName: text("company_name").notNull().default(""),
     /** The office line the shop calls when the job is finished. Digits only, may be empty. */
     companyPhone: text("company_phone").notNull().default(""),
     email: text("email").notNull().default(""),

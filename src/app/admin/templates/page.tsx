@@ -25,7 +25,7 @@ const GROUPS: Array<{ key: string; title: string; description: string }> = [
 ];
 
 const VARIABLES = [
-  "{first_name}", "{last_name}", "{full_name}", "{phone}", "{company_phone}", "{email}", "{job_number}",
+  "{first_name}", "{last_name}", "{full_name}", "{phone}", "{company_name}", "{company_phone}", "{email}", "{job_number}",
   "{status}", "{on_hold_reason}", "{assigned_employee}", "{eta}", "{vehicle}",
   "{deposit}", "{total}", "{business_name}",
 ];

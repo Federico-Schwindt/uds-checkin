@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
         ilike(entries.jobNumber, like),
         ilike(customers.firstName, like),
         ilike(customers.lastName, like),
+        ilike(customers.companyName, like),
         ilike(entries.vehicleMake, like),
         ilike(entries.vehicleModel, like)
       )!
@@ -34,6 +35,7 @@ export async function GET(req: NextRequest) {
       vehicleModel: entries.vehicleModel,
       firstName: customers.firstName,
       lastName: customers.lastName,
+      companyName: customers.companyName,
       assignedEmployee: entries.assignedEmployee,
       createdAt: entries.createdAt,
     })
