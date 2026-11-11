@@ -77,3 +77,12 @@ It refuses to delete without `--yes`, runs in one transaction, and prints the wo
 - `src/db/` — Drizzle schema + idempotent bootstrap (DDL + seeds) that runs once per process; works on both PGlite (dev) and Postgres (prod).
 - `src/lib/notify.ts` — template rendering and Twilio/SMTP senders; every attempt is recorded in `message_log`.
 - `src/lib/form-options.json` / `legal-texts.json` — dropdown options and legal texts extracted verbatim from the Gravity Forms export.
+
+## Online store integration
+
+The online store (universaldriveshafts.com) turns each custom driveshaft it sells into a work order here, through
+`/api/integrations/web-orders` (code and protocol in `src/lib/integration.ts`). Every request is signed with
+`INTEGRATION_SECRET` (set in the app's environment, the same value as the store's `CHECKIN_API_SECRET`); without it
+the routes answer 503. Web orders show **Online store** as the creator, keep their customer silent (no e-mail, no SMS
+consent) and follow the order: paid later → Paid, cancelled → On hold with a DO NOT BUILD line, shipped → Completed.
+Self-test against in-memory Postgres: see the header of `scripts/integration-selftest.ts`.
