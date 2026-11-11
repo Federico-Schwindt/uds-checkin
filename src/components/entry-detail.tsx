@@ -33,7 +33,8 @@ import { EntryHistory } from "@/components/entry-history";
 import { ScoreEditor, type SuggestedPoints } from "@/components/score-editor";
 import { cn, formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
-import { CUSTOM_ORDER_KEY } from "@/lib/integration-shared";
+import { CUSTOM_ORDER_KEY, INTERNAL_CUSTOM_KEYS, readOnlineBuild } from "@/lib/integration-shared";
+import { OnlineBuildCard } from "@/components/online-build-card";
 
 /* ---------------- field definitions ---------------- */
 
@@ -320,6 +321,7 @@ export function EntryDetail({
 
   const data = editing ? draftEntry : entry;
   const custData = (editing ? draftCustomer : customer) as Record<string, unknown> | null;
+  const onlineBuild = readOnlineBuild(entry.custom);
 
   const renderField = (f: FieldDef, source: "entry" | "customer") => {
     const obj = source === "entry" ? data : custData;
@@ -340,7 +342,7 @@ export function EntryDetail({
               {display}
             </a>
           ) : (
-            <p className={cn("text-sm text-ink-900 mt-0.5 break-words", !value && "text-ink-300")}>{display}</p>
+            <p className={cn("text-sm text-ink-900 mt-0.5 break-words", f.type === "textarea" && "whitespace-pre-line", !value && "text-ink-300")}>{display}</p>
           )}
         </div>
       );
@@ -518,6 +520,9 @@ export function EntryDetail({
         </Card>
       )}
 
+      {/* A custom driveshaft from the online builder, laid out for the bench */}
+      {onlineBuild && <OnlineBuildCard build={onlineBuild} image={String(entry.productImage || "")} />}
+
       {/* Customer */}
       <Card className="p-5">
         <div className="flex items-center justify-between mb-4">
@@ -544,7 +549,7 @@ export function EntryDetail({
       <Card className="p-5">
         <h2 className="font-bold mb-4">Job details</h2>
         <div className={grid}>{JOB_FIELDS.map((f) => renderField(f, "entry"))}</div>
-        {!editing && (entry.productImage as string) && (
+        {!editing && !onlineBuild && (entry.productImage as string) && (
           <div className="mt-4">
             <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-400 mb-1.5">Product Image</p>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -697,14 +702,14 @@ function CustomFieldsCard({ custom }: { custom: Record<string, unknown> | null }
       .catch(() => {});
   }, [custom]);
 
-  if (!custom || Object.keys(custom).length === 0) return null;
+  if (!custom || Object.keys(custom).filter((k) => !INTERNAL_CUSTOM_KEYS.includes(k)).length === 0) return null;
 
   const isImage = (v: string) => /^(https?:)?\/|^\/api\/files\//.test(v) && /\.(png|jpe?g|webp|gif)$/i.test(v);
   const isLink = (v: string) => /^https:\/\/[^\s"'<>]+$/.test(v);
   // jsonb does not keep key order; the online store sends the order to show its details in (CUSTOM_ORDER_KEY)
   const order = Array.isArray(custom[CUSTOM_ORDER_KEY]) ? (custom[CUSTOM_ORDER_KEY] as unknown[]).map(String) : [];
   const shown = Object.entries(custom)
-    .filter(([key]) => key !== CUSTOM_ORDER_KEY)
+    .filter(([key]) => !INTERNAL_CUSTOM_KEYS.includes(key))
     .sort(([a], [b]) => (order.indexOf(a) + 1 || order.length + 1) - (order.indexOf(b) + 1 || order.length + 1));
 
   return (
