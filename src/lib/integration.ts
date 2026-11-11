@@ -3,7 +3,7 @@ import { and, eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 import { activityLog, customers, entries, locations, parts, statusHistory, type Db } from "@/db";
 import { normalizePhone } from "@/lib/utils";
-import { CUSTOM_ORDER_KEY } from "@/lib/integration-shared";
+import { BUILD_KEY, CUSTOM_ORDER_KEY } from "@/lib/integration-shared";
 
 /**
  * Online-store integration: the store (universaldriveshafts.com) turns each custom driveshaft it sells into a work
@@ -60,6 +60,26 @@ export function verifySignature(input: {
 const text = (max: number) => z.string().trim().max(max).default("");
 const httpsUrl = z.string().trim().max(2000).refine((v) => v === "" || /^https:\/\/[^\s"'<>]+$/.test(v), "must be an https URL").default("");
 
+/** The build as the online builder knows it, grouped for the "Online build" card (see lib/integration-shared OnlineBuild). */
+const buildSchema = z.object({
+  title: text(200),
+  subtitle: text(200),
+  highlights: z.array(z.object({ label: z.string().trim().min(1).max(40), value: z.string().trim().min(1).max(80) })).max(8).default([]),
+  sections: z.array(z.object({
+    title: z.string().trim().min(1).max(60),
+    rows: z.array(z.tuple([z.string().trim().min(1).max(80), z.string().trim().max(600)])).max(30),
+  })).min(1).max(10),
+  links: z.object({ build: httpsUrl, drawing: httpsUrl }).default({ build: "", drawing: "" }),
+  note: text(600),
+});
+
+/** JSON with keys sorted: jsonb hands objects back in its own key order, so plain stringify would always differ. */
+function canon(v: unknown): string {
+  if (Array.isArray(v)) return `[${v.map(canon).join(",")}]`;
+  if (v && typeof v === "object") return `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${canon((v as Record<string, unknown>)[k])}`).join(",")}}`;
+  return JSON.stringify(v ?? null);
+}
+
 export const webOrderSchema = z.object({
   order: z.string().trim().min(1).max(60),
   customer: z.object({
@@ -87,6 +107,7 @@ export const webOrderSchema = z.object({
     payment: z.enum(["Paid", "Unpaid", ""]).default(""),
     productImage: httpsUrl,
     custom: z.record(z.string().max(80), z.union([z.string().max(2000), z.number(), z.boolean()])).default({}),
+    build: buildSchema.optional(),
   }),
   parts: z
     .array(z.object({ sku: text(80), name: z.string().trim().min(1).max(250), qty: z.number().int().min(1).max(999), price: z.number().min(0).max(1_000_000) }))
@@ -103,6 +124,8 @@ export const webOrderUpdateSchema = z.object({
   cancel: z.object({ reason: z.enum(["cancelled", "refunded"]) }).optional(),
   /** The order shipped or was completed in the store. */
   complete: z.object({ note: text(200) }).optional(),
+  /** The store's build card, refreshed (the order was edited, or the store lays it out better); notes stay the shop's. */
+  build: buildSchema.optional(),
 });
 export type WebOrderUpdate = z.infer<typeof webOrderUpdateSchema>;
 
@@ -161,7 +184,10 @@ export async function upsertWebOrder(db: Db, job: string, input: WebOrder): Prom
       measurementA: e.measurementA, measurementB: e.measurementB, measurementC: e.measurementC,
       total: e.total === null ? null : e.total.toFixed(2), jobNumber: job, jobStatus: "New", payment: e.payment,
       // jsonb keeps keys in its own order (shortest first); CUSTOM_ORDER_KEY keeps the store's, for the Additional information card
-      custom: Object.keys(e.custom).length ? { ...e.custom, [CUSTOM_ORDER_KEY]: Object.keys(e.custom) } : null, createdByName: INTEGRATION_ACTOR,
+      custom: Object.keys(e.custom).length || e.build
+        ? { ...e.custom, ...(Object.keys(e.custom).length ? { [CUSTOM_ORDER_KEY]: Object.keys(e.custom) } : {}), ...(e.build ? { [BUILD_KEY]: e.build } : {}) }
+        : null,
+      createdByName: INTEGRATION_ACTOR,
     }).returning({ id: entries.id });
     if (input.parts.length) {
       await tx.insert(parts).values(input.parts.map((p) => ({ entryId: row.id, sku: p.sku, name: p.name, qty: p.qty, price: p.price.toFixed(2) })));
@@ -207,6 +233,11 @@ export async function updateWebOrder(db: Db, job: string, input: WebOrderUpdate)
         patch.onHoldReason = `Order ${input.cancel.reason} online`;
         diff.onHoldReason = { from: e.onHoldReason, to: patch.onHoldReason };
       }
+    }
+    const custom = (e.custom as Record<string, unknown> | null) || {};
+    if (input.build && canon(custom[BUILD_KEY]) !== canon(input.build)) {
+      patch.custom = { ...custom, [BUILD_KEY]: input.build };
+      diff.build = { from: custom[BUILD_KEY] ? "previous build card" : "", to: "build card from the online store" };
     }
     if (input.complete && !input.cancel && !cancelled && e.jobStatus !== "Completed") {
       toStatus = "Completed";

@@ -8,6 +8,7 @@ import { drizzle } from "drizzle-orm/pglite";
 import { eq } from "drizzle-orm";
 import * as schema from "@/db/schema";
 import { bootstrap } from "@/db/bootstrap";
+import { readOnlineBuild } from "@/lib/integration-shared";
 import { CANCEL_MARK, IntegrationError, updateWebOrder, upsertWebOrder, verifySignature, webOrderSchema, webOrderStatuses, webOrderUpdateSchema } from "@/lib/integration";
 
 let failures = 0, checks = 0;
@@ -40,7 +41,12 @@ const order = (over: any = {}) => webOrderSchema.parse({
   customer: { firstName: "Alex", lastName: "Morgan", phone: "+1 (813) 555-0142", street: "12 Test St", city: "Tampa", state: "FL", zip: "33601", country: "United States" },
   entry: { notes: "ONLINE ORDER UDS-261111-AB12\nSeries: 1350", laborRequest: "Custom Made Driveshaft", driveshaftPieces: "1 Piece", driveshaftMaterial: "Steel",
     designerType: "One Piece", measurementA: '52.25"', total: 919.51, payment: "Paid", productImage: "https://universaldriveshafts.com/online-builder/drawing?f=trans&r=flange&a1=52.25&c1=48",
-    custom: { "Online order": "UDS-261111-AB12", "Series": "1350 Series" } },
+    custom: { "Online order": "UDS-261111-AB12", "Series": "1350 Series" },
+    build: { title: "Custom 1350 series steel driveshaft", subtitle: "Order UDS-261111-AB12 · $919.51",
+      highlights: [{ label: "A1", value: '52.25"' }, { label: "C1", value: '48"' }],
+      sections: [{ title: "Shaft", rows: [["Series", "1350 Series"], ["Tube material", "Steel"]] }, { title: "Measurements", rows: [["A1 · overall length", '52.25"']] }],
+      links: { build: "https://universaldriveshafts.com/online-builder?dsb_series=1350", drawing: "https://universaldriveshafts.com/online-builder/drawing?f=trans&r=flange&a1=52.25" },
+      note: "A1 and C1 are shaft measurements." } },
   parts: [{ sku: "", name: "Custom 1350 driveshaft", qty: 1, price: 832.38 }, { sku: "2-2-1379U", name: "Rear yoke: 2-2-1379", qty: 1, price: 87.13 }],
   ...over,
 });
@@ -49,6 +55,9 @@ eqv([r1.created, r1.deleted], [true, false], "created");
 const [e1] = await db.select().from(entries).where(eq(entries.id, r1.id));
 eqv([e1.jobNumber, e1.jobStatus, e1.payment, e1.createdByName, e1.total, e1.measurementA], ["UDS-261111-AB12", "New", "Paid", "Online store", "919.51", '52.25"'], "entry row");
 ok(e1.productImage.startsWith("https://universaldriveshafts.com/online-builder/drawing"), "drawing as product image");
+const card = readOnlineBuild(e1.custom);
+eqv([card?.title, card?.sections.map((x) => x.title), card?.highlights.length, card?.links.build.startsWith("https://")], ["Custom 1350 series steel driveshaft", ["Shaft", "Measurements"], 2, true], "online build card stored and readable");
+eqv(readOnlineBuild({ Series: "x" }), null, "no card on a shop check-in");
 eqv([e1.custom["Online order"], e1.custom["Series"], e1.custom["__order"]], ["UDS-261111-AB12", "1350 Series", ["Online order", "Series"]], "additional information, with the store's order kept");
 const [c1] = await db.select().from(customers).where(eq(customers.id, e1.customerId));
 eqv([c1.phone, c1.email, c1.smsConsent, c1.city], ["8135550142", "", false, "Tampa"], "silent customer row");
@@ -88,6 +97,14 @@ eqv(bad({ ...order(), parts: Array.from({ length: 21 }, () => ({ name: "x", qty:
 
 // ---- updates
 const up = (job: string, u: any) => updateWebOrder(db, job, webOrderUpdateSchema.parse({ order: job, ...u }));
+// the card is refreshed only when it changed (jsonb reorders keys: compared canonically), the notes are never touched
+eqv((await up("UDS-261111-AB12", { build: order().entry.build })).changed, [], "same card: nothing");
+const newer = { ...order().entry.build, sections: [{ title: "Shaft", rows: [["Series", "1350 Series"], ["Tube OD", '3"']] }] };
+eqv((await up("UDS-261111-AB12", { build: newer })).changed, ["build"], "new card replaces the old");
+const er = (await db.select().from(entries).where(eq(entries.id, r1.id)))[0];
+eqv([readOnlineBuild(er.custom)?.sections[0].rows[1], er.notes], [["Tube OD", '3"'], "edited by the shop"], "card updated, the shop's notes kept");
+eqv(webOrderSchema.safeParse({ ...order(), entry: { ...order().entry, build: { ...order().entry.build, sections: [] } } }).success, false, "a card needs sections");
+eqv(webOrderSchema.safeParse({ ...order(), entry: { ...order().entry, build: { ...order().entry.build, links: { build: "http://x", drawing: "" } } } }).success, false, "card links must be https");
 const pick = await upsertWebOrder(db, "UDS-PICKUP-1", order({ order: "UDS-PICKUP-1", entry: { ...order().entry, payment: "Unpaid" } }));
 eqv((await up("UDS-PICKUP-1", { payment: "Paid" })).changed, ["payment"], "paid later");
 eqv((await up("UDS-PICKUP-1", { payment: "Paid" })).changed, [], "paid twice: nothing");
@@ -119,8 +136,8 @@ await throws(up("UDS-SHIP-1", { payment: "Paid" }), 404, "deleted not updated");
 
 // ---- statuses
 const st = await webOrderStatuses(db, ["UDS-261111-AB12", "UDS-CANCEL-1", "UDS-SHIP-1", "SHOP-777", "x y"]);
-const byJob = Object.fromEntries(st.map((s: any) => [s.job, [s.status, s.cancelled, s.deleted]]));
-eqv(byJob, { "UDS-261111-AB12": ["New", false, false], "UDS-CANCEL-1": ["On hold", true, false], "UDS-SHIP-1": ["Completed", false, true] }, "statuses (shop entries never listed)");
+const byJob = Object.fromEntries(st.map((s: any) => [s.job, [s.status, s.cancelled, s.deleted]]).sort(([a]: any, [b]: any) => a.localeCompare(b)));
+eqv(byJob, { "UDS-261111-AB12": ["New", false, false], "UDS-CANCEL-1": ["On hold", true, false], "UDS-SHIP-1": ["Completed", false, true] }, "statuses (shop entries never listed, any order)");
 
 console.log(failures ? `${failures} of ${checks} checks FAILED` : `all ${checks} checks passed`);
 process.exit(failures ? 1 : 0);
