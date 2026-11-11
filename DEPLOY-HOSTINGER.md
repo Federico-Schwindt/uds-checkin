@@ -21,6 +21,10 @@ Set these on the server (see `.env.example`):
   the folder automatically on the first upload. Just make sure the parent path is
   writable by the user running Node (a folder under your home dir always is).
 - `PORT` — the port Node should listen on (Hostinger often provides/expects one).
+- `INTEGRATION_SECRET` — at least 32 random characters (e.g. `openssl rand -hex 32`), the same value as
+  `CHECKIN_API_SECRET` in the online store's `.env`. It signs the store's requests to `/api/integrations/…`
+  (custom driveshaft orders become work orders, then follow the order: paid, cancelled, shipped). Without it
+  those routes answer 503 and nothing else changes. To rotate it, change both sides together.
 
 Twilio and SMTP are configured in the app at **Admin → Settings**, not via env.
 

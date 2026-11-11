@@ -33,6 +33,7 @@ import { EntryHistory } from "@/components/entry-history";
 import { ScoreEditor, type SuggestedPoints } from "@/components/score-editor";
 import { cn, formatDateTime, formatMoney, formatPhone } from "@/lib/utils";
 import formOptions from "@/lib/form-options.json";
+import { CUSTOM_ORDER_KEY } from "@/lib/integration-shared";
 
 /* ---------------- field definitions ---------------- */
 
@@ -699,12 +700,18 @@ function CustomFieldsCard({ custom }: { custom: Record<string, unknown> | null }
   if (!custom || Object.keys(custom).length === 0) return null;
 
   const isImage = (v: string) => /^(https?:)?\/|^\/api\/files\//.test(v) && /\.(png|jpe?g|webp|gif)$/i.test(v);
+  const isLink = (v: string) => /^https:\/\/[^\s"'<>]+$/.test(v);
+  // jsonb does not keep key order; the online store sends the order to show its details in (CUSTOM_ORDER_KEY)
+  const order = Array.isArray(custom[CUSTOM_ORDER_KEY]) ? (custom[CUSTOM_ORDER_KEY] as unknown[]).map(String) : [];
+  const shown = Object.entries(custom)
+    .filter(([key]) => key !== CUSTOM_ORDER_KEY)
+    .sort(([a], [b]) => (order.indexOf(a) + 1 || order.length + 1) - (order.indexOf(b) + 1 || order.length + 1));
 
   return (
     <Card className="p-5">
       <h2 className="font-bold mb-4">Additional information</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-4">
-        {Object.entries(custom).map(([key, value]) => {
+        {shown.map(([key, value]) => {
           const label = labels[key] || key;
           const list = Array.isArray(value) ? value : null;
           return (
@@ -726,6 +733,10 @@ function CustomFieldsCard({ custom }: { custom: Record<string, unknown> | null }
               ) : typeof value === "string" && isImage(value) ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={value} alt={label} className="h-24 rounded-lg border border-ink-200 mt-1" />
+              ) : typeof value === "string" && isLink(value) ? (
+                <a href={value} target="_blank" rel="noopener noreferrer" className="block text-sm font-semibold text-brand-700 hover:underline mt-0.5">
+                  Open
+                </a>
               ) : (
                 <p className="text-sm text-ink-900 mt-0.5 break-words">
                   {value === true ? "Yes" : value === false ? "No" : String(value ?? "") || "—"}

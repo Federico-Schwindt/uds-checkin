@@ -4,8 +4,10 @@ import { AUTH_COOKIE, verifySessionToken } from "@/lib/auth";
 /**
  * Reachable without a session. The inbound-mail routes are public because they
  * are called by a mail provider or a scheduler; each checks its own shared secret.
+ * The integration routes are called by the online store and check a signature
+ * made with INTEGRATION_SECRET on every request (src/lib/integration.ts).
  */
-const PUBLIC_PREFIXES = ["/lock", "/api/auth/", "/api/inbound/", "/manifest.webmanifest"];
+const PUBLIC_PREFIXES = ["/lock", "/api/auth/", "/api/inbound/", "/api/integrations/", "/manifest.webmanifest"];
 
 /** Admin-only areas — technicians are bounced to the station. */
 const ADMIN_PREFIXES = ["/admin", "/api/admin"];
