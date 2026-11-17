@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { getDb } from "@/db";
 import { IntegrationError, readSigned, updateWebOrder, upsertWebOrder, webOrderSchema, webOrderStatuses, webOrderUpdateSchema } from "@/lib/integration";
-import { notifyForEntry } from "@/lib/notify";
 import { logActivity } from "@/lib/audit";
 
 /**
@@ -28,10 +27,7 @@ export async function PUT(req: NextRequest, ctx: Ctx) {
   try {
     const input = webOrderSchema.parse(JSON.parse(body || "null"));
     const res = await upsertWebOrder(await getDb(), job, input);
-    // the shop's own "new check-in" e-mail (Admin → Templates); never the customer's: the store talks to web customers
-    if (res.created) {
-      try { await notifyForEntry(res.id, "admin_submission"); } catch (err) { console.error("notify failed", err); }
-    }
+    // no "new check-in" e-mail and nothing to the customer for web orders (owner, 2026-11-17): see notifyForEntry
     return NextResponse.json(res, { status: res.created ? 201 : 200 });
   } catch (err) {
     if (err instanceof SyntaxError) return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
