@@ -113,6 +113,8 @@ export const webOrderSchema = z.object({
     .array(z.object({ sku: text(80), name: z.string().trim().min(1).max(250), qty: z.number().int().min(1).max(999), price: z.number().min(0).max(1_000_000) }))
     .max(20)
     .default([]),
+  /** Sent again by hand from the store's order page: a work order deleted at the shop comes back (owner, 2026-11-17). */
+  restore: z.boolean().default(false),
 });
 export type WebOrder = z.infer<typeof webOrderSchema>;
 
@@ -147,14 +149,24 @@ async function findWebEntry(db: Db | Tx, job: string) {
 
 /**
  * Creates the work order for a job number, once. A repeat returns the existing one untouched (the shop may have
- * edited it); a deleted one is not brought back. Customer, entry, parts, first status row and the audit row are
- * written in one transaction.
+ * edited it); a deleted one is not brought back, unless the store sends it again by hand (`restore`), which undoes the
+ * delete like Admin → Activity → Restore. Customer, entry, parts, first status row and the audit row are written in
+ * one transaction.
  */
-export async function upsertWebOrder(db: Db, job: string, input: WebOrder): Promise<{ id: number; created: boolean; deleted: boolean }> {
+export async function upsertWebOrder(db: Db, job: string, input: WebOrder): Promise<{ id: number; created: boolean; deleted: boolean; restored?: boolean }> {
   if (!/^[A-Za-z0-9-]{3,60}$/.test(job)) throw new IntegrationError(400, "Invalid job number");
   const phone = normalizePhone(input.customer.phone);
   return db.transaction(async (tx) => {
     const existing = await findWebEntry(tx, job);
+    if (existing && existing.deletedAt && input.restore) {
+      await tx.update(entries).set({ deletedAt: null }).where(eq(entries.id, existing.id));
+      await tx.insert(activityLog).values({
+        action: "entry.restore", entity: "entry", entityId: existing.id,
+        summary: `Restored check-in #${existing.id} (Job ${job}) · sent again from the online store`,
+        details: { source: "online store", order: input.order }, actor: INTEGRATION_ACTOR, ip: "",
+      });
+      return { id: existing.id, created: false, deleted: false, restored: true };
+    }
     if (existing) return { id: existing.id, created: false, deleted: !!existing.deletedAt };
 
     // a returning web customer keeps their silent row; a customer who checked in at the counter is never borrowed,
