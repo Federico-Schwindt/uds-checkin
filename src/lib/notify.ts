@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { getDb, entries, customers, messageTemplates, messageLog } from "@/db";
 import { getSettings, type AppSettings } from "@/lib/settings";
+import { INTEGRATION_ACTOR } from "@/lib/integration";
 import { formatMoney, formatPhone, toE164 } from "@/lib/utils";
 
 export type TemplateKey = "submission" | "confirmed" | "ongoing" | "on_hold" | "completed" | "admin_submission";
@@ -247,6 +248,9 @@ export async function notifyForEntry(entryId: number, key: TemplateKey): Promise
   const db = await getDb();
   const entry = await loadEntryWithCustomer(entryId);
   if (!entry) return {};
+  // work orders sent by the online store notify nobody from here, neither the shop nor the customer: the store tells
+  // its own customers (when the order ships) and the shop sees them in its list (owner, 2026-11-17)
+  if (entry.createdByName === INTEGRATION_ACTOR) return {};
   const s = await getSettings();
   const vars = buildVariables(entry, s);
   const templates = await db.select().from(messageTemplates).where(eq(messageTemplates.key, key));
