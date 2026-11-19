@@ -64,7 +64,7 @@ const httpsUrl = z.string().trim().max(2000).refine((v) => v === "" || /^https:\
 const buildSchema = z.object({
   title: text(200),
   subtitle: text(200),
-  highlights: z.array(z.object({ label: z.string().trim().min(1).max(40), value: z.string().trim().min(1).max(80) })).max(8).default([]),
+  highlights: z.array(z.object({ label: z.string().trim().min(1).max(40), value: z.string().trim().min(1).max(80) })).max(16).default([]),
   sections: z.array(z.object({
     title: z.string().trim().min(1).max(60),
     rows: z.array(z.tuple([z.string().trim().min(1).max(80), z.string().trim().max(600)])).max(30),
